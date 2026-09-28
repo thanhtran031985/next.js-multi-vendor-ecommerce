@@ -13,6 +13,7 @@ Covet là sàn thương mại điện tử nhiều người bán (multi-vendor).
 docs/tasks/
 ├── README.md            ← bảng tổng tất cả task + trạng thái
 ├── _template/           ← mẫu cho task mới (task.md, progress.md, decisions.md)
+├── dashboard.html       ← SINH RA bởi `npm run tasks:dashboard`, KHÔNG sửa tay
 └── NN-slug/             ← mỗi task một thư mục, NN = số thứ tự 2 chữ số
     ├── task.md          ← yêu cầu của task (do tôi viết, KHÔNG tự sửa)
     ├── progress.md      ← tiến độ, Claude cập nhật sau mỗi bước
@@ -25,6 +26,10 @@ Quy ước đặt tên:
 - Nhánh git tương ứng: `feat/NN-slug`.
 - Task xong vẫn giữ nguyên thư mục, chỉ đổi trạng thái trong README. Không di chuyển, không xóa.
 
+Ký hiệu trạng thái (dùng trong README và progress.md; dashboard tô màu theo đó):
+⬜ chưa làm · 🔄 đang làm · ❓ có code chưa rà soát · ⚠️ khác task.md · ❌ thiếu · ✅ xong.
+Ký hiệu khác sẽ hiện màu xám trên dashboard kèm cảnh báo.
+
 ## Khi tôi yêu cầu tạo task mới
 1. Đọc `docs/tasks/README.md`, lấy số lớn nhất hiện có + 1 làm NN.
 2. Đề xuất slug, hỏi tôi xác nhận nếu tên chưa rõ.
@@ -33,6 +38,7 @@ Quy ước đặt tên:
 5. Thêm một dòng vào bảng trong `docs/tasks/README.md` (trạng thái ⬜, phụ thuộc nếu có).
 6. Nếu task có giao diện: liệt kê các file `designs/*.dc.html` liên quan trong mục
    "Thiết kế" của `task.md` (hỏi tôi nếu không chắc file nào thuộc task).
+7. Chạy `npm run tasks:dashboard`.
 Không bắt đầu làm task khi tôi chưa yêu cầu.
 
 ## Quy trình khi làm một task
@@ -42,7 +48,8 @@ Không bắt đầu làm task khi tôi chưa yêu cầu.
 - Làm lần lượt từng bước theo đúng thứ tự trong `task.md`.
 - Sau MỖI bước:
   1. Tự chạy phần "Kiểm tra" của bước đó.
-  2. Cập nhật `progress.md` (bảng trạng thái + nhật ký của bước).
+  2. Cập nhật `progress.md` (bảng trạng thái + nhật ký của bước), rồi chạy
+     `npm run tasks:dashboard`.
   3. Báo cáo ngắn: đã làm gì, kết quả kiểm tra, việc tôi cần làm thủ công.
   4. Đề xuất commit message dạng `NN-slug: step N — <mô tả>`. Chỉ commit khi tôi đồng ý.
   5. DỪNG và chờ tôi trả lời "continue".
