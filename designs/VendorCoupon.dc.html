@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#F4F3F7;font-family:'Instrument Sans',system-ui,sans-serif;color:#3A3745;-webkit-font-smoothing:antialiased}
+a{color:#6544E0;text-decoration:none}a:hover{color:#5636C6}
+::selection{background:#EBE6FE;color:#472BA3}input::placeholder{color:#A5A2AE}
+@keyframes shimmer{0%{background-position:-450px 0}100%{background-position:450px 0}}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#DCDAE3;border-radius:6px}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#6544E0">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#6544E0"></rect><rect x="330" y="290" width="540" height="60" rx="12" fill="#fff" opacity=".9"></rect><rect x="330" y="370" width="540" height="46" rx="10" fill="#fff" opacity=".55"></rect><text x="600" y="600" font-family="Sora, sans-serif" font-size="70" font-weight="800" fill="#fff" text-anchor="middle">Covet<tspan fill="#BCA9FB">.</tspan></text></svg>
+</template>
+
+<div style="display:flex;min-height:100vh;background:#F4F3F7">
+
+  <!-- ICON RAIL -->
+  <div style="{{ railStyle }}">
+    <div style="width:38px;height:38px;border-radius:11px;background:#6544E0;display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:14px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
+    <sc-for list="{{ railItems }}" as="r" hint-placeholder-count="7"><button aria-label="{{ r.label }}" style="{{ r.style }}">{{ r.svg }}</button></sc-for>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside style="{{ sidebarStyle }}">
+    <div style="font:700 17px/1 'Sora',sans-serif;color:#17151F;padding:0 8px 18px;border-bottom:1px solid #F1F0F4;margin-bottom:14px">Marketing</div>
+    <div style="font:600 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-transform:uppercase;letter-spacing:.08em;padding:0 8px;margin-bottom:10px">Promotion Management</div>
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <a href="#" style="display:flex;align-items:center;padding:10px 12px;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;background:#F5F2FF;cursor:pointer">Coupons</a>
+      <a href="#" style="display:flex;align-items:center;padding:10px 12px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer;transition:background .15s" style-hover="background:#F5F4F7">Clearance Sale</a>
+    </div>
+    <div style="margin-top:22px;background:linear-gradient(135deg,#6544E0,#472BA3);border-radius:14px;padding:16px;color:#fff">
+      <div style="display:flex;align-items:center;gap:10px"><span style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><div><div style="font:600 13px/1 'Sora',sans-serif">Setup Guide</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.75);margin-top:5px">20% Complete</div></div></div>
+      <div style="height:6px;border-radius:999px;background:rgba(255,255,255,.2);margin-top:12px;overflow:hidden"><div style="width:20%;height:100%;background:#fff;border-radius:999px"></div></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <div style="height:64px;background:#fff;border-bottom:1px solid #ECECF1;display:flex;align-items:center;gap:16px;padding:0 26px;position:sticky;top:0;z-index:30">
+      <button onClick="{{ toggleSidebar }}" aria-label="Toggle sidebar" style="width:30px;height:30px;border:1px solid #ECECF1;border-radius:8px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7">{{ collapseIcon }}</button>
+      <div style="display:flex;align-items:center;gap:8px;font:500 13px/1 'Instrument Sans',sans-serif"><a href="#" style="color:#6544E0">Marketing</a><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg><span style="color:#75727F">{{ breadcrumb }}</span></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+        <button aria-label="Notifications" style="position:relative;width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span style="position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;background:#E5484D;color:#fff;font:600 10px/17px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">1</span></button>
+        <button aria-label="Messages" style="position:relative;width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span style="position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;background:#6544E0;color:#fff;font:600 10px/17px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">3</span></button>
+        <button aria-label="Fullscreen" style="width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></button>
+        <div style="position:relative;margin-left:6px" onMouseLeave="{{ closeProfile }}">
+          <div onClick="{{ toggleProfile }}" style="display:flex;align-items:center;gap:10px;height:44px;padding:0 8px 0 6px;border:1px solid #ECECF1;border-radius:999px;background:#fff;cursor:pointer" style-hover="background:#F5F4F7"><span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);color:#6544E0;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span><div style="text-align:left"><div style="font:600 13px/1 'Sora',sans-serif;color:#17151F">James</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-top:4px">j****@g**il.com</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div style="{{ profileMenuStyle }}">
+           <div style="background:#fff;border:1px solid #F1F0F4;border-radius:14px;box-shadow:0 20px 48px -14px rgba(20,18,31,.28);padding:6px">
+            <a href="VendorProfile.dc.html" style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745" style-hover="background:#F5F2FF;color:#6544E0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Profile Setting</a>
+            <a href="VendorChangePassword.dc.html" style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745" style-hover="background:#F5F2FF;color:#6544E0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>Change Password</a>
+            <a href="login.dc.html" style="display:flex;align-items:center;gap:11px;padding:12px 14px 10px;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#E5484D;margin-top:2px;border-top:1px solid #F1F0F4" style-hover="background:#FDECEC"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>Logout</a>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- body -->
+    <div style="padding:26px;max-width:1240px;width:100%;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px">
+        <div style="display:flex;align-items:center;gap:12px"><span style="width:36px;height:36px;border-radius:10px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><h1 style="font:800 24px/1 'Sora',sans-serif;color:#17151F;letter-spacing:-.01em;margin:0">Coupon Setup</h1></div>
+        <div style="display:flex;gap:4px;background:#EDECF1;border-radius:11px;padding:4px"><sc-for list="{{ stateTabs }}" as="s" hint-placeholder-count="4"><button onClick="{{ s.pick }}" style="{{ s.style }}">{{ s.label }}</button></sc-for></div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:26px 28px;margin-bottom:22px">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px 24px">
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Coupon Type</label><select style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 fill=%22none%22 stroke=%22%2375727F%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22/></svg>');background-repeat:no-repeat;background-position:right 12px center"><option>Select coupon type</option><option>Discount On Purchase</option><option>Free Delivery</option><option>First Order</option></select></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Coupon Title</label><input placeholder="Title" style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+          <div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px"><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px;margin:0">Coupon Code</label><span style="font:600 12px/1 'Instrument Sans',sans-serif;color:#6544E0;cursor:pointer">Generate code</span></div><input value="6XJUHJ8E2L" style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Customer</label><select style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 fill=%22none%22 stroke=%22%2375727F%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22/></svg>');background-repeat:no-repeat;background-position:right 12px center"><option>Select Customer</option><option>All Customer</option></select></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Limit For Same User</label><input placeholder="Ex: 10" style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Discount Type</label><select style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 fill=%22none%22 stroke=%22%2375727F%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22/></svg>');background-repeat:no-repeat;background-position:right 12px center"><option>Amount</option><option>Percentage</option></select></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Discount Amount</label><input placeholder="Ex: 5000" style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Minimum Purchase ($)</label><input placeholder="Ex: 100" style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Start Date</label><input type="date" style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Expire Date</label><input type="date" style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px"><button style="height:48px;padding:0 30px;border:1px solid #ECECF1;border-radius:12px;background:#fff;color:#3A3745;font:600 14px/1 'Instrument Sans',sans-serif;cursor:pointer" style-hover="background:#F5F4F7">Reset</button><button style="height:48px;padding:0 34px;border:none;border-radius:12px;background:#6544E0;color:#fff;font:700 14px/1 'Sora',sans-serif;cursor:pointer" style-hover="background:#5636C6">Submit</button></div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px 24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:10px"><span style="font:700 17px/1 'Sora',sans-serif;color:#17151F">Coupon List</span><span style="min-width:26px;height:24px;padding:0 9px;display:flex;align-items:center;justify-content:center;background:#EDECF1;border-radius:999px;font:700 12px/1 'Sora',sans-serif;color:#3A3745">5</span></div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="display:flex;align-items:center;height:44px;background:#F5F4F7;border:1px solid #ECECF1;border-radius:11px;overflow:hidden;min-width:280px" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE"><span style="padding:0 12px;color:#A5A2AE"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span><input placeholder="Search by Title or Code" style="flex:1;border:none;outline:none;background:transparent;padding:0 4px;font:400 13px/1 'Instrument Sans',sans-serif;color:#17151F"><button style="height:44px;padding:0 20px;border:none;background:#6544E0;color:#fff;font:600 13px/1 'Instrument Sans',sans-serif;cursor:pointer" style-hover="background:#5636C6">Search</button></div>
+            <button style="display:flex;align-items:center;gap:8px;height:44px;padding:0 18px;border:1px solid #ECECF1;border-radius:11px;background:#fff;color:#3A3745;font:600 13px/1 'Instrument Sans',sans-serif;cursor:pointer" style-hover="background:#F5F4F7"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Export</button>
+          </div>
+        </div>
+
+        <sc-if value="{{ isDefault }}" hint-placeholder-val="{{ true }}">
+          <div style="border:1px solid #F1F0F4;border-radius:14px;overflow-x:auto"><div style="min-width:960px">
+            <div style="display:grid;grid-template-columns:50px 1.5fr 1.3fr 1.2fr 1.4fr 110px 90px 120px;gap:14px;padding:14px 18px;background:#F5F4F7;font:600 11px/1 'Instrument Sans',sans-serif;color:#75727F;text-transform:uppercase;letter-spacing:.04em"><span>SL</span><span>Coupon</span><span>Coupon Type</span><span>Duration</span><span>Limit</span><span>Discount Bearer</span><span>Status</span><span style="text-align:right">Action</span></div>
+            <sc-for list="{{ coupons }}" as="c" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:50px 1.5fr 1.3fr 1.2fr 1.4fr 110px 90px 120px;gap:14px;padding:16px 18px;align-items:center;border-top:1px solid #F5F4F7;transition:background .15s" style-hover="background:#FBFAFC">
+                <span style="font:500 13px/1 'Instrument Sans',sans-serif;color:#75727F">{{ c.sl }}</span>
+                <div style="min-width:0"><div style="font:500 13px/1.3 'Instrument Sans',sans-serif;color:#17151F">{{ c.title }}</div><div style="font:700 12px/1 'Sora',sans-serif;color:#17151F;margin-top:6px">Code: {{ c.code }}</div></div>
+                <span style="font:400 13px/1 'Instrument Sans',sans-serif;color:#3A3745">{{ c.type }}</span>
+                <span style="font:400 12.5px/1.4 'Instrument Sans',sans-serif;color:#3A3745">{{ c.duration }}</span>
+                <div style="font:400 12.5px/1.5 'Instrument Sans',sans-serif;color:#3A3745"><div>Same User Limit: <span style="color:#17151F;font-weight:600">{{ c.userLimit }}</span></div><div>Total Used: <span style="color:#17151F;font-weight:600">{{ c.used }}</span></div></div>
+                <span style="font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745">{{ c.bearer }}</span>
+                <span><span style="{{ c.toggle }}"><span style="width:18px;height:18px;border-radius:50%;background:#fff"></span></span></span>
+                <div style="display:flex;gap:7px;justify-content:flex-end"><button onClick="{{ c.view }}" aria-label="View" style="width:32px;height:32px;border:1px solid #E6F5EE;border-radius:8px;background:#F1FBF6;color:#2E9E6B;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#E6F5EE"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><span style="width:32px;height:32px;border:1px solid #EBE6FE;border-radius:8px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"></path></svg></span><span style="width:32px;height:32px;border:1px solid #F6D9DA;border-radius:8px;background:#FDECEC;color:#E5484D;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></span></div>
+              </div>
+            </sc-for>
+          </div></div>
+        </sc-if>
+
+        <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #F1F0F4;border-radius:14px;overflow:hidden"><sc-for list="{{ skel }}" as="k" hint-placeholder-count="5"><div style="display:flex;gap:16px;align-items:center;padding:18px 18px;border-top:1px solid #F5F4F7"><div style="width:40px;height:12px;border-radius:5px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="flex:1;height:12px;border-radius:5px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="width:70px;height:22px;border-radius:999px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div></div></sc-for></div>
+        </sc-if>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:64px 32px;display:flex;flex-direction:column;align-items:center;text-align:center"><div style="width:78px;height:78px;border-radius:22px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#9B7DF5;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div><div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">No coupons yet</div><div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 0;max-width:340px">Create your first coupon using the setup form above.</div></div>
+        </sc-if>
+
+        <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:64px 32px;display:flex;flex-direction:column;align-items:center;text-align:center"><div style="width:78px;height:78px;border-radius:22px;background:#FDECEC;display:flex;align-items:center;justify-content:center;color:#E5484D;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div><div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">Couldn't load coupons</div><div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 24px;max-width:340px">Something went wrong. Please try again.</div><button onClick="{{ retry }}" style="display:flex;align-items:center;gap:8px;height:46px;padding:0 24px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer" style-hover="background:#5636C6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>Try again</button></div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:200;background:rgba(20,18,31,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px">
+          <div onClick="{{ stop }}" style="position:relative;width:100%;max-width:660px;background:#fff;border-radius:20px;box-shadow:0 40px 90px -20px rgba(20,18,31,.5);overflow:hidden;display:grid;grid-template-columns:1fr 260px">
+            <button onClick="{{ closeModal }}" aria-label="Close" style="position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:999px;border:none;background:rgba(255,255,255,.9);color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5" style-hover="background:#EBE6FE;color:#472BA3"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <div style="padding:30px 32px">
+              <div style="font:700 19px/1.3 'Sora',sans-serif;color:#17151F">{{ mv.title }}</div>
+              <div style="font:600 13px/1 'Instrument Sans',sans-serif;color:#17151F;margin-top:12px">Code : <span style="color:#6544E0">{{ mv.code }}</span></div>
+              <div style="font:400 13px/1 'Instrument Sans',sans-serif;color:#75727F;margin-top:10px">{{ mv.type }}</div>
+              <div style="display:grid;grid-template-columns:auto 1fr;gap:11px 14px;margin-top:26px;font:400 13px/1.4 'Instrument Sans',sans-serif">
+                <span style="color:#75727F">Minimum Purchase</span><span style="color:#17151F;font-weight:600">: {{ mv.minP }}</span>
+                <span style="color:#75727F">Maximum Discount</span><span style="color:#17151F;font-weight:600">: {{ mv.maxD }}</span>
+                <span style="color:#75727F">Start Date</span><span style="color:#17151F;font-weight:600">: {{ mv.start }}</span>
+                <span style="color:#75727F">Expire Date</span><span style="color:#17151F;font-weight:600">: {{ mv.expire }}</span>
+                <span style="color:#75727F">Discount Bearer</span><span style="color:#17151F;font-weight:600">: {{ mv.bearer }}</span>
+              </div>
+            </div>
+            <div style="background:linear-gradient(135deg,#5636C6,#2E1F6B);display:flex;align-items:center;justify-content:center;position:relative">
+              <div style="position:absolute;left:-1px;top:0;bottom:0;width:14px;background:#9B7DF5"></div>
+              <div style="width:170px;height:170px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font:800 40px/1 'Sora',sans-serif;color:#17151F">{{ mv.big }}</div><div style="font:600 15px/1 'Sora',sans-serif;color:#6544E0;margin-top:8px">Off</div></div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1200},&quot;breadcrumb&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;,&quot;default&quot;:&quot;Coupons&quot;}}">
+class Component extends DCLogic {
+  state = { viewState: 'default', sidebarOpen: true, profileOpen: false, modal: null };
+
+  renderVals() {
+    const rail = (name) => { const p = { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = {
+      home: [['path', { d: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' }]],
+      box: [['path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }], ['polyline', { points: '3.27 6.96 12 12.01 20.73 6.96' }]],
+      bag: [['path', { d: 'M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z' }], ['line', { x1: 3, y1: 6, x2: 21, y2: 6 }], ['path', { d: 'M16 10a4 4 0 0 1-8 0' }]],
+      send: [['line', { x1: 22, y1: 2, x2: 11, y2: 13 }], ['polygon', { points: '22 2 15 22 11 13 2 9 22 2' }]],
+      speaker: [['polygon', { points: '11 5 6 9 2 9 2 15 6 15 11 19 11 5' }], ['path', { d: 'M15.54 8.46a5 5 0 0 1 0 7.07' }]],
+      chart: [['path', { d: 'M3 3v18h18' }], ['rect', { x: 7, y: 10, width: 3, height: 8 }], ['rect', { x: 12, y: 6, width: 3, height: 12 }]],
+      users: [['path', { d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' }], ['circle', { cx: 9, cy: 7, r: 4 }], ['path', { d: 'M23 21v-2a4 4 0 0 0-3-3.87' }]],
+      sliders: [['line', { x1: 4, y1: 21, x2: 4, y2: 14 }], ['line', { x1: 4, y1: 10, x2: 4, y2: 3 }], ['line', { x1: 12, y1: 21, x2: 12, y2: 12 }], ['line', { x1: 12, y1: 8, x2: 12, y2: 3 }], ['line', { x1: 20, y1: 21, x2: 20, y2: 16 }], ['line', { x1: 20, y1: 12, x2: 20, y2: 3 }], ['line', { x1: 1, y1: 14, x2: 7, y2: 14 }], ['line', { x1: 9, y1: 8, x2: 15, y2: 8 }], ['line', { x1: 17, y1: 16, x2: 23, y2: 16 }]],
+    }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const railDefs = ['home','box','bag','send','speaker','chart','users','sliders'];
+    const railActive = 4;
+    const railItems = railDefs.map((k, i) => ({ label: k, svg: rail(k), style: (i === railActive ? "width:40px;height:40px;border:none;border-radius:11px;background:#6544E0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s" : "width:40px;height:40px;border:none;border-radius:11px;background:transparent;color:#8B8895;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s") }));
+
+    const active = this.props.active || 'all';
+    const subA = "display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:9px;font:600 13px/1 'Instrument Sans',sans-serif;color:#6544E0;background:#F5F2FF;cursor:pointer";
+    const subI = "display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:9px;font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer;transition:background .15s";
+    const statusDefs = [
+      { k: 'all', label: 'All', count: 25, dot: '#6544E0' },
+      { k: 'pending', label: 'Pending', count: 3, dot: '#4C7DF0' },
+      { k: 'confirmed', label: 'Confirmed', count: 4, dot: '#2E9E6B' },
+      { k: 'packaging', label: 'Packaging', count: 1, dot: '#E0912F' },
+      { k: 'outfor', label: 'Out for delivery', count: 2, dot: '#E0912F' },
+      { k: 'delivered', label: 'Delivered', count: 11, dot: '#2E9E6B' },
+      { k: 'returned', label: 'Returned', count: 1, dot: '#E5484D' },
+      { k: 'failed', label: 'Failed To Deliver', count: 2, dot: '#E5484D' },
+      { k: 'canceled', label: 'Canceled', count: 1, dot: '#A5A2AE' },
+    ];
+    const pill = "min-width:22px;height:22px;padding:0 7px;display:flex;align-items:center;justify-content:center;background:#EDECF1;border-radius:999px;font:600 11px/1 'Instrument Sans',sans-serif;color:#75727F";
+    const statusNav = statusDefs.map(n => ({ label: n.label, count: n.count, dot: n.dot, style: (n.k === active ? subA : subI), pill }));
+
+    const open = this.state.sidebarOpen;
+    const railStyle = "width:64px;flex:none;background:#17151F;flex-direction:column;align-items:center;padding:16px 0;gap:8px;position:sticky;top:0;height:100vh;display:" + (open ? 'flex' : 'none');
+    const sidebarStyle = "width:236px;flex:none;background:#fff;border-right:1px solid #ECECF1;padding:20px 16px;position:sticky;top:0;height:100vh;overflow-y:auto;display:" + (open ? 'block' : 'none');
+    const collapseIcon = React.createElement('svg', { width: 15, height: 15, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, open ? React.createElement('polyline', { points: '15 18 9 12 15 6' }) : React.createElement('g', null, React.createElement('line', { x1: 3, y1: 6, x2: 21, y2: 6 }), React.createElement('line', { x1: 3, y1: 12, x2: 21, y2: 12 }), React.createElement('line', { x1: 3, y1: 18, x2: 21, y2: 18 })));
+    const profileMenuStyle = "position:absolute;top:100%;right:0;padding-top:10px;z-index:60;width:236px;transition:opacity .16s ease,transform .16s ease;" + (this.state.profileOpen ? "opacity:1;visibility:visible;transform:translateY(0)" : "opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none");
+
+    const tabI = "padding:0 14px;height:30px;border-radius:8px;border:none;background:transparent;color:#75727F;font:500 12px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:all .15s";
+    const tabA = "padding:0 14px;height:30px;border-radius:8px;border:none;background:#fff;color:#17151F;font:600 12px/1 'Instrument Sans',sans-serif;cursor:pointer;box-shadow:0 1px 3px rgba(20,18,31,.12)";
+    const stateTabs = [ { k: 'default', l: 'Default' }, { k: 'loading', l: 'Loading' }, { k: 'empty', l: 'Empty' }, { k: 'error', l: 'Error' } ].map(t => ({ label: t.l, style: this.state.viewState === t.k ? tabA : tabI, pick: () => this.setState({ viewState: t.k }) }));
+
+    const sIcon = (name, color) => { const p = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = {
+      pending: [['circle', { cx: 12, cy: 12, r: 10 }], ['polyline', { points: '12 6 12 12 16 14' }]],
+      confirmed: [['path', { d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14' }], ['polyline', { points: '22 4 12 14.01 9 11.01' }]],
+      packaging: [['path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }], ['polyline', { points: '3.27 6.96 12 12.01 20.73 6.96' }]],
+      outfor: [['rect', { x: 1, y: 3, width: 15, height: 13 }], ['path', { d: 'M16 8h4l3 3v5h-7V8z' }], ['circle', { cx: 5.5, cy: 18.5, r: 2.5 }], ['circle', { cx: 18.5, cy: 18.5, r: 2.5 }]],
+      delivered: [['path', { d: 'M20 6 9 17l-5-5' }]],
+      canceled: [['circle', { cx: 12, cy: 12, r: 10 }], ['line', { x1: 15, y1: 9, x2: 9, y2: 15 }], ['line', { x1: 9, y1: 9, x2: 15, y2: 15 }]],
+      returned: [['polyline', { points: '1 4 1 10 7 10' }], ['path', { d: 'M3.51 15a9 9 0 1 0 2.13-9.36L1 10' }]],
+      failed: [['circle', { cx: 12, cy: 12, r: 10 }], ['line', { x1: 12, y1: 8, x2: 12, y2: 12 }], ['line', { x1: 12, y1: 16, x2: 12.01, y2: 16 }]],
+    }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const chip = (bg) => "width:40px;height:40px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;background:" + bg;
+    const summary = [
+      { label: 'Pending', value: 3, icon: 'pending', bg: '#EAF1FC', c: '#2C5E9E', num: '#17151F' },
+      { label: 'Confirmed', value: 4, icon: 'confirmed', bg: '#E6F5EE', c: '#2E7D53', num: '#2E9E6B' },
+      { label: 'Packaging', value: 1, icon: 'packaging', bg: '#FBEFDD', c: '#B4741C', num: '#17151F' },
+      { label: 'Out for Delivery', value: 2, icon: 'outfor', bg: '#F5F2FF', c: '#6544E0', num: '#17151F' },
+      { label: 'Delivered', value: 11, icon: 'delivered', bg: '#E6F5EE', c: '#2E7D53', num: '#2E9E6B' },
+      { label: 'Canceled', value: 1, icon: 'canceled', bg: '#FDECEC', c: '#C0403F', num: '#17151F' },
+      { label: 'Returned', value: 1, icon: 'returned', bg: '#EAF1FC', c: '#2C5E9E', num: '#17151F' },
+      { label: 'Failed to Deliver', value: 2, icon: 'failed', bg: '#FDECEC', c: '#C0403F', num: '#E5484D' },
+    ].map(c => ({ label: c.label, value: c.value, numColor: c.num, iconWrap: chip(c.bg), svg: sIcon(c.icon, c.c) }));
+
+    const st = (bg, fg) => "display:inline-flex;align-items:center;padding:5px 11px;border-radius:999px;font:600 11px/1 'Instrument Sans',sans-serif;background:" + bg + ";color:" + fg;
+    const stMap = { Delivered: st('#E6F5EE', '#2E7D53'), Pending: st('#EAF1FC', '#2C5E9E'), Confirmed: st('#E6F5EE', '#2E7D53'), Canceled: st('#FDECEC', '#C0403F') };
+    const payYes = "display:inline-block;margin-top:6px;font:600 11px/1 'Instrument Sans',sans-serif;color:#2E7D53";
+    const payNo = "display:inline-block;margin-top:6px;font:600 11px/1 'Instrument Sans',sans-serif;color:#C0403F";
+    const orders = [
+      { sl: 1, id: '100193', date: '22 Sep 2025', time: '19:29 PM', customer: 'Robert Downey', phone: '+1****', total: '$165.50', pay: 'Paid', status: 'Delivered' },
+      { sl: 2, id: '100188', date: '10 Jan 2025', time: '18:22 PM', customer: 'David Jack', phone: '+1****', total: '$535.00', pay: 'Paid', status: 'Delivered' },
+      { sl: 3, id: '100181', date: '10 Jan 2025', time: '02:56 AM', customer: 'Tom Holland', phone: '+1****', total: '$380.00', pay: 'Paid', status: 'Delivered' },
+      { sl: 4, id: '100178', date: '10 Jan 2025', time: '02:55 AM', customer: 'Anthony Mackie', phone: '+1****', total: '$4,300.00', pay: 'Unpaid', status: 'Pending' },
+      { sl: 5, id: '100176', date: '10 Jan 2025', time: '02:48 AM', customer: 'Robert Downey', phone: '+1****', total: '$4,300.00', pay: 'Unpaid', status: 'Pending' },
+      { sl: 6, id: '100173', date: '10 Jan 2025', time: '02:47 AM', customer: 'Robert Downey', phone: '+1****', total: '$4,300.00', pay: 'Unpaid', status: 'Canceled' },
+    ].map(o => ({ ...o, statusStyle: stMap[o.status] || stMap.Pending, payStyle: o.pay === 'Paid' ? payYes : payNo }));
+
+    const on = "display:inline-flex;align-items:center;width:38px;height:22px;border-radius:999px;background:#6544E0;padding:2px;justify-content:flex-end";
+    const off = "display:inline-flex;align-items:center;width:38px;height:22px;border-radius:999px;background:#E4E2E9;padding:2px;justify-content:flex-start";
+    const couponData = [
+      { sl: 1, title: '75% discount on Purchase', code: 'rFhfx7XiCm', type: 'Discount On Purchase', duration: '10 Jan, 25 - 31 Jan, 29', userLimit: 20, used: 0, bearer: 'Seller', active: true, minP: '$7,000.00', maxD: '$75.00', start: '10th Jan 2025', expire: '31st Jan 2029', big: '75%' },
+      { sl: 2, title: 'Free Delivery', code: 'l2oDTjKF3z', type: 'Free Delivery', duration: '10 Jan, 25 - 31 Jan, 29', userLimit: 2, used: 0, bearer: 'Seller', active: true, minP: '$100.00', maxD: 'Free Shipping', start: '10th Jan 2025', expire: '31st Jan 2029', big: 'Free' },
+      { sl: 3, title: 'Discount on purchase', code: '856gmef66p', type: 'Discount On Purchase', duration: '10 Jan, 25 - 10 Jun, 26', userLimit: 10, used: 2, bearer: 'Seller', active: false, minP: '$500.00', maxD: '$50.00', start: '10th Jan 2025', expire: '10th Jun 2026', big: '$50' },
+      { sl: 4, title: '$50 discount on Purchase', code: '2ul59rwkw2', type: 'Discount On Purchase', duration: '10 Jan, 25 - 31 Dec, 26', userLimit: 122, used: 0, bearer: 'Seller', active: true, minP: '$1,000.00', maxD: '$50.00', start: '10th Jan 2025', expire: '31st Dec 2026', big: '$50' },
+      { sl: 5, title: 'free delivery', code: 'pcuw655ytg', type: 'Free Delivery', duration: '10 Jan, 25 - 31 Dec, 27', userLimit: 11, used: 1, bearer: 'Seller', active: true, minP: '$200.00', maxD: 'Free Shipping', start: '10th Jan 2025', expire: '31st Dec 2027', big: 'Free' },
+    ];
+    const coupons = couponData.map(c => ({ ...c, toggle: c.active ? on : off, view: () => this.setState({ modal: { title: c.title + (c.type === 'Free Delivery' ? '' : ''), code: c.code, type: c.type, minP: c.minP, maxD: c.maxD, start: c.start, expire: c.expire, bearer: c.bearer, big: c.big } }) }));
+
+    return {
+      railItems, railStyle, sidebarStyle, collapseIcon, profileMenuStyle,
+      coupons, skel: [0,1,2,3,4],
+      modalOpen: !!this.state.modal, mv: this.state.modal || {},
+      closeModal: () => this.setState({ modal: null }),
+      stop: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
+      breadcrumb: this.props.breadcrumb || 'Coupons',
+      toggleSidebar: () => this.setState(s => ({ sidebarOpen: !s.sidebarOpen })),
+      toggleProfile: () => this.setState(s => ({ profileOpen: !s.profileOpen })),
+      closeProfile: () => this.setState({ profileOpen: false }),
+      stateTabs, summary, orders, skel: [0,1,2,3,4,5], skel8: [0,1,2,3,4,5,6,7],
+      isDefault: this.state.viewState === 'default', isLoading: this.state.viewState === 'loading',
+      isEmpty: this.state.viewState === 'empty', isError: this.state.viewState === 'error',
+      reset: () => this.setState({ viewState: 'default' }), retry: () => this.setState({ viewState: 'default' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

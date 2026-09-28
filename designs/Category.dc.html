@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --container-max:1600px;
+  --container-pad-desktop:40px;
+  --container-pad-tablet:24px;
+  --container-pad-mobile:16px;
+  --cpad:var(--container-pad-desktop);
+}
+@media(max-width:1024px){:root{--cpad:var(--container-pad-tablet)}}
+@media(max-width:640px){:root{--cpad:var(--container-pad-mobile)}}
+*{box-sizing:border-box}
+html{font-size:17px}
+#covet-root{zoom:1.0625}
+body{margin:0;background:#FAFAFA;font-family:'Instrument Sans',system-ui,sans-serif;color:#3A3745;-webkit-font-smoothing:antialiased}
+a{color:#6544E0;text-decoration:none}
+a:hover{color:#5636C6}
+::selection{background:#EBE6FE;color:#472BA3}
+@keyframes shimmer{0%{background-position:-450px 0}100%{background-position:450px 0}}
+input[type=range]{-webkit-appearance:none;appearance:none;height:5px;border-radius:999px;background:#E4E2E9;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#6544E0;cursor:pointer;box-shadow:0 2px 6px -1px rgba(101,68,224,.6)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border:none;border-radius:50%;background:#6544E0;cursor:pointer}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#6544E0">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#6544E0"></rect>
+    <rect x="360" y="300" width="150" height="220" rx="18" fill="#ffffff" opacity=".9"></rect>
+    <rect x="540" y="300" width="300" height="60" rx="14" fill="#ffffff" opacity=".7"></rect>
+    <rect x="540" y="380" width="300" height="140" rx="14" fill="#ffffff" opacity=".45"></rect>
+    <text x="600" y="640" font-family="Sora, sans-serif" font-size="80" font-weight="800" fill="#ffffff" text-anchor="middle">Covet<tspan fill="#BCA9FB">.</tspan></text>
+  </svg>
+</template>
+
+<div id="covet-root" style="background:#FAFAFA;min-height:100vh">
+
+  <!-- ===================== TOP UTILITY BAR ===================== -->
+  <div style="background:#17151F;color:#C9C7D1">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:0 var(--cpad);height:40px;display:flex;align-items:center;justify-content:space-between;font:400 12.5px/1 'Instrument Sans',sans-serif">
+      <div style="display:flex;align-items:center;gap:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9B7DF5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        <span>Free delivery on orders over <span style="color:#fff;font-weight:600">$50</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:26px">
+        <a href="Home.dc.html" style="color:#C9C7D1" style-hover="color:#fff">Home</a>
+        <a href="Design System.dc.html" style="color:#C9C7D1" style-hover="color:#fff">Design System</a>
+        <a href="#" style="color:#C9C7D1" style-hover="color:#fff">Sell on Covet</a>
+        <a href="#" style="color:#C9C7D1" style-hover="color:#fff">Help Center</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== HEADER ===================== -->
+  <header style="background:#fff;border-bottom:1px solid #F1F0F4;position:sticky;top:0;z-index:40">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:0 var(--cpad);height:80px;display:flex;align-items:center;gap:28px">
+      <a href="Home.dc.html" style="font:800 27px/1 'Sora',sans-serif;color:#17151F;letter-spacing:-.02em;flex:none">Covet<span style="color:#6544E0">.</span></a>
+      <div style="flex:1;display:flex;align-items:center;height:48px;background:#F5F4F7;border:1px solid #ECECF1;border-radius:12px;transition:border-color .2s,box-shadow .2s" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE">
+        <div style="position:relative;height:100%" onMouseEnter="{{ openHdr }}" onMouseLeave="{{ closeHdr }}">
+          <div style="display:flex;align-items:center;gap:6px;padding:0 16px;height:100%;border-right:1px solid #E6E4EC;color:#3A3745;font:500 13px/1 'Instrument Sans',sans-serif;white-space:nowrap;cursor:pointer">All Categories
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div style="{{ hdrWrapStyle }}">
+            <div style="{{ panelInner }}">
+              <div style="background:#FBFAFF;border-right:1px solid #F1F0F4;padding:12px;max-height:420px;overflow-y:auto">
+                <sc-for list="{{ hdrCats }}" as="c" hint-placeholder-count="8">
+                  <a href="#" onMouseEnter="{{ c.open }}" style="{{ c.rowStyle }}">
+                    <span>{{ c.name }}</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ c.chevron }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </a>
+                </sc-for>
+              </div>
+              <div style="padding:26px 28px;max-height:420px;overflow-y:auto">
+                <div style="display:flex;flex-wrap:wrap;gap:24px 40px;align-items:flex-start">
+                  <sc-for list="{{ hdrGroups }}" as="g" hint-placeholder-count="4">
+                    <div style="min-width:130px">
+                      <h4 style="font:700 14px/1 'Sora',sans-serif;color:#17151F;margin:0 0 14px">{{ g.title }}</h4>
+                      <div style="display:flex;flex-direction:column;gap:11px">
+                        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="5">
+                          <a href="#" style="font:400 13px/1 'Instrument Sans',sans-serif;color:#6E6A7C" style-hover="color:#6544E0">{{ it }}</a>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <input placeholder="Search products, brands and sellers…" style="flex:1;border:none;outline:none;background:transparent;padding:0 16px;font:400 14px/1 'Instrument Sans',sans-serif;color:#17151F">
+        <button aria-label="Search" style="height:100%;padding:0 20px;border:none;border-radius:0 11px 11px 0;background:#6544E0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex:none">
+        <button style="position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:10px;color:#3A3745;transition:background .2s" style-hover="background:#F5F4F7">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg>
+          <span style="font:500 11px/1 'Instrument Sans',sans-serif;color:#75727F">Wishlist</span>
+          <span style="position:absolute;top:2px;right:4px;min-width:17px;height:17px;padding:0 4px;background:#E5484D;color:#fff;font:600 10px/17px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">5</span>
+        </button>
+        <button style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:10px;color:#3A3745;transition:background .2s" style-hover="background:#F5F4F7">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span style="font:500 11px/1 'Instrument Sans',sans-serif;color:#75727F">Account</span>
+        </button>
+        <div style="position:relative;margin-left:6px" onMouseEnter="{{ openCart }}" onMouseLeave="{{ closeCart }}">
+          <button style="display:flex;align-items:center;gap:12px;background:#F5F2FF;border:1px solid #EBE6FE;cursor:pointer;padding:9px 14px 9px 12px;border-radius:12px;transition:background .2s" style-hover="background:#EBE6FE">
+            <div style="position:relative;color:#6544E0">
+              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+              <span style="position:absolute;top:-7px;right:-8px;min-width:18px;height:18px;padding:0 4px;background:#6544E0;color:#fff;font:600 10px/18px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">{{ cartCount }}</span>
+            </div>
+            <div style="text-align:left">
+              <div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#75727F;margin-bottom:3px">My cart</div>
+              <div style="font:700 14px/1 'Sora',sans-serif;color:#17151F">{{ headerTotal }}</div>
+            </div>
+          </button>
+          <div style="{{ cartPopupStyle }}">
+           <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 26px 64px -16px rgba(20,18,31,.30);overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#F5F2FF;border-bottom:1px solid #EBE6FE">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:34px;height:34px;border-radius:10px;background:#6544E0;display:flex;align-items:center;justify-content:center;color:#fff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span>
+                <span style="font:700 16px/1 'Sora',sans-serif;color:#17151F">Shopping Cart</span>
+              </div>
+              <button onClick="{{ closeCart }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font:500 13px/1 'Instrument Sans',sans-serif;color:#75727F" style-hover="color:#17151F"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Close</button>
+            </div>
+            <div style="padding:8px 20px">
+              <div style="font:600 10px/1 'Instrument Sans',sans-serif;color:#6544E0;text-transform:uppercase;letter-spacing:.07em;padding:14px 0 6px">Sold by Marchetti</div>
+              <sc-for list="{{ cartRows }}" as="row" hint-placeholder-count="1">
+                <div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid #F1F0F4">
+                  <div style="position:relative;width:66px;height:66px;border-radius:12px;background:#F5F4F7;flex:none;overflow:hidden"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 8px,transparent 8px 16px)"></div></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font:600 9.5px/1 'Instrument Sans',sans-serif;color:#6544E0;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">{{ row.seller }}</div>
+                    <div style="font:500 13px/1.35 'Instrument Sans',sans-serif;color:#17151F;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ row.title }}</div>
+                    <div style="font:700 14px/1 'Sora',sans-serif;color:#17151F;margin-top:6px">{{ row.lineText }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:16px 20px 20px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px"><span style="font:500 14px/1 'Instrument Sans',sans-serif;color:#75727F">Subtotal</span><span style="font:800 22px/1 'Sora',sans-serif;color:#17151F">{{ subtotalText }}</span></div>
+              <button style="width:100%;height:48px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:700 14px/1 'Sora',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Proceed to Checkout</button>
+            </div>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== MEGA NAV ===================== -->
+  <nav style="background:#fff;border-bottom:1px solid #F1F0F4">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:0 var(--cpad);height:54px;display:flex;align-items:center;gap:8px">
+      <div style="position:relative;margin-right:14px" onMouseEnter="{{ openNav }}" onMouseLeave="{{ closeNav }}">
+        <button style="display:flex;align-items:center;gap:10px;height:38px;padding:0 18px;background:#17151F;color:#fff;border:none;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          All Categories
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div style="{{ navWrapStyle }}">
+          <div style="{{ panelInner }}">
+            <div style="background:#FBFAFF;border-right:1px solid #F1F0F4;padding:12px;max-height:420px;overflow-y:auto">
+              <sc-for list="{{ hdrCats }}" as="c" hint-placeholder-count="8">
+                <a href="#" onMouseEnter="{{ c.open }}" style="{{ c.rowStyle }}">
+                  <span>{{ c.name }}</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ c.chevron }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+              </sc-for>
+            </div>
+            <div style="padding:26px 28px;max-height:420px;overflow-y:auto">
+              <div style="display:flex;flex-wrap:wrap;gap:24px 40px;align-items:flex-start">
+                <sc-for list="{{ hdrGroups }}" as="g" hint-placeholder-count="4">
+                  <div style="min-width:130px">
+                    <h4 style="font:700 14px/1 'Sora',sans-serif;color:#17151F;margin:0 0 14px">{{ g.title }}</h4>
+                    <div style="display:flex;flex-direction:column;gap:11px">
+                      <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="5">
+                        <a href="#" style="font:400 13px/1 'Instrument Sans',sans-serif;color:#6E6A7C" style-hover="color:#6544E0">{{ it }}</a>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="Home.dc.html" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Home</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;border-radius:8px">Brands</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Offers</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">All Sellers</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Gift Cards</a>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font:500 13px/1 'Instrument Sans',sans-serif;color:#2E9E6B">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.91 8.84 8.56 2.23a1.93 1.93 0 0 0-1.81 0L3.1 4.13a2.12 2.12 0 0 0-.05 3.69l12.22 6.93a2 2 0 0 0 1.94 0L21 12.51a2.12 2.12 0 0 0-.09-3.67Z"></path><path d="m3.09 8.84 8.66 4.92v9.16"></path></svg>
+        Sell on Covet — open a store free
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== BREADCRUMB ===================== -->
+  <div style="max-width:var(--container-max);margin:0 auto;padding:20px var(--cpad) 0;display:flex;align-items:center;gap:8px;font:400 13px/1 'Instrument Sans',sans-serif;color:#A5A2AE">
+    <a href="Home.dc.html" style="color:#75727F" style-hover="color:#6544E0">Home</a>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    <span style="color:#75727F">Categories</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    <span style="color:#17151F;font-weight:600">Men's Fashion</span>
+  </div>
+
+  <!-- ===================== RESULTS TOOLBAR ===================== -->
+  <div style="max-width:var(--container-max);margin:0 auto;padding:16px var(--cpad) 0">
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:20px 24px">
+      <div style="flex:none;min-width:max-content">
+        <h1 style="font:700 24px/1.1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em;white-space:nowrap">Men's Fashion Products</h1>
+        <p style="font:400 13px/1 'Instrument Sans',sans-serif;color:#75727F;margin:8px 0 0"><span style="color:#6544E0;font-weight:600">{{ itemCount }}</span> items found</p>
+      </div>
+      <div style="flex:1;min-width:220px;display:flex;align-items:center;height:46px;background:#F5F4F7;border:1px solid #ECECF1;border-radius:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE">
+        <input placeholder="Search within Men's Fashion…" style="flex:1;border:none;outline:none;background:transparent;padding:0 16px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F">
+        <button aria-label="Search" style="height:100%;padding:0 18px;border:none;background:#6544E0;color:#fff;display:flex;align-items:center;cursor:pointer;transition:background .2s" style-hover="background:#5636C6"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+      </div>
+      <div style="flex:none;display:flex;align-items:center;gap:10px">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5h10"></path><path d="M11 9h7"></path><path d="M11 13h4"></path><path d="m3 17 3 3 3-3"></path><path d="M6 18V4"></path></svg>
+        <span style="font:500 13px/1 'Instrument Sans',sans-serif;color:#75727F;white-space:nowrap">Sort by</span>
+        <select value="{{ sortBy }}" onChange="{{ onSort }}" style="height:46px;padding:0 38px 0 14px;border:1px solid #ECECF1;border-radius:12px;background:#fff;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;cursor:pointer;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 fill=%22none%22 stroke=%22%2375727F%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22/></svg>');background-repeat:no-repeat;background-position:right 12px center">
+          <option value="default">Default</option>
+          <option value="priceLow">Price: Low to High</option>
+          <option value="priceHigh">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MAIN ===================== -->
+  <div style="max-width:var(--container-max);margin:0 auto;padding:24px var(--cpad) 0;display:grid;grid-template-columns:296px 1fr;gap:24px;align-items:start">
+
+    <!-- FILTER SIDEBAR -->
+    <aside style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px;position:sticky;top:96px">
+      <div style="display:flex;align-items:center;gap:9px;padding-bottom:16px;border-bottom:1px solid #F1F0F4;margin-bottom:18px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6544E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+        <h3 style="font:700 16px/1 'Sora',sans-serif;color:#17151F;margin:0">Filter By</h3>
+        <button onClick="{{ resetFilters }}" style="margin-left:auto;background:none;border:none;cursor:pointer;font:500 12px/1 'Instrument Sans',sans-serif;color:#6544E0" style-hover="color:#472BA3">Clear all</button>
+      </div>
+
+      <!-- Product type -->
+      <div style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Product Type</div>
+      <select value="{{ productType }}" onChange="{{ onType }}" style="width:100%;height:44px;padding:0 38px 0 14px;border:1px solid #ECECF1;border-radius:11px;background:#fff;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;cursor:pointer;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 fill=%22none%22 stroke=%22%2375727F%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22/></svg>');background-repeat:no-repeat;background-position:right 12px center;margin-bottom:22px">
+        <option value="all">All</option>
+        <option value="sale">On Sale</option>
+        <option value="new">New Arrivals</option>
+        <option value="rated">Top Rated</option>
+      </select>
+
+      <!-- Price -->
+      <div style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px">Price</div>
+      <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:14px">
+        <div style="flex:1">
+          <label style="display:block;font:400 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-bottom:6px">Min</label>
+          <input value="{{ priceMin }}" onInput="{{ onMin }}" inputmode="numeric" style="width:100%;height:42px;border:1px solid #ECECF1;border-radius:10px;padding:0 12px;font:500 13px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE">
+        </div>
+        <span style="color:#C6C4CE;padding-bottom:11px">—</span>
+        <div style="flex:1">
+          <label style="display:block;font:400 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-bottom:6px">Max</label>
+          <input value="{{ priceMax }}" onInput="{{ onMax }}" inputmode="numeric" style="width:100%;height:42px;border:1px solid #ECECF1;border-radius:10px;padding:0 12px;font:500 13px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE">
+        </div>
+        <button aria-label="Apply price" style="width:42px;height:42px;flex:none;border:none;border-radius:10px;background:#6544E0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s" style-hover="background:#5636C6"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+      </div>
+      <input type="range" min="0" max="4000" value="{{ priceMax }}" onInput="{{ onMax }}" style="width:100%;margin-bottom:24px">
+
+      <!-- Categories -->
+      <div style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Categories</div>
+      <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:22px">
+        <sc-for list="{{ categories }}" as="c" hint-placeholder-count="7">
+          <a href="#" onClick="{{ c.pick }}" style="{{ c.rowStyle }}">
+            <span style="width:30px;height:30px;border-radius:9px;background:{{ c.iconBg }};display:flex;align-items:center;justify-content:center;flex:none;color:{{ c.iconColor }}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
+            </span>
+            <span style="flex:1;font:inherit">{{ c.name }}</span>
+            <span style="font:500 11.5px/1 'Instrument Sans',sans-serif;color:#A5A2AE">{{ c.count }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </sc-for>
+      </div>
+
+      <!-- Brands -->
+      <div style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Brands</div>
+      <div style="display:flex;align-items:center;height:42px;background:#F5F4F7;border:1px solid #ECECF1;border-radius:10px;overflow:hidden;margin-bottom:12px" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE">
+        <input placeholder="Search by brand" style="flex:1;border:none;outline:none;background:transparent;padding:0 12px;font:400 13px/1 'Instrument Sans',sans-serif;color:#17151F">
+        <span style="padding:0 12px;color:#A5A2AE"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2px;max-height:264px;overflow-y:auto;padding-right:4px">
+        <sc-for list="{{ brands }}" as="b" hint-placeholder-count="8">
+          <label onClick="{{ b.toggle }}" style="display:flex;align-items:center;gap:11px;padding:9px 8px;border-radius:9px;cursor:pointer;transition:background .15s" style-hover="background:#F5F2FF">
+            <span style="{{ b.boxStyle }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" style="{{ b.checkStyle }}"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+            <span style="flex:1;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745">{{ b.name }}</span>
+            <span style="min-width:26px;height:22px;padding:0 7px;display:flex;align-items:center;justify-content:center;background:#F3F2F6;border-radius:999px;font:600 11px/1 'Instrument Sans',sans-serif;color:#75727F">{{ b.count }}</span>
+          </label>
+        </sc-for>
+      </div>
+    </aside>
+
+    <!-- RESULTS COLUMN -->
+    <div>
+      <!-- state switcher (demo affordance) -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+        <span style="font:500 12px/1 'Instrument Sans',sans-serif;color:#A5A2AE">Preview state</span>
+        <div style="display:flex;gap:4px;background:#F1F0F4;border-radius:11px;padding:4px">
+          <sc-for list="{{ stateTabs }}" as="s" hint-placeholder-count="4">
+            <button onClick="{{ s.pick }}" style="{{ s.style }}">{{ s.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- DEFAULT: product grid -->
+      <sc-if value="{{ isDefault }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:20px">
+          <sc-for list="{{ products }}" as="item" hint-placeholder-count="6">
+            <dc-import name="ProductCard" product="{{ item }}" on-quick-view="{{ openQuickView }}" hint-size="100%,384px"></dc-import>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- LOADING skeleton -->
+      <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:20px">
+          <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="6">
+            <div style="background:#fff;border:1px solid #F1F0F4;border-radius:16px;overflow:hidden">
+              <div style="aspect-ratio:1/1;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div>
+              <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+                <div style="height:9px;width:42%;border-radius:5px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div>
+                <div style="height:13px;width:88%;border-radius:5px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div>
+                <div style="height:18px;width:38%;border-radius:5px;margin-top:4px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div>
+                <div style="height:40px;border-radius:10px;margin-top:6px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- EMPTY -->
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px dashed #DAD8E0;border-radius:18px;padding:72px 32px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <div style="width:78px;height:78px;border-radius:22px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#9B7DF5;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+          <div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">No products match your filters</div>
+          <div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 24px;max-width:340px">Try widening your price range or clearing a filter to see more from our sellers.</div>
+          <button onClick="{{ resetFilters }}" style="height:46px;padding:0 24px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Clear all filters</button>
+        </div>
+      </sc-if>
+
+      <!-- ERROR -->
+      <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #F6D9DA;border-radius:18px;padding:72px 32px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <div style="width:78px;height:78px;border-radius:22px;background:#FDECEC;display:flex;align-items:center;justify-content:center;color:#E5484D;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+          <div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">Something went wrong</div>
+          <div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 24px;max-width:340px">We couldn't load products right now. Check your connection and try again.</div>
+          <button onClick="{{ retry }}" style="display:flex;align-items:center;gap:8px;height:46px;padding:0 24px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>Try again</button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- ===================== HELP CARDS ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px var(--cpad) 0">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+      <sc-for list="{{ helpCards }}" as="h" hint-placeholder-count="4">
+        <a href="#" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:32px 24px;background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);transition:box-shadow .25s,transform .25s" style-hover="box-shadow:0 16px 34px -14px rgba(20,18,31,.18);transform:translateY(-3px)">
+          <span style="width:56px;height:56px;border-radius:16px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#6544E0" data-icon="{{ h.icon }}">{{ h.svg }}</span>
+          <div><div style="font:700 16px/1.1 'Sora',sans-serif;color:#17151F">{{ h.title }}</div><div style="font:400 13px/1.4 'Instrument Sans',sans-serif;color:#75727F;margin-top:7px">{{ h.sub }}</div></div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="background:#17151F;color:#B3B0BD;margin-top:72px">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:60px var(--cpad) 0;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.4fr;gap:40px">
+      <div>
+        <div style="font:800 26px/1 'Sora',sans-serif;color:#fff;letter-spacing:-.02em;margin-bottom:16px">Covet<span style="color:#9B7DF5">.</span></div>
+        <p style="font:400 13.5px/1.6 'Instrument Sans',sans-serif;color:#8B8895;margin:0 0 20px;max-width:280px">A curated multi-vendor marketplace bringing independent sellers and beloved brands under one trusted checkout.</p>
+        <div style="display:flex;gap:10px">
+          <a href="#" aria-label="Facebook" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+          <a href="#" aria-label="Instagram" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg></a>
+          <a href="#" aria-label="X" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5-6.6L5.4 22H2.3l8-9.2L1.5 2h6.9l4.5 6z"></path></svg></a>
+        </div>
+      </div>
+      <div>
+        <div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:18px">Quick Links</div>
+        <div style="display:flex;flex-direction:column;gap:12px;font:400 13.5px/1 'Instrument Sans',sans-serif">
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Profile Info</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Featured Products</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Best Selling</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Latest Products</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Track Order</a>
+        </div>
+      </div>
+      <div>
+        <div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:18px">Other</div>
+        <div style="display:flex;flex-direction:column;gap:12px;font:400 13.5px/1 'Instrument Sans',sans-serif">
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">About Us</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Terms &amp; Conditions</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Privacy Policy</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Refund Policy</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Cancellation Policy</a>
+        </div>
+      </div>
+      <div>
+        <div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:18px">Newsletter</div>
+        <p style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#8B8895;margin:0 0 14px">Subscribe to get the latest updates and members-only deals.</p>
+        <div style="display:flex;height:46px;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)">
+          <input placeholder="Your email address" style="flex:1;border:none;background:transparent;outline:none;padding:0 14px;color:#fff;font:400 13.5px/1 'Instrument Sans',sans-serif">
+          <button style="border:none;background:#6544E0;color:#fff;padding:0 18px;font:600 13px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:var(--container-max);margin:44px auto 0;padding:28px var(--cpad) 34px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div style="display:flex;align-items:center;gap:8px;font:400 13px/1 'Instrument Sans',sans-serif;color:#8B8895">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9B7DF5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        Kingston, New York 12401, United States
+      </div>
+      <div style="font:400 12.5px/1 'Instrument Sans',sans-serif;color:#6C6976">© 2026 Covet Marketplace. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- ===================== QUICK VIEW MODAL ===================== -->
+  <sc-if value="{{ qvOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeQuickView }}" style="position:fixed;inset:0;z-index:200;background:rgba(20,18,31,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px">
+      <div onClick="{{ stop }}" style="position:relative;width:100%;max-width:940px;max-height:90vh;overflow-y:auto;background:#fff;border-radius:22px;box-shadow:0 40px 90px -20px rgba(20,18,31,.5);display:grid;grid-template-columns:1fr 1fr">
+        <button onClick="{{ closeQuickView }}" aria-label="Close" style="position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:999px;border:none;background:#F3F2F6;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;transition:background .2s,color .2s" style-hover="background:#EBE6FE;color:#472BA3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        <div style="padding:30px;border-right:1px solid #F1F0F4">
+          <div style="position:relative;aspect-ratio:1/1;border:1px solid #F1F0F4;border-radius:16px;background:#F5F4F7;display:flex;align-items:center;justify-content:center;overflow:hidden">
+            <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 12px,transparent 12px 24px)"></div>
+            <sc-if value="{{ qvHasDiscount }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:14px;left:14px;font:600 12px/1 'Instrument Sans',sans-serif;color:#472BA3;background:#EBE6FE;padding:7px 11px;border-radius:999px">{{ qvDiscountText }}</span></sc-if>
+            <span style="position:relative;font:500 12px/1.5 ui-monospace,Menlo,monospace;color:#A5A2AE;text-align:center;padding:0 24px">{{ qvImgLabel }}</span>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:16px">
+            <sc-for list="{{ qvThumbs }}" as="t" hint-placeholder-count="3">
+              <div onClick="{{ t.pick }}" style="{{ t.style }}"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.03) 0 6px,transparent 6px 12px)"></div></div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:34px">
+          <div style="font:600 11px/1 'Instrument Sans',sans-serif;color:#6544E0;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Sold by {{ qvSeller }}</div>
+          <h2 style="font:700 26px/1.25 'Sora',sans-serif;color:#17151F;margin:0 0 16px;letter-spacing:-.01em">{{ qvTitle }}</h2>
+          <div style="display:flex;align-items:center;gap:16px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#75727F;padding-bottom:18px;border-bottom:1px solid #F1F0F4"><span><span style="color:#17151F;font-weight:600">{{ qvReviews }}</span> Reviews</span><span style="width:1px;height:14px;background:#E6E4EC"></span><span><span style="color:#17151F;font-weight:600">In stock</span></span></div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin:20px 0 22px"><span style="font:800 34px/1 'Sora',sans-serif;color:#6544E0">{{ qvPriceText }}</span><sc-if value="{{ qvHasCompare }}" hint-placeholder-val="{{ false }}"><span style="font:400 17px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-decoration:line-through">{{ qvCompareText }}</span></sc-if></div>
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:22px">
+            <span style="font:500 14px/1 'Instrument Sans',sans-serif;color:#3A3745">Qty</span>
+            <div style="display:flex;align-items:center;border:1px solid #E6E4EC;border-radius:12px;overflow:hidden">
+              <button onClick="{{ qvDec }}" aria-label="Decrease" style="width:44px;height:46px;border:none;background:#fff;color:#75727F;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#F5F4F7"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+              <span style="width:56px;text-align:center;font:700 15px/1 'Sora',sans-serif;color:#17151F;border-left:1px solid #F1F0F4;border-right:1px solid #F1F0F4;line-height:46px">{{ qvQty }}</span>
+              <button onClick="{{ qvInc }}" aria-label="Increase" style="width:44px;height:46px;border:none;background:#fff;color:#6544E0;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#F5F2FF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+            </div>
+          </div>
+          <div style="font:500 15px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:24px">Total Price : <span style="font:800 20px/1 'Sora',sans-serif;color:#6544E0;margin-left:4px">{{ qvTotalText }}</span></div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <button style="flex:1;height:52px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:700 14px/1 'Sora',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Buy now</button>
+            <button style="flex:1;height:52px;border-radius:12px;border:none;background:#17151F;color:#fff;font:700 14px/1 'Sora',sans-serif;cursor:pointer;transition:opacity .2s" style-hover="opacity:.88">Add to cart</button>
+            <button aria-label="Add to wishlist" style="width:52px;height:52px;flex:none;border-radius:12px;border:1px solid #E6E4EC;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color .2s,border-color .2s" style-hover="color:#E5484D;border-color:#F3C9CB"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1200}}">
+class Component extends DCLogic {
+  state = {
+    viewState: 'default',
+    activeCat: 0,
+    sortBy: 'default',
+    productType: 'all',
+    priceMin: '0',
+    priceMax: '4000',
+    brandSel: {},
+    cartOpen: false,
+    hdrOpen: false,
+    navOpen: false,
+    hdrCat: 0,
+    quickView: null,
+    qvQty: 1,
+    qvThumb: 0,
+  };
+
+  renderVals() {
+    const money = n => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    // ---- source data (Men's Fashion) ----
+    const allProducts = [
+      { title: 'T900 Ultra Smart Watch', seller: 'TechNova', price: 28.5, compare: 30, rating: 4, reviews: 1, discount: 5, new: false },
+      { title: 'Oxford Short Sleeve Shirt', seller: 'Marchetti', price: 25, rating: 5, reviews: 42, new: true },
+      { title: 'Shiny Leather Loafers for Men', seller: 'Marchetti', price: 110, rating: 5, reviews: 68 },
+      { title: "Men's Full-Grain Leather Belt", seller: 'Marchetti', price: 19, rating: 4, reviews: 96 },
+      { title: 'Bluetooth Sport Smart Watch', seller: 'Hanover Electronics', price: 150, rating: 5, reviews: 33, new: true },
+      { title: 'Popcorn Cushion Running Shoes', seller: 'Peak Outdoors', price: 170, compare: 200, rating: 5, reviews: 128, discount: 15 },
+    ];
+
+    const min = parseFloat(this.state.priceMin) || 0;
+    const max = parseFloat(this.state.priceMax) || 999999;
+    let products = allProducts.filter(p => p.price >= min && p.price <= max);
+    const pt = this.state.productType;
+    if (pt === 'sale') products = products.filter(p => p.discount);
+    else if (pt === 'new') products = products.filter(p => p.new);
+    else if (pt === 'rated') products = products.filter(p => (p.rating || 0) >= 5);
+    const sb = this.state.sortBy;
+    if (sb === 'priceLow') products = products.slice().sort((a, b) => a.price - b.price);
+    else if (sb === 'priceHigh') products = products.slice().sort((a, b) => b.price - a.price);
+    else if (sb === 'rating') products = products.slice().sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    else if (sb === 'newest') products = products.slice().sort((a, b) => (b.new ? 1 : 0) - (a.new ? 1 : 0));
+
+    // effective state: manual switch, but default falls back to empty if filters kill everything
+    let vs = this.state.viewState;
+    if (vs === 'default' && products.length === 0) vs = 'empty';
+
+    // ---- header All-Categories mega dropdown ----
+    const hdrMenu = [
+      { name: "Women's Fashion", groups: [
+        { title: 'Clothing', items: ['Dresses', 'Tops & Blouses', 'Knitwear', 'Jeans', 'Skirts', 'Activewear'] },
+        { title: 'Footwear', items: ['Heels', 'Flats', 'Sneakers', 'Boots', 'Sandals'] },
+        { title: 'Bags', items: ['Totes', 'Crossbody', 'Clutches', 'Backpacks'] },
+        { title: 'Jewelry', items: ['Necklaces', 'Earrings', 'Rings', 'Bracelets'] },
+      ]},
+      { name: "Men's Fashion", groups: [
+        { title: 'Watches', items: ['Sports Watches', 'Business Watches', 'Smart Watches'] },
+        { title: 'Clothing', items: ['Shirts', 'T-Shirts', 'Hoodies', 'Sweaters', 'Jeans', 'Pants'] },
+        { title: 'Footwear', items: ['Shoes', 'Boots', 'Sneakers', 'Loafers', 'Sandals'] },
+        { title: 'Bags & Wallets', items: ['Backpacks', 'Business Bags', 'Wallets'] },
+      ]},
+      { name: 'Phones & Gadgets', groups: [
+        { title: 'Smartphones', items: ['iPhone', 'Samsung Galaxy', 'Google Pixel', 'OnePlus'] },
+        { title: 'Wearables', items: ['Smartwatches', 'Fitness Bands', 'Earbuds'] },
+        { title: 'Accessories', items: ['Cases & Covers', 'Chargers', 'Power Banks', 'Cables'] },
+        { title: 'Tablets', items: ['iPad', 'Android Tablets', 'E-Readers'] },
+      ]},
+      { name: 'Electronics', groups: [
+        { title: 'Computers', items: ['Laptops', 'Desktops', 'Monitors', 'Keyboards & Mice'] },
+        { title: 'Audio', items: ['Headphones', 'Speakers', 'Soundbars', 'Microphones'] },
+        { title: 'TV & Home', items: ['Smart TVs', 'Streaming Devices', 'Projectors'] },
+        { title: 'Storage', items: ['SSDs', 'Hard Drives', 'USB Hubs', 'Memory Cards'] },
+      ]},
+      { name: 'Health & Beauty', groups: [
+        { title: 'Skincare', items: ['Moisturizers', 'Serums', 'Cleansers', 'Sunscreen'] },
+        { title: 'Makeup', items: ['Face', 'Eyes', 'Lips', 'Brushes'] },
+        { title: 'Hair Care', items: ['Shampoo', 'Treatments', 'Styling Tools'] },
+        { title: 'Wellness', items: ['Vitamins', 'Supplements', 'Fragrance'] },
+      ]},
+      { name: 'Home & Kitchen', groups: [
+        { title: 'Kitchen', items: ['Cookware', 'Small Appliances', 'Bakeware', 'Utensils'] },
+        { title: 'Dining', items: ['Dinnerware', 'Glassware', 'Cutlery'] },
+        { title: 'Bedding', items: ['Sheet Sets', 'Duvets', 'Pillows'] },
+        { title: 'Decor', items: ['Lighting', 'Rugs', 'Wall Art', 'Storage'] },
+      ]},
+      { name: "Kid's Fashion", groups: [
+        { title: 'Clothing', items: ['Tops', 'Dresses', 'Outerwear', 'Sleepwear'] },
+        { title: 'Footwear', items: ['Sneakers', 'Sandals', 'Boots'] },
+        { title: 'Baby', items: ['Bodysuits', 'Rompers', 'Accessories'] },
+      ]},
+      { name: 'Sports & Outdoor', groups: [
+        { title: 'Fitness', items: ['Weights', 'Yoga', 'Cardio', 'Apparel'] },
+        { title: 'Outdoor', items: ['Camping', 'Hiking', 'Cycling', 'Water Sports'] },
+        { title: 'Team Sports', items: ['Football', 'Basketball', 'Tennis'] },
+      ]},
+    ];
+    const hdrRowIdle = "display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer;transition:background .15s,color .15s";
+    const hdrRowActive = "display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;background:#F5F2FF;cursor:pointer;transition:background .15s,color .15s";
+    const hdrCat = this.state.hdrCat;
+    const hdrCats = hdrMenu.map((c, i) => ({
+      name: c.name,
+      rowStyle: i === hdrCat ? hdrRowActive : hdrRowIdle,
+      chevron: i === hdrCat ? '#6544E0' : '#C6C4CE',
+      open: () => this.setState({ hdrCat: i }),
+    }));
+    const hdrGroups = hdrMenu[hdrCat] ? hdrMenu[hdrCat].groups : [];
+    const wrapStyle = (open) => "position:absolute;top:100%;left:0;padding-top:10px;z-index:60;transition:opacity .16s ease,transform .16s ease;" + (open ? "opacity:1;visibility:visible;transform:translateY(0)" : "opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none");
+    const panelInner = "position:relative;width:660px;background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 26px 64px -16px rgba(20,18,31,.28);overflow:hidden;display:grid;grid-template-columns:236px 1fr";
+    const hdrWrapStyle = wrapStyle(this.state.hdrOpen);
+    const navWrapStyle = wrapStyle(this.state.navOpen);
+
+    // ---- categories ----
+    const catData = [
+      { name: "Men's Fashion", count: 6 }, { name: "Women's Fashion", count: 128 },
+      { name: "Kid's Fashion", count: 54 }, { name: 'Health & Beauty', count: 96 },
+      { name: 'Pet Supplies', count: 37 }, { name: 'Home & Kitchen', count: 142 },
+      { name: 'Baby & Toddler', count: 61 },
+    ];
+    const catIdle = "display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:11px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer;transition:background .15s";
+    const catActive = "display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:11px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;background:#F5F2FF;cursor:pointer;transition:background .15s";
+    const categories = catData.map((c, i) => ({
+      name: c.name, count: c.count,
+      rowStyle: i === this.state.activeCat ? catActive : catIdle,
+      iconBg: i === this.state.activeCat ? '#EBE6FE' : '#F3F2F6',
+      iconColor: i === this.state.activeCat ? '#6544E0' : '#A5A2AE',
+      pick: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ activeCat: i }); },
+    }));
+
+    // ---- brands ----
+    const brandData = [
+      { name: 'Marchetti', count: 31 }, { name: 'TechNova', count: 27 }, { name: 'Hanover Electronics', count: 25 },
+      { name: 'Peak Outdoors', count: 30 }, { name: 'UrbanEdge', count: 17 }, { name: 'Cool Sneakers', count: 23 },
+      { name: 'Nova Threads', count: 23 }, { name: 'Atlas Goods', count: 21 }, { name: 'Northwind', count: 20 },
+    ];
+    const brands = brandData.map((b, i) => {
+      const on = !!this.state.brandSel[b.name];
+      return {
+        name: b.name, count: b.count,
+        boxStyle: "width:19px;height:19px;flex:none;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .15s;border:" + (on ? "none;background:#6544E0" : "1.5px solid #D6D4DD;background:#fff"),
+        checkStyle: on ? "display:block" : "display:none",
+        toggle: () => this.setState(s => ({ brandSel: { ...s.brandSel, [b.name]: !s.brandSel[b.name] } })),
+      };
+    });
+
+    // ---- state tabs ----
+    const tabIdle = "padding:0 14px;height:30px;border-radius:8px;border:none;background:transparent;color:#75727F;font:500 12px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:all .15s";
+    const tabActive = "padding:0 14px;height:30px;border-radius:8px;border:none;background:#fff;color:#17151F;font:600 12px/1 'Instrument Sans',sans-serif;cursor:pointer;box-shadow:0 1px 3px rgba(20,18,31,.12)";
+    const stateTabs = [
+      { key: 'default', label: 'Default' }, { key: 'loading', label: 'Loading' },
+      { key: 'empty', label: 'Empty' }, { key: 'error', label: 'Error' },
+    ].map(t => ({ label: t.label, style: this.state.viewState === t.key ? tabActive : tabIdle, pick: () => this.setState({ viewState: t.key }) }));
+
+    // ---- help cards ----
+    const helpCards = [
+      { title: 'About us', sub: 'Know more about our company', icon: 'building' },
+      { title: 'Contact Us', sub: 'We are here to help', icon: 'chat' },
+      { title: 'FAQ', sub: 'Get all your answers', icon: 'help' },
+      { title: 'Blog', sub: 'Check our latest posts', icon: 'blog' },
+    ].map(h => ({ ...h, svg: this.iconFor(h.icon) }));
+
+    // ---- cart ----
+    const cart = [
+      { title: 'Shiny Leather Loafers for Men', seller: 'Marchetti', price: 110, qty: 1 },
+      { title: "Men's Full-Grain Leather Belt", seller: 'Marchetti', price: 19, qty: 2 },
+    ];
+    const subtotal = cart.reduce((a, c) => a + c.price * c.qty, 0);
+    const cartRows = cart.map(c => ({ title: c.title, seller: c.seller, lineText: money(c.price * c.qty) + '  ·  x' + c.qty }));
+    const cartOpen = this.state.cartOpen;
+    const cartPopupStyle = "position:absolute;top:100%;right:0;width:388px;padding-top:14px;z-index:60;transition:opacity .18s ease,transform .18s ease;" + (cartOpen ? "opacity:1;visibility:visible;transform:translateY(0)" : "opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none");
+
+    // ---- quick view ----
+    const qv = this.state.quickView || {};
+    const qvQty = this.state.qvQty;
+    const qvThumb = this.state.qvThumb;
+    const qvThumbs = [0, 1, 2].map(k => ({
+      k,
+      style: "width:60px;height:60px;border-radius:10px;background:#F5F4F7;flex:none;overflow:hidden;cursor:pointer;position:relative;border:2px solid " + (k === qvThumb ? '#6544E0' : '#ECECF1'),
+      pick: () => this.setState({ qvThumb: k }),
+    }));
+
+    return {
+      itemCount: products.length,
+      products,
+      skeletons: [0, 1, 2, 3, 4, 5],
+      categories, brands, stateTabs, helpCards,
+      isDefault: vs === 'default', isLoading: vs === 'loading', isEmpty: vs === 'empty', isError: vs === 'error',
+      sortBy: this.state.sortBy, productType: this.state.productType,
+      priceMin: this.state.priceMin, priceMax: this.state.priceMax,
+      onSort: (e) => this.setState({ sortBy: e.target.value }),
+      onType: (e) => this.setState({ productType: e.target.value }),
+      onMin: (e) => this.setState({ priceMin: e.target.value }),
+      onMax: (e) => this.setState({ priceMax: e.target.value }),
+      resetFilters: () => this.setState({ activeCat: 0, sortBy: 'default', productType: 'all', priceMin: '0', priceMax: '4000', brandSel: {}, viewState: 'default' }),
+      retry: () => this.setState({ viewState: 'loading' }),
+      // cart
+      cartCount: cart.reduce((a, c) => a + c.qty, 0),
+      headerTotal: money(subtotal),
+      subtotalText: money(subtotal),
+      cartRows, cartPopupStyle,
+      openCart: () => this.setState({ cartOpen: true }),
+      closeCart: () => this.setState({ cartOpen: false }),
+      hdrCats, hdrGroups, hdrWrapStyle, navWrapStyle, panelInner,
+      openHdr: () => this.setState({ hdrOpen: true }),
+      closeHdr: () => this.setState({ hdrOpen: false }),
+      openNav: () => this.setState({ navOpen: true }),
+      closeNav: () => this.setState({ navOpen: false }),
+      // quick view
+      qvOpen: !!this.state.quickView, qvThumbs, qvQty,
+      qvTitle: qv.title, qvSeller: qv.seller, qvImgLabel: qv.title,
+      qvPriceText: money(qv.price || 0), qvCompareText: money(qv.compare || 0),
+      qvHasCompare: !!qv.compare, qvHasDiscount: !!qv.discount,
+      qvDiscountText: qv.discount ? ('\u2212' + qv.discount + '%') : '',
+      qvReviews: qv.reviews || 0, qvTotalText: money((qv.price || 0) * qvQty),
+      stop: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
+      openQuickView: (p) => this.setState({ quickView: p, qvQty: 1, qvThumb: 0 }),
+      closeQuickView: () => this.setState({ quickView: null }),
+      qvInc: () => this.setState(s => ({ qvQty: s.qvQty + 1 })),
+      qvDec: () => this.setState(s => ({ qvQty: Math.max(1, s.qvQty - 1) })),
+    };
+  }
+
+  iconFor(name) {
+    const p = { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
+    const paths = {
+      building: [['path', { d: 'M3 21h18' }], ['path', { d: 'M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16' }], ['path', { d: 'M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1' }]],
+      chat: [['path', { d: 'M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z' }]],
+      help: [['circle', { cx: 12, cy: 12, r: 10 }], ['path', { d: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' }], ['line', { x1: 12, y1: 17, x2: 12.01, y2: 17 }]],
+      blog: [['path', { d: 'M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2' }], ['path', { d: 'M18 14h-8M15 18h-5M10 6h8v4h-8V6z' }]],
+    };
+    return React.createElement('svg', p, (paths[name] || []).map((seg, i) => React.createElement(seg[0], { key: i, ...seg[1] })));
+  }
+}
+</script>
+</body>
+</html>

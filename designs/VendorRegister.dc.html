@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#FAFAFA;font-family:'Instrument Sans',system-ui,sans-serif;color:#3A3745;-webkit-font-smoothing:antialiased}
+a{color:#6544E0;text-decoration:none}a:hover{color:#5636C6}
+::selection{background:#EBE6FE;color:#472BA3}input::placeholder{color:#A5A2AE}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#6544E0">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#6544E0"></rect><rect x="330" y="300" width="540" height="150" rx="16" fill="#fff" opacity=".9"></rect><text x="600" y="620" font-family="Sora, sans-serif" font-size="70" font-weight="800" fill="#fff" text-anchor="middle">Covet<tspan fill="#BCA9FB">.</tspan></text></svg>
+</template>
+
+<div style="background:#FAFAFA">
+  <!-- HEADER -->
+  <header style="background:#fff;border-bottom:1px solid #F1F0F4;position:sticky;top:0;z-index:40">
+    <div style="max-width:1240px;margin:0 auto;padding:0 32px;height:72px;display:flex;align-items:center;gap:28px">
+      <a href="Home.dc.html" style="font:800 26px/1 'Sora',sans-serif;color:#17151F;letter-spacing:-.02em;flex:none">Covet<span style="color:#6544E0">.</span></a>
+      <nav style="display:flex;align-items:center;gap:6px;margin-left:8px">
+        <a href="Home.dc.html" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Home</a>
+        <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Brands</a>
+        <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Offers</a>
+        <a href="Vendors.dc.html" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">All Sellers</a>
+        <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Gift Cards</a>
+      </nav>
+      <a href="VendorLogin.dc.html" style="margin-left:auto;display:flex;align-items:center;gap:8px;height:44px;padding:0 22px;border-radius:11px;background:#6544E0;color:#fff;font:700 13px/1 'Sora',sans-serif" style-hover="background:#5636C6">Vendor Login</a>
+    </div>
+  </header>
+
+  <!-- REGISTRATION HERO -->
+  <section style="background:linear-gradient(120deg,#F5F2FF,#FBFAFF);border-bottom:1px solid #F1F0F4">
+    <div style="max-width:1240px;margin:0 auto;padding:48px 32px;display:grid;grid-template-columns:340px 1fr;gap:40px;align-items:center">
+      <div>
+        <h1 style="font:800 30px/1.1 'Sora',sans-serif;color:#17151F;letter-spacing:-.01em;margin:0">Vendor Registration</h1>
+        <p style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:14px 0 20px">Create your own store. Already have a store? <a href="VendorLogin.dc.html" style="font-weight:600">Login</a></p>
+        <div style="position:relative;width:100%;aspect-ratio:4/3;border-radius:16px;background:#EAE8F0;border:1px dashed #C9C6D3;display:flex;align-items:center;justify-content:center;overflow:hidden"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.02) 0 12px,transparent 12px 24px)"></div><span style="position:relative;font:500 12px/1.4 ui-monospace,Menlo,monospace;color:#A5A2AE">seller illustration</span></div>
+      </div>
+      <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 12px 34px -18px rgba(20,18,31,.2);padding:30px 32px">
+        <div style="font:700 19px/1 'Sora',sans-serif;color:#17151F;margin-bottom:22px">Create An Account</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 24px">
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Email <span style="color:#E5484D">*</span></label><input type="email" placeholder="Ex: example@gmail.com" style="width:100%;height:48px;border:1px solid #ECECF1;border-radius:11px;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Phone <span style="color:#E5484D">*</span></label><div style="display:flex;align-items:center;height:48px;border:1px solid #ECECF1;border-radius:11px;overflow:hidden;background:#FBFAFC" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"><span style="display:flex;align-items:center;gap:6px;padding:0 12px;height:100%;border-right:1px solid #ECECF1;font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745;white-space:nowrap">+1<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span><input placeholder="Enter phone number" style="flex:1;min-width:0;border:none;outline:none;background:transparent;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F"></div></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Password <span style="color:#E5484D">*</span></label><div style="display:flex;align-items:center;height:48px;border:1px solid #ECECF1;border-radius:11px;overflow:hidden;background:#FBFAFC" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"><input type="password" placeholder="Minimum 8 characters long" style="flex:1;min-width:0;border:none;outline:none;background:transparent;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F"><span style="padding:0 14px;color:#A5A2AE;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg></span></div></div>
+          <div><label style="display:block;font:600 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:9px">Confirm Password <span style="color:#E5484D">*</span></label><div style="display:flex;align-items:center;height:48px;border:1px solid #ECECF1;border-radius:11px;overflow:hidden;background:#FBFAFC" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"><input type="password" placeholder="Confirm password" style="flex:1;min-width:0;border:none;outline:none;background:transparent;padding:0 14px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#17151F"><span style="padding:0 14px;color:#A5A2AE;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg></span></div></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:24px"><a href="vendordashboard.dc.html" style="display:inline-flex;align-items:center;height:48px;padding:0 28px;border-radius:12px;background:#6544E0;color:#fff;font:700 14px/1 'Sora',sans-serif" style-hover="background:#5636C6">Proceed To Next</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY SELL -->
+  <section style="max-width:1240px;margin:0 auto;padding:64px 32px 0;text-align:center">
+    <h2 style="font:800 30px/1.1 'Sora',sans-serif;color:#17151F;letter-spacing:-.01em;margin:0">Why Sell With Us</h2>
+    <p style="font:400 15px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:14px 0 40px">Boost your sales! Join us for a seamless, profitable selling experience.</p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:left">
+      <sc-for list="{{ perks }}" as="p" hint-placeholder-count="4"><div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:26px 24px;transition:box-shadow .25s,transform .25s" style-hover="box-shadow:0 16px 34px -14px rgba(20,18,31,.18);transform:translateY(-3px)"><span style="width:52px;height:52px;border-radius:15px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center;margin-bottom:18px">{{ p.svg }}</span><div style="font:700 16px/1.2 'Sora',sans-serif;color:#17151F">{{ p.title }}</div><div style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin-top:10px">{{ p.desc }}</div></div></sc-for>
+    </div>
+  </section>
+
+  <!-- 3 STEPS -->
+  <section style="background:linear-gradient(120deg,#2E1F6B,#472BA3);margin-top:64px">
+    <div style="max-width:1240px;margin:0 auto;padding:56px 32px;text-align:center">
+      <h2 style="font:800 30px/1.1 'Sora',sans-serif;color:#fff;letter-spacing:-.01em;margin:0">3 Easy Steps To Start Selling</h2>
+      <p style="font:400 15px/1.5 'Instrument Sans',sans-serif;color:rgba(255,255,255,.75);margin:14px 0 44px;max-width:520px;margin-left:auto;margin-right:auto">Register, upload your products with detailed info and images, and reach millions of buyers instantly.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3"><div style="text-align:center"><span style="width:64px;height:64px;border-radius:18px;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px">{{ s.svg }}</span><div style="font:700 18px/1.2 'Sora',sans-serif;color:#fff">{{ s.title }}</div><div style="font:400 13px/1.6 'Instrument Sans',sans-serif;color:rgba(255,255,255,.72);margin-top:10px;max-width:280px;margin-left:auto;margin-right:auto">{{ s.desc }}</div></div></sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP DOWNLOAD -->
+  <section style="max-width:1240px;margin:0 auto;padding:56px 32px 0">
+    <div style="background:#F5F2FF;border:1px solid #EBE6FE;border-radius:22px;padding:40px 44px;display:grid;grid-template-columns:280px 1fr;gap:40px;align-items:center">
+      <div style="position:relative;width:180px;height:260px;margin:0 auto;border-radius:26px;background:#17151F;border:6px solid #17151F;overflow:hidden"><div style="width:100%;height:100%;border-radius:20px;background:linear-gradient(160deg,#6544E0,#2E1F6B);display:flex;align-items:center;justify-content:center;font:500 11px/1.4 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.6)">app mockup</div></div>
+      <div>
+        <h2 style="font:800 26px/1.15 'Sora',sans-serif;color:#17151F;letter-spacing:-.01em;margin:0">Download Free Vendor App</h2>
+        <p style="font:400 14px/1.6 'Instrument Sans',sans-serif;color:#75727F;margin:14px 0 24px;max-width:460px">Download our free seller app and start reaching millions of buyers on the go. Easy setup, manage listings, and boost sales anywhere.</p>
+        <div style="display:flex;gap:12px">
+          <div style="display:flex;align-items:center;gap:9px;height:48px;padding:0 18px;border-radius:11px;background:#17151F;color:#fff;cursor:pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M3 2l16 10L3 22z" opacity=".9"></path></svg><div><div style="font:400 8px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.7)">GET IT ON</div><div style="font:600 13px/1.2 'Instrument Sans',sans-serif;color:#fff;margin-top:2px">Google Play</div></div></div>
+          <div style="display:flex;align-items:center;gap:9px;height:48px;padding:0 18px;border-radius:11px;background:#17151F;color:#fff;cursor:pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M17.05 12.5c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.15-2.8.85-3.5.85-.7 0-1.85-.83-3-.8-1.55.02-3 .9-3.8 2.3-1.6 2.8-.4 7 1.15 9.3.77 1.13 1.68 2.4 2.87 2.35 1.15-.05 1.58-.75 2.97-.75s1.78.75 3 .72c1.24-.02 2.02-1.14 2.78-2.28.88-1.3 1.24-2.57 1.26-2.63-.03-.01-2.42-.93-2.44-3.7zM14.8 5.3c.63-.77 1.06-1.83.94-2.9-.9.04-2 .6-2.65 1.36-.58.68-1.1 1.77-.96 2.8 1 .08 2.03-.5 2.67-1.26z"></path></svg><div><div style="font:400 8px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.7)">Download on the</div><div style="font:600 13px/1.2 'Instrument Sans',sans-serif;color:#fff;margin-top:2px">App Store</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="max-width:900px;margin:0 auto;padding:64px 32px 0;text-align:center">
+    <h2 style="font:800 30px/1.1 'Sora',sans-serif;color:#17151F;letter-spacing:-.01em;margin:0">Frequently Asked Questions</h2>
+    <p style="font:400 15px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:14px 0 36px">Got questions about becoming a vendor? Explore our FAQ for answers to common queries about joining our platform.</p>
+    <div style="display:flex;flex-direction:column;gap:12px;text-align:left">
+      <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5"><div style="background:#fff;border:1px solid #F1F0F4;border-radius:14px;overflow:hidden"><div onClick="{{ f.toggle }}" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;cursor:pointer"><span style="font:600 14.5px/1.3 'Instrument Sans',sans-serif;color:#17151F">{{ f.q }}</span><span style="{{ f.iconStyle }}">{{ f.icon }}</span></div><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><div style="padding:0 22px 20px;font:400 13.5px/1.6 'Instrument Sans',sans-serif;color:#75727F">{{ f.a }}</div></sc-if></div></sc-for>
+    </div>
+  </section>
+
+  <!-- HELP CARDS -->
+  <section style="max-width:1240px;margin:0 auto;padding:56px 32px 0">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <sc-for list="{{ helpCards }}" as="h" hint-placeholder-count="4"><a href="#" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:30px 22px;background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);transition:box-shadow .25s,transform .25s" style-hover="box-shadow:0 16px 34px -14px rgba(20,18,31,.18);transform:translateY(-3px)"><span style="width:52px;height:52px;border-radius:15px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center">{{ h.svg }}</span><div><div style="font:700 15px/1.1 'Sora',sans-serif;color:#17151F">{{ h.title }}</div><div style="font:400 12.5px/1.4 'Instrument Sans',sans-serif;color:#75727F;margin-top:7px">{{ h.sub }}</div></div></a></sc-for>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#17151F;color:#B3B0BD;margin-top:64px">
+    <div style="max-width:1240px;margin:0 auto;padding:56px 32px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.4fr;gap:40px">
+      <div><div style="font:800 24px/1 'Sora',sans-serif;color:#fff;letter-spacing:-.02em;margin-bottom:16px">Covet<span style="color:#9B7DF5">.</span></div><p style="font:400 13px/1.6 'Instrument Sans',sans-serif;color:#8B8895;margin:0;max-width:260px">A curated multi-vendor marketplace bringing independent sellers and beloved brands under one trusted checkout.</p></div>
+      <div><div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:16px">Quick Links</div><div style="display:flex;flex-direction:column;gap:11px;font:400 13px/1 'Instrument Sans',sans-serif"><a href="#" style="color:#8B8895" style-hover="color:#fff">Profile Info</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Featured Products</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Best Selling</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Track Order</a></div></div>
+      <div><div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:16px">Other</div><div style="display:flex;flex-direction:column;gap:11px;font:400 13px/1 'Instrument Sans',sans-serif"><a href="#" style="color:#8B8895" style-hover="color:#fff">About Us</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Terms &amp; Conditions</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Privacy Policy</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Return Policy</a></div></div>
+      <div><div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:16px">Newsletter</div><p style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#8B8895;margin:0 0 14px">Subscribe to our channel to get latest updates.</p><div style="display:flex;height:46px;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)"><input placeholder="Your Email Address" style="flex:1;min-width:0;border:none;background:transparent;outline:none;padding:0 14px;color:#fff;font:400 13px/1 'Instrument Sans',sans-serif"><button style="border:none;background:#6544E0;color:#fff;padding:0 18px;font:600 13px/1 'Instrument Sans',sans-serif;cursor:pointer" style-hover="background:#5636C6">Subscribe</button></div></div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.08);padding:22px 32px;text-align:center;font:400 12.5px/1 'Instrument Sans',sans-serif;color:#6C6976">© 2026 Covet Marketplace. All rights reserved.</div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:2200}}">
+class Component extends DCLogic {
+  state = { open: {} };
+  icon(name, sw) {
+    const p = { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: sw || 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
+    const paths = {
+      rocket: [['path', { d: 'M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91 0z' }], ['path', { d: 'M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z' }]],
+      headset: [['path', { d: 'M3 18v-6a9 9 0 0 1 18 0v6' }], ['path', { d: 'M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z' }]],
+      search: [['circle', { cx: 11, cy: 11, r: 8 }], ['line', { x1: 21, y1: 21, x2: 16.65, y2: 16.65 }]],
+      megaphone: [['path', { d: 'm3 11 18-5v12L3 14v-3z' }], ['path', { d: 'M11.6 16.8a3 3 0 1 1-5.8-1.6' }]],
+      register: [['path', { d: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z' }], ['polyline', { points: '14 2 14 8 20 8' }], ['line', { x1: 9, y1: 15, x2: 15, y2: 15 }]],
+      upload: [['path', { d: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4' }], ['polyline', { points: '17 8 12 3 7 8' }], ['line', { x1: 12, y1: 3, x2: 12, y2: 15 }]],
+      cart: [['circle', { cx: 9, cy: 21, r: 1 }], ['circle', { cx: 20, cy: 21, r: 1 }], ['path', { d: 'M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6' }]],
+      building: [['path', { d: 'M3 21h18' }], ['path', { d: 'M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16' }], ['path', { d: 'M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1' }]],
+      chat: [['path', { d: 'M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z' }]],
+      help: [['circle', { cx: 12, cy: 12, r: 10 }], ['path', { d: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' }], ['line', { x1: 12, y1: 17, x2: 12.01, y2: 17 }]],
+      blog: [['path', { d: 'M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2' }], ['path', { d: 'M18 14h-8M15 18h-5M10 6h8v4h-8V6z' }]],
+    };
+    return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] })));
+  }
+  renderVals() {
+    const perks = [
+      { title: 'Easy Onboarding', desc: 'Start selling quickly with our user-friendly onboarding process designed to get you up and running fast.', icon: 'rocket' },
+      { title: '24/7 Support', desc: 'Get round-the-clock support from our dedicated team to resolve any issues and assist you anytime.', icon: 'headset' },
+      { title: 'SEO Friendly', desc: 'Enjoy enhanced search visibility with our SEO-friendly platform, driving more traffic to your listings.', icon: 'search' },
+      { title: 'Free Marketing', desc: 'Benefit from our extensive, no-cost marketing efforts to boost your visibility and sales.', icon: 'megaphone' },
+    ].map(p => ({ ...p, svg: this.icon(p.icon) }));
+    const steps = [
+      { title: 'Get Registered', desc: 'Sign up easily and create your seller account in just a few minutes. It\u2019s fast and simple to get started.', icon: 'register' },
+      { title: 'Upload Products', desc: 'List your products with detailed descriptions and high-quality images to attract more buyers effortlessly.', icon: 'upload' },
+      { title: 'Start Selling', desc: 'Go live and start reaching millions of potential buyers immediately. Watch your sales grow.', icon: 'cart' },
+    ].map(s => ({ ...s, svg: this.icon(s.icon) }));
+    const faqDefs = [
+      { q: 'How do I register as a seller?', a: 'Fill in the Create An Account form above with your email, phone and a password, then follow the guided onboarding steps to set up your store.' },
+      { q: 'How do I upload products?', a: 'Once your store is approved, use Add New Product in your seller dashboard to add product details, images, pricing and inventory.' },
+      { q: 'What are the fees for selling?', a: 'Covet charges a small per-order commission that varies by category. There are no listing or monthly subscription fees.' },
+      { q: 'How do I handle customer inquiries?', a: 'Customer questions come through the Covet AI support agent and your seller inbox, so you can respond quickly from one place.' },
+      { q: 'When and how do I get paid?', a: 'Completed order earnings accumulate in your Vendor Wallet and can be withdrawn to your connected Stripe account on your payout schedule.' },
+    ];
+    const open = this.state.open;
+    const minus = React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2.4, strokeLinecap: 'round' }, React.createElement('line', { x1: 5, y1: 12, x2: 19, y2: 12 }));
+    const plus = React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2.4, strokeLinecap: 'round' }, React.createElement('line', { x1: 12, y1: 5, x2: 12, y2: 19 }), React.createElement('line', { x1: 5, y1: 12, x2: 19, y2: 12 }));
+    const faqs = faqDefs.map((f, i) => ({ q: f.q, a: f.a, open: !!open[i], icon: open[i] ? minus : plus, iconStyle: "width:30px;height:30px;flex:none;border-radius:8px;display:flex;align-items:center;justify-content:center;" + (open[i] ? "background:#6544E0;color:#fff" : "background:#F3F2F6;color:#75727F"), toggle: () => this.setState(s => ({ open: { ...s.open, [i]: !s.open[i] } })) }));
+    const helpCards = [
+      { title: 'About us', sub: 'Know more about our company', icon: 'building' },
+      { title: 'Contact Us', sub: 'We are here to help', icon: 'chat' },
+      { title: 'FAQ', sub: 'Get all your answers', icon: 'help' },
+      { title: 'Blog', sub: 'Check our latest blogs', icon: 'blog' },
+    ].map(h => ({ ...h, svg: this.icon(h.icon, 1.9) }));
+    return { perks, steps, faqs, helpCards };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#F4F3F7;font-family:'Instrument Sans',system-ui,sans-serif;color:#3A3745;-webkit-font-smoothing:antialiased}
+a{color:#6544E0;text-decoration:none}a:hover{color:#5636C6}
+::selection{background:#EBE6FE;color:#472BA3}input::placeholder{color:#A5A2AE}
+@keyframes shimmer{0%{background-position:-450px 0}100%{background-position:450px 0}}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#DCDAE3;border-radius:6px}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#6544E0">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#6544E0"></rect><rect x="330" y="290" width="150" height="110" rx="14" fill="#fff" opacity=".9"></rect><rect x="500" y="290" width="150" height="110" rx="14" fill="#fff" opacity=".72"></rect><rect x="670" y="290" width="150" height="110" rx="14" fill="#fff" opacity=".55"></rect><text x="600" y="580" font-family="Sora, sans-serif" font-size="68" font-weight="800" fill="#fff" text-anchor="middle">Covet<tspan fill="#BCA9FB">.</tspan></text></svg>
+</template>
+
+<div style="display:flex;min-height:100vh;background:#F4F3F7">
+
+  <!-- ICON RAIL -->
+  <div style="{{ railStyle }}">
+    <div style="width:38px;height:38px;border-radius:11px;background:#6544E0;display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:14px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
+    <sc-for list="{{ railItems }}" as="r" hint-placeholder-count="7"><button aria-label="{{ r.label }}" style="{{ r.style }}">{{ r.svg }}</button></sc-for>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside style="{{ sidebarStyle }}">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 8px 18px;border-bottom:1px solid #F1F0F4;margin-bottom:14px"><span style="width:34px;height:34px;border-radius:10px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></span><span style="font:700 16px/1 'Sora',sans-serif;color:#17151F">Home</span></div>
+    <div style="font:600 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-transform:uppercase;letter-spacing:.08em;padding:0 8px;margin-bottom:10px">Overview</div>
+    <div style="display:flex;flex-direction:column;gap:3px">
+      <sc-for list="{{ sideItems }}" as="n" hint-placeholder-count="2"><a href="#" style="{{ n.style }}"><span style="{{ n.iconWrap }}">{{ n.svg }}</span><span>{{ n.label }}</span></a></sc-for>
+    </div>
+    <div style="margin-top:22px;background:linear-gradient(135deg,#6544E0,#472BA3);border-radius:14px;padding:16px;color:#fff">
+      <div style="display:flex;align-items:center;gap:10px"><span style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><div><div style="font:600 13px/1 'Sora',sans-serif">Setup Guide</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.75);margin-top:5px">38% Complete</div></div></div>
+      <div style="height:6px;border-radius:999px;background:rgba(255,255,255,.2);margin-top:12px;overflow:hidden"><div style="width:38%;height:100%;background:#fff;border-radius:999px"></div></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <div style="height:64px;background:#fff;border-bottom:1px solid #ECECF1;display:flex;align-items:center;gap:16px;padding:0 26px;position:sticky;top:0;z-index:30">
+      <button onClick="{{ toggleSidebar }}" aria-label="Toggle sidebar" style="width:30px;height:30px;border:1px solid #ECECF1;border-radius:8px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7">{{ collapseIcon }}</button>
+      <div style="display:flex;align-items:center;gap:8px;font:500 13px/1 'Instrument Sans',sans-serif"><a href="#" style="color:#6544E0">Home</a><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg><span style="color:#75727F">Dashboard</span></div>
+      <div style="flex:1;max-width:420px;margin-left:14px;display:flex;align-items:center;height:40px;background:#F5F4F7;border:1px solid #ECECF1;border-radius:10px;overflow:hidden" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE"><span style="padding:0 12px;color:#A5A2AE"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span><input placeholder="Search Menu..." style="flex:1;min-width:0;border:none;outline:none;background:transparent;padding:0 4px;font:400 13px/1 'Instrument Sans',sans-serif;color:#17151F"></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+        <button aria-label="Notifications" style="position:relative;width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span style="position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;background:#E5484D;color:#fff;font:600 10px/17px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">12</span></button>
+        <button aria-label="Messages" style="position:relative;width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></button>
+        <button aria-label="Fullscreen" style="width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></button>
+        <div style="position:relative;margin-left:6px" onMouseLeave="{{ closeProfile }}">
+          <div onClick="{{ toggleProfile }}" style="display:flex;align-items:center;gap:10px;height:44px;padding:0 8px 0 6px;border:1px solid #ECECF1;border-radius:999px;background:#fff;cursor:pointer" style-hover="background:#F5F4F7"><span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);color:#6544E0;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span><div style="text-align:left"><div style="font:600 13px/1 'Sora',sans-serif;color:#17151F">Admin</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-top:4px">Master Admin</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div style="{{ profileMenuStyle }}">
+           <div style="background:#fff;border:1px solid #F1F0F4;border-radius:14px;box-shadow:0 20px 48px -14px rgba(20,18,31,.28);padding:6px">
+            <a href="#" style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745" style-hover="background:#F5F2FF;color:#6544E0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Profile</a>
+            <a href="#" style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745" style-hover="background:#F5F2FF;color:#6544E0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>Settings</a>
+            <a href="login.dc.html" style="display:flex;align-items:center;gap:11px;padding:12px 14px 10px;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#E5484D;margin-top:2px;border-top:1px solid #F1F0F4" style-hover="background:#FDECEC"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>Logout</a>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- body -->
+    <div style="padding:26px;max-width:1280px;width:100%;margin:0 auto">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px">
+        <div><h1 style="font:800 26px/1.1 'Sora',sans-serif;color:#17151F;letter-spacing:-.01em;margin:0">Welcome Admin</h1><p style="font:400 14px/1 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 0">Monitor your business analytics and statistics.</p></div>
+        <div style="display:flex;gap:4px;background:#EDECF1;border-radius:11px;padding:4px"><sc-for list="{{ stateTabs }}" as="s" hint-placeholder-count="4"><button onClick="{{ s.pick }}" style="{{ s.style }}">{{ s.label }}</button></sc-for></div>
+      </div>
+
+      <sc-if value="{{ isDefault }}" hint-placeholder-val="{{ true }}">
+        <!-- BUSINESS ANALYTICS -->
+        <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:24px 26px;margin-bottom:22px">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px"><div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:9px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg></span><span style="font:700 17px/1 'Sora',sans-serif;color:#17151F">Business Analytics</span></div><div style="display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:1px solid #ECECF1;border-radius:10px;font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer">This Year Statistics<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px">
+            <sc-for list="{{ bizCards }}" as="c" hint-placeholder-count="4"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px;border:1px solid #F1F0F4;border-radius:14px;background:#FBFAFC"><div><div style="font:500 12.5px/1.2 'Instrument Sans',sans-serif;color:#75727F">{{ c.label }}</div><div style="font:800 26px/1 'Sora',sans-serif;color:#17151F;margin-top:12px">{{ c.value }}</div></div><span style="{{ c.iconWrap }}">{{ c.svg }}</span></div></sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+            <sc-for list="{{ statusCards }}" as="c" hint-placeholder-count="8"><div style="display:flex;align-items:center;gap:11px;padding:14px 16px;border:1px solid #F1F0F4;border-radius:12px;background:#fff"><span style="{{ c.iconWrap }}">{{ c.svg }}</span><span style="flex:1;font:500 12.5px/1.2 'Instrument Sans',sans-serif;color:#3A3745">{{ c.label }}</span><span style="font:700 16px/1 'Sora',sans-serif;color:{{ c.numColor }}">{{ c.value }}</span></div></sc-for>
+          </div>
+        </div>
+
+        <!-- ADMIN WALLET -->
+        <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:24px 26px;margin-bottom:22px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"><span style="width:30px;height:30px;border-radius:9px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4z"></path></svg></span><span style="font:700 17px/1 'Sora',sans-serif;color:#17151F">Admin Wallet</span></div>
+          <div style="display:grid;grid-template-columns:300px 1fr 1fr;gap:16px">
+            <div style="border:1px solid #EBE6FE;border-radius:16px;padding:24px;background:linear-gradient(150deg,#F5F2FF,#FBFAFF);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center"><span style="width:56px;height:56px;border-radius:16px;background:#fff;box-shadow:0 6px 16px -6px rgba(101,68,224,.4);color:#6544E0;display:flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><rect x="7" y="10" width="3" height="8"></rect><rect x="12" y="6" width="3" height="12"></rect><rect x="17" y="13" width="3" height="5"></rect></svg></span><div style="font:800 24px/1 'Sora',sans-serif;color:#17151F">$27,514.52</div><div style="font:400 13px/1 'Instrument Sans',sans-serif;color:#75727F;margin-top:8px">Total Admin Earning</div></div>
+            <div style="display:flex;flex-direction:column;gap:16px"><sc-for list="{{ walletLeft }}" as="w" hint-placeholder-count="2"><div style="flex:1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px;border:1px solid #F1F0F4;border-radius:16px;background:#FBFAFC"><div><div style="font:800 21px/1 'Sora',sans-serif;color:#17151F">{{ w.value }}</div><div style="font:400 12.5px/1 'Instrument Sans',sans-serif;color:#75727F;margin-top:7px">{{ w.label }}</div></div><span style="{{ w.iconWrap }}">{{ w.svg }}</span></div></sc-for></div>
+            <div style="display:flex;flex-direction:column;gap:16px"><sc-for list="{{ walletRight }}" as="w" hint-placeholder-count="2"><div style="flex:1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px;border:1px solid #F1F0F4;border-radius:16px;background:#FBFAFC"><div><div style="font:800 21px/1 'Sora',sans-serif;color:#17151F">{{ w.value }}</div><div style="font:400 12.5px/1 'Instrument Sans',sans-serif;color:#75727F;margin-top:7px">{{ w.label }}</div></div><span style="{{ w.iconWrap }}">{{ w.svg }}</span></div></sc-for></div>
+          </div>
+        </div>
+
+        <!-- ORDER STATISTICS + USER OVERVIEW -->
+        <div style="display:grid;grid-template-columns:1fr 380px;gap:22px;margin-bottom:22px;align-items:start">
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:24px 26px">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:8px"><div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:9px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg></span><span style="font:700 17px/1 'Sora',sans-serif;color:#17151F">Order Statistics</span></div><div style="display:flex;gap:4px;background:#F1F0F4;border-radius:11px;padding:4px"><sc-for list="{{ orderRange }}" as="t" hint-placeholder-count="3"><button onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button></sc-for></div></div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:24px;margin:14px 0"><div style="display:flex;align-items:center;gap:8px;font:500 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745"><span style="width:11px;height:11px;border-radius:50%;background:#6544E0"></span>Inhouse</div><div style="display:flex;align-items:center;gap:8px;font:500 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745"><span style="width:11px;height:11px;border-radius:50%;background:#2E9E6B"></span>Vendor</div></div>
+            <div style="height:300px;position:relative"><canvas ref="{{ orderChartRef }}"></canvas></div>
+          </div>
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:24px 26px">
+            <div style="font:700 17px/1 'Sora',sans-serif;color:#17151F;margin-bottom:20px">User Overview</div>
+            <div style="height:230px;position:relative;margin-bottom:20px"><canvas ref="{{ userChartRef }}"></canvas></div>
+            <div style="display:flex;flex-direction:column;gap:12px"><sc-for list="{{ userLegend }}" as="u" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:10px;font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745"><span style="width:10px;height:10px;border-radius:50%;background:{{ u.color }}"></span>{{ u.label }}</div></sc-for></div>
+          </div>
+        </div>
+
+        <!-- EARNING STATISTICS -->
+        <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:24px 26px;margin-bottom:22px">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:8px"><div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:9px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><rect x="7" y="10" width="3" height="8"></rect><rect x="12" y="6" width="3" height="12"></rect><rect x="17" y="13" width="3" height="5"></rect></svg></span><span style="font:700 17px/1 'Sora',sans-serif;color:#17151F">Earning Statistics</span></div><div style="display:flex;gap:4px;background:#F1F0F4;border-radius:11px;padding:4px"><sc-for list="{{ earnRange }}" as="t" hint-placeholder-count="3"><button onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button></sc-for></div></div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:24px;margin:14px 0"><div style="display:flex;align-items:center;gap:8px;font:500 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745"><span style="width:11px;height:11px;border-radius:50%;background:#6544E0"></span>Inhouse</div><div style="display:flex;align-items:center;gap:8px;font:500 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745"><span style="width:11px;height:11px;border-radius:50%;background:#2E9E6B"></span>Vendor</div><div style="display:flex;align-items:center;gap:8px;font:500 12.5px/1 'Instrument Sans',sans-serif;color:#3A3745"><span style="width:11px;height:11px;border-radius:50%;background:#E0912F"></span>Commission</div></div>
+          <div style="height:300px;position:relative"><canvas ref="{{ earnChartRef }}"></canvas></div>
+        </div>
+
+        <!-- USERS -->
+        <div style="font:700 18px/1 'Sora',sans-serif;color:#17151F;margin-bottom:16px">Users</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:26px">
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px 24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="display:flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6544E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span style="font:700 15px/1 'Sora',sans-serif;color:#17151F">Top Customers</span></div><a href="#" style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#6544E0">View All</a></div>
+            <div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ topCustomers }}" as="c" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:14px;padding:12px;border:1px solid #F1F0F4;border-radius:14px" style-hover="background:#FBFAFC"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);color:#9B7DF5;display:flex;align-items:center;justify-content:center;flex:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div><div style="flex:1;min-width:0"><div style="font:600 14px/1.2 'Instrument Sans',sans-serif;color:#17151F">{{ c.name }}</div><div style="font:400 11.5px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-top:6px">{{ c.email }}</div></div><span style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:#F5F2FF;color:#472BA3;font:600 11px/1 'Instrument Sans',sans-serif;white-space:nowrap">Orders : {{ c.orders }}</span></div></sc-for></div>
+          </div>
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px 24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="display:flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5484D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><span style="font:700 15px/1 'Sora',sans-serif;color:#17151F">Top Delivery Man</span></div><a href="#" style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#6544E0">View All</a></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><sc-for list="{{ deliveryMen }}" as="d" hint-placeholder-count="2"><div style="border:1px solid #F1F0F4;border-radius:14px;padding:20px;text-align:center" style-hover="box-shadow:0 10px 24px -14px rgba(20,18,31,.2)"><div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);color:#9B7DF5;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div><div style="font:700 14px/1 'Sora',sans-serif;color:#17151F">{{ d.name }}</div><div style="display:flex;align-items:center;justify-content:center;gap:5px;font:400 12px/1 'Instrument Sans',sans-serif;color:#75727F;margin-top:10px">Rating : <span style="color:#17151F;font-weight:600">{{ d.rating }}</span><svg width="12" height="12" viewBox="0 0 24 24" fill="#E8A13A" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div><div style="font:400 12px/1 'Instrument Sans',sans-serif;color:#75727F;margin-top:8px">Order Delivered : <span style="color:#17151F;font-weight:600">{{ d.delivered }}</span></div></div></sc-for></div>
+          </div>
+        </div>
+
+        <!-- STORES -->
+        <div style="font:700 18px/1 'Sora',sans-serif;color:#17151F;margin-bottom:16px">Stores</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:26px">
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px 24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="display:flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#E5484D" stroke="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg><span style="font:700 15px/1 'Sora',sans-serif;color:#17151F">Most Popular Stores</span></div><a href="#" style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#6544E0">View All</a></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><sc-for list="{{ popularStores }}" as="s" hint-placeholder-count="2"><a href="Store.dc.html" style="display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #F1F0F4;border-radius:14px" style-hover="background:#FBFAFC"><span style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);color:#6544E0;display:flex;align-items:center;justify-content:center;flex:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"></path><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"></path><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"></path></svg></span><div><div style="font:600 13.5px/1.2 'Instrument Sans',sans-serif;color:#17151F">{{ s.name }}</div><div style="display:flex;align-items:center;gap:4px;font:400 12px/1 'Instrument Sans',sans-serif;color:#75727F;margin-top:6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="#E5484D" stroke="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg>{{ s.likes }}</div></div></a></sc-for></div>
+          </div>
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px 24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="display:flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6544E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span style="font:700 15px/1 'Sora',sans-serif;color:#17151F">Top Selling Stores</span></div><a href="#" style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#6544E0">View All</a></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><sc-for list="{{ topStores }}" as="s" hint-placeholder-count="4"><a href="Store.dc.html" style="display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #F1F0F4;border-radius:14px" style-hover="background:#FBFAFC"><span style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);color:#6544E0;display:flex;align-items:center;justify-content:center;flex:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"></path><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"></path><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"></path></svg></span><div style="min-width:0"><div style="font:600 13.5px/1.2 'Instrument Sans',sans-serif;color:#17151F">{{ s.name }}</div><div style="display:flex;align-items:center;gap:5px;font:700 12.5px/1 'Sora',sans-serif;color:#6544E0;margin-top:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>{{ s.sales }}</div></div></a></sc-for></div>
+          </div>
+        </div>
+
+        <!-- INHOUSE PRODUCTS -->
+        <div style="font:700 18px/1 'Sora',sans-serif;color:#17151F;margin-bottom:16px">Inhouse Products</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:26px">
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px 24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="display:flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#E8A13A" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><span style="font:700 15px/1 'Sora',sans-serif;color:#17151F">Most Rated Products</span></div><a href="#" style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#6544E0">View All</a></div>
+            <div style="display:flex;flex-direction:column;gap:12px"><sc-for list="{{ inhouseRated }}" as="p" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:14px;padding:12px;border:1px solid #F1F0F4;border-radius:14px" style-hover="background:#FBFAFC"><div style="position:relative;width:52px;height:52px;border-radius:12px;background:#F5F4F7;flex:none;overflow:hidden"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 8px,transparent 8px 16px)"></div></div><div style="flex:1;min-width:0"><div style="font:600 13.5px/1.3 'Instrument Sans',sans-serif;color:#17151F">{{ p.title }}</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#6544E0;margin-top:6px">Sold by Covet Inhouse</div><div style="display:flex;align-items:center;gap:6px;margin-top:8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#E8A13A" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><span style="font:700 12.5px/1 'Sora',sans-serif;color:#17151F">{{ p.rating }}</span><span style="font:400 12px/1 'Instrument Sans',sans-serif;color:#A5A2AE">({{ p.reviews }} Reviews)</span></div></div></div></sc-for></div>
+          </div>
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px 24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="display:flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6544E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span style="font:700 15px/1 'Sora',sans-serif;color:#17151F">Top Selling Products</span></div><a href="#" style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#6544E0">View All</a></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><sc-for list="{{ inhouseTop }}" as="p" hint-placeholder-count="4"><div style="border:1px solid #F1F0F4;border-radius:14px;padding:14px;text-align:center" style-hover="box-shadow:0 10px 24px -14px rgba(20,18,31,.2)"><div style="position:relative;aspect-ratio:1/1;border-radius:10px;background:#F5F4F7;overflow:hidden;margin-bottom:10px"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 8px,transparent 8px 16px)"></div></div><div style="font:600 12.5px/1.3 'Instrument Sans',sans-serif;color:#17151F;min-height:32px">{{ p.title }}</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin:8px 0 4px">Total Sold Price</div><div style="font:700 14px/1 'Sora',sans-serif;color:#17151F;margin-bottom:10px">{{ p.price }}</div><span style="display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;background:#F5F2FF;color:#472BA3;font:600 11px/1 'Instrument Sans',sans-serif">Sold : {{ p.sold }}</span></div></sc-for></div>
+          </div>
+        </div>
+
+        <!-- VENDOR PRODUCTS -->
+        <div style="font:700 18px/1 'Sora',sans-serif;color:#17151F;margin-bottom:16px">Vendor Products</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px 24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="display:flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#E8A13A" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><span style="font:700 15px/1 'Sora',sans-serif;color:#17151F">Most Rated Products</span></div><a href="#" style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#6544E0">View All</a></div>
+            <div style="display:flex;flex-direction:column;gap:12px"><sc-for list="{{ vendorRated }}" as="p" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:14px;padding:12px;border:1px solid #F1F0F4;border-radius:14px" style-hover="background:#FBFAFC"><div style="position:relative;width:52px;height:52px;border-radius:12px;background:#F5F4F7;flex:none;overflow:hidden"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 8px,transparent 8px 16px)"></div></div><div style="flex:1;min-width:0"><div style="font:600 13.5px/1.3 'Instrument Sans',sans-serif;color:#17151F">{{ p.title }}</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#6544E0;margin-top:6px">Sold by {{ p.seller }}</div><div style="display:flex;align-items:center;gap:6px;margin-top:8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#E8A13A" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><span style="font:700 12.5px/1 'Sora',sans-serif;color:#17151F">{{ p.rating }}</span><span style="font:400 12px/1 'Instrument Sans',sans-serif;color:#A5A2AE">({{ p.reviews }} Reviews)</span></div></div></div></sc-for></div>
+          </div>
+          <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:22px 24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="display:flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6544E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span style="font:700 15px/1 'Sora',sans-serif;color:#17151F">Top Selling Products</span></div><a href="#" style="font:600 12.5px/1 'Instrument Sans',sans-serif;color:#6544E0">View All</a></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><sc-for list="{{ vendorTop }}" as="p" hint-placeholder-count="4"><div style="border:1px solid #F1F0F4;border-radius:14px;padding:14px;text-align:center" style-hover="box-shadow:0 10px 24px -14px rgba(20,18,31,.2)"><div style="position:relative;aspect-ratio:1/1;border-radius:10px;background:#F5F4F7;overflow:hidden;margin-bottom:10px"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 8px,transparent 8px 16px)"></div></div><div style="font:600 12.5px/1.3 'Instrument Sans',sans-serif;color:#17151F;min-height:32px">{{ p.title }}</div><div style="font:400 10.5px/1 'Instrument Sans',sans-serif;color:#6544E0;margin-top:6px">{{ p.seller }}</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin:8px 0 4px">Total Sold Price</div><div style="font:700 14px/1 'Sora',sans-serif;color:#17151F;margin-bottom:10px">{{ p.price }}</div><span style="display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;background:#F5F2FF;color:#472BA3;font:600 11px/1 'Instrument Sans',sans-serif">Sold : {{ p.sold }}</span></div></sc-for></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px"><sc-for list="{{ skel4 }}" as="k" hint-placeholder-count="4"><div style="height:96px;border-radius:14px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div></sc-for></div>
+        <div style="height:200px;border-radius:18px;margin-bottom:22px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div>
+        <div style="height:340px;border-radius:18px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div>
+      </sc-if>
+
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px dashed #DAD8E0;border-radius:18px;padding:72px 32px;display:flex;flex-direction:column;align-items:center;text-align:center"><div style="width:78px;height:78px;border-radius:22px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#9B7DF5;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg></div><div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">No analytics yet</div><div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 0;max-width:360px">As stores and orders come in across the marketplace, platform analytics will appear here.</div></div>
+      </sc-if>
+
+      <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #F6D9DA;border-radius:18px;padding:72px 32px;display:flex;flex-direction:column;align-items:center;text-align:center"><div style="width:78px;height:78px;border-radius:22px;background:#FDECEC;display:flex;align-items:center;justify-content:center;color:#E5484D;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div><div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">Couldn't load dashboard</div><div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 24px;max-width:360px">Something went wrong while loading platform analytics. Please try again.</div><button onClick="{{ retry }}" style="display:flex;align-items:center;gap:8px;height:46px;padding:0 24px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer" style-hover="background:#5636C6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>Try again</button></div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1800}}">
+class Component extends DCLogic {
+  state = { viewState: 'default', sidebarOpen: true, profileOpen: false, orderRange: 'year', earnRange: 'year' };
+  orderChartRef = React.createRef();
+  userChartRef = React.createRef();
+  earnChartRef = React.createRef();
+  componentDidMount() { this._draw(); }
+  componentDidUpdate() { this._draw(); }
+  componentWillUnmount() { ['_oc','_uc','_ec'].forEach(k => { if (this[k]) { this[k].destroy(); this[k] = null; } }); }
+
+  _draw() {
+    if (this.state.viewState !== 'default' || typeof Chart === 'undefined') {
+      ['_oc','_uc','_ec'].forEach(k => { if (this[k]) { this[k].destroy(); this[k] = null; } });
+      return;
+    }
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const orderSets = { year: { in: [1.2,1.8,1.4,2.6,2.1,3.4,2.9,3.8,3.2,4.4,3.9,4.8], ven: [0.8,1.2,1.0,1.8,1.5,2.4,2.1,2.8,2.4,3.2,2.9,3.6] }, month: { labels: ['W1','W2','W3','W4'], in: [2.1,3.2,2.8,4.1], ven: [1.4,2.2,1.9,2.8] }, week: { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], in: [0.6,0.9,0.7,1.2,1.0,1.5,1.3], ven: [0.4,0.6,0.5,0.9,0.7,1.1,0.9] } };
+    const orderLine = (ref, key, which) => {
+      const el = ref.current; if (!el) return;
+      const set = orderSets[this.state.orderRange] || orderSets.year;
+      const labels = set.labels || months;
+      if (this[key]) this[key].destroy();
+      const ctx = el.getContext('2d');
+      const g1 = ctx.createLinearGradient(0, 0, 0, 300); g1.addColorStop(0, 'rgba(101,68,224,0.20)'); g1.addColorStop(1, 'rgba(101,68,224,0)');
+      const g2 = ctx.createLinearGradient(0, 0, 0, 300); g2.addColorStop(0, 'rgba(46,158,107,0.18)'); g2.addColorStop(1, 'rgba(46,158,107,0)');
+      this[key] = new Chart(ctx, { type: 'line', data: { labels, datasets: [
+        { label: 'Inhouse', data: set.in, borderColor: '#6544E0', backgroundColor: g1, borderWidth: 2.5, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5 },
+        { label: 'Vendor', data: set.ven, borderColor: '#2E9E6B', backgroundColor: g2, borderWidth: 2.5, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5 },
+      ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + v, font: { family: 'Instrument Sans' }, color: '#A5A2AE' }, grid: { color: '#F1F0F4', borderDash: [4,4] }, border: { display: false } }, x: { ticks: { font: { family: 'Instrument Sans' }, color: '#A5A2AE' }, grid: { display: false }, border: { display: false } } } } });
+    };
+    orderLine(this.orderChartRef, '_oc');
+
+    // earning
+    const earnSets = { year: { in: [1.4,2.0,1.6,2.8,2.3,3.6,3.1,4.0,3.4,4.6,4.1,5.0], ven: [1.0,1.4,1.2,2.0,1.7,2.6,2.3,3.0,2.6,3.4,3.1,3.8], com: [0.3,0.4,0.35,0.55,0.45,0.7,0.6,0.8,0.7,0.9,0.82,1.0] }, month: { labels: ['W1','W2','W3','W4'], in: [2.4,3.5,3.0,4.4], ven: [1.6,2.4,2.1,3.0], com: [0.4,0.6,0.5,0.75] }, week: { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], in: [0.7,1.0,0.8,1.3,1.1,1.6,1.4], ven: [0.5,0.7,0.6,1.0,0.8,1.2,1.0], com: [0.1,0.15,0.12,0.2,0.16,0.24,0.2] } };
+    const el = this.earnChartRef.current;
+    if (el) {
+      const set = earnSets[this.state.earnRange] || earnSets.year;
+      const labels = set.labels || months;
+      if (this._ec) this._ec.destroy();
+      const ctx = el.getContext('2d');
+      const g1 = ctx.createLinearGradient(0, 0, 0, 300); g1.addColorStop(0, 'rgba(101,68,224,0.18)'); g1.addColorStop(1, 'rgba(101,68,224,0)');
+      this._ec = new Chart(ctx, { type: 'line', data: { labels, datasets: [
+        { label: 'Inhouse', data: set.in, borderColor: '#6544E0', backgroundColor: g1, borderWidth: 2.5, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5 },
+        { label: 'Vendor', data: set.ven, borderColor: '#2E9E6B', backgroundColor: 'rgba(46,158,107,0.06)', borderWidth: 2.5, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5 },
+        { label: 'Commission', data: set.com, borderColor: '#E0912F', backgroundColor: 'rgba(224,145,47,0.06)', borderWidth: 2.5, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5 },
+      ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + v, font: { family: 'Instrument Sans' }, color: '#A5A2AE' }, grid: { color: '#F1F0F4', borderDash: [4,4] }, border: { display: false } }, x: { ticks: { font: { family: 'Instrument Sans' }, color: '#A5A2AE' }, grid: { display: false }, border: { display: false } } } } });
+    }
+
+    // donut
+    const ud = this.userChartRef.current;
+    if (ud) {
+      if (this._uc) this._uc.destroy();
+      this._uc = new Chart(ud.getContext('2d'), { type: 'doughnut', data: { labels: ['Total Customer', 'Total Vendor', 'Total Delivery Man'], datasets: [{ data: [7, 10, 4], backgroundColor: ['#4C7DF0', '#E0912F', '#2E1F6B'], borderWidth: 0, hoverOffset: 6 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { display: false }, tooltip: { enabled: true } } } });
+    }
+  }
+
+  renderVals() {
+    const rail = (name) => { const p = { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = {
+      home: [['path', { d: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' }]],
+      box: [['path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }], ['polyline', { points: '3.27 6.96 12 12.01 20.73 6.96' }]],
+      bag: [['path', { d: 'M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z' }], ['line', { x1: 3, y1: 6, x2: 21, y2: 6 }], ['path', { d: 'M16 10a4 4 0 0 1-8 0' }]],
+      send: [['line', { x1: 22, y1: 2, x2: 11, y2: 13 }], ['polygon', { points: '22 2 15 22 11 13 2 9 22 2' }]],
+      speaker: [['polygon', { points: '11 5 6 9 2 9 2 15 6 15 11 19 11 5' }], ['path', { d: 'M15.54 8.46a5 5 0 0 1 0 7.07' }]],
+      chart: [['path', { d: 'M3 3v18h18' }], ['rect', { x: 7, y: 10, width: 3, height: 8 }], ['rect', { x: 12, y: 6, width: 3, height: 12 }]],
+      users: [['path', { d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' }], ['circle', { cx: 9, cy: 7, r: 4 }], ['path', { d: 'M23 21v-2a4 4 0 0 0-3-3.87' }]],
+      sliders: [['line', { x1: 4, y1: 21, x2: 4, y2: 14 }], ['line', { x1: 4, y1: 10, x2: 4, y2: 3 }], ['line', { x1: 12, y1: 21, x2: 12, y2: 12 }], ['line', { x1: 12, y1: 8, x2: 12, y2: 3 }], ['line', { x1: 20, y1: 21, x2: 20, y2: 16 }], ['line', { x1: 20, y1: 12, x2: 20, y2: 3 }], ['line', { x1: 1, y1: 14, x2: 7, y2: 14 }], ['line', { x1: 9, y1: 8, x2: 15, y2: 8 }], ['line', { x1: 17, y1: 16, x2: 23, y2: 16 }]],
+    }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const railDefs = ['home','box','bag','send','speaker','chart','users','sliders'];
+    const railItems = railDefs.map((k, i) => ({ label: k, svg: rail(k), style: (i === 0 ? "width:40px;height:40px;border:none;border-radius:11px;background:#6544E0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s" : "width:40px;height:40px;border:none;border-radius:11px;background:transparent;color:#8B8895;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s") }));
+
+    const sideIcon = (name) => { const p = { width: 17, height: 17, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = { dash: [['rect', { x: 3, y: 3, width: 7, height: 9 }], ['rect', { x: 14, y: 3, width: 7, height: 5 }], ['rect', { x: 14, y: 12, width: 7, height: 9 }], ['rect', { x: 3, y: 16, width: 7, height: 5 }]], pos: [['rect', { x: 2, y: 3, width: 20, height: 14, rx: 2 }], ['line', { x1: 8, y1: 21, x2: 16, y2: 21 }], ['line', { x1: 12, y1: 17, x2: 12, y2: 21 }]] }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const rowA = "display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;background:#F5F2FF;cursor:pointer";
+    const rowI = "display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer;transition:background .15s";
+    const sideItems = [ { k: 'dashboard', l: 'Dashboard', icon: 'dash' }, { k: 'pos', l: 'POS', icon: 'pos' } ].map(n => ({ label: n.l, svg: sideIcon(n.icon), iconWrap: "display:flex;color:inherit", style: (n.k === 'dashboard' ? rowA : rowI) }));
+
+    const open = this.state.sidebarOpen;
+    const railStyle = "width:64px;flex:none;background:#17151F;flex-direction:column;align-items:center;padding:16px 0;gap:8px;position:sticky;top:0;height:100vh;display:" + (open ? 'flex' : 'none');
+    const sidebarStyle = "width:236px;flex:none;background:#fff;border-right:1px solid #ECECF1;padding:20px 16px;position:sticky;top:0;height:100vh;overflow-y:auto;display:" + (open ? 'block' : 'none');
+    const collapseIcon = React.createElement('svg', { width: 15, height: 15, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, open ? React.createElement('polyline', { points: '15 18 9 12 15 6' }) : React.createElement('g', null, React.createElement('line', { x1: 3, y1: 6, x2: 21, y2: 6 }), React.createElement('line', { x1: 3, y1: 12, x2: 21, y2: 12 }), React.createElement('line', { x1: 3, y1: 18, x2: 21, y2: 18 })));
+    const profileMenuStyle = "position:absolute;top:100%;right:0;padding-top:10px;z-index:60;width:220px;transition:opacity .16s ease,transform .16s ease;" + (this.state.profileOpen ? "opacity:1;visibility:visible;transform:translateY(0)" : "opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none");
+
+    const tabI = "padding:0 14px;height:30px;border-radius:8px;border:none;background:transparent;color:#75727F;font:500 12px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:all .15s";
+    const tabA = "padding:0 14px;height:30px;border-radius:8px;border:none;background:#fff;color:#17151F;font:600 12px/1 'Instrument Sans',sans-serif;cursor:pointer;box-shadow:0 1px 3px rgba(20,18,31,.12)";
+    const stateTabs = [ { k: 'default', l: 'Default' }, { k: 'loading', l: 'Loading' }, { k: 'empty', l: 'Empty' }, { k: 'error', l: 'Error' } ].map(t => ({ label: t.l, style: this.state.viewState === t.k ? tabA : tabI, pick: () => this.setState({ viewState: t.k }) }));
+    const rTab = (val, key) => (v) => ({ style: this.state[key] === v ? "padding:0 14px;height:32px;border-radius:8px;border:none;background:#6544E0;color:#fff;font:600 12px/1 'Instrument Sans',sans-serif;cursor:pointer" : "padding:0 14px;height:32px;border-radius:8px;border:none;background:transparent;color:#75727F;font:500 12px/1 'Instrument Sans',sans-serif;cursor:pointer", pick: () => this.setState({ [key]: v }) });
+    const mkRange = (key) => [ { k: 'year', l: 'This Year' }, { k: 'month', l: 'This Month' }, { k: 'week', l: 'This Week' } ].map(t => { const r = rTab(t.k, key)(t.k); return { label: t.l, style: r.style, pick: r.pick }; });
+
+    const bIcon = (name, color) => { const p = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = {
+      order: [['path', { d: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z' }], ['polyline', { points: '14 2 14 8 20 8' }], ['line', { x1: 9, y1: 13, x2: 15, y2: 13 }], ['line', { x1: 9, y1: 17, x2: 13, y2: 17 }]],
+      store: [['path', { d: 'M3 9l1-5h16l1 5' }], ['path', { d: 'M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9' }], ['path', { d: 'M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0' }]],
+      product: [['path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }], ['polyline', { points: '3.27 6.96 12 12.01 20.73 6.96' }]],
+      customer: [['path', { d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' }], ['circle', { cx: 9, cy: 7, r: 4 }], ['path', { d: 'M23 21v-2a4 4 0 0 0-3-3.87' }]],
+    }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const bChip = (bg) => "width:44px;height:44px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;background:" + bg;
+    const bizCards = [
+      { label: 'Total Order', value: 248, icon: 'order', bg: '#F5F2FF', c: '#6544E0' },
+      { label: 'Total Stores', value: 10, icon: 'store', bg: '#EAF1FC', c: '#2C5E9E' },
+      { label: 'Total Products', value: 39, icon: 'product', bg: '#E6F5EE', c: '#2E7D53' },
+      { label: 'Total Customers', value: 21, icon: 'customer', bg: '#FBEFDD', c: '#B4741C' },
+    ].map(c => ({ label: c.label, value: c.value, iconWrap: bChip(c.bg), svg: bIcon(c.icon, c.c) }));
+
+    const sIcon = (name, color) => { const p = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = {
+      pending: [['circle', { cx: 12, cy: 12, r: 10 }], ['polyline', { points: '12 6 12 12 16 14' }]],
+      confirmed: [['path', { d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14' }], ['polyline', { points: '22 4 12 14.01 9 11.01' }]],
+      packaging: [['path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }], ['polyline', { points: '3.27 6.96 12 12.01 20.73 6.96' }]],
+      outfor: [['rect', { x: 1, y: 3, width: 15, height: 13 }], ['path', { d: 'M16 8h4l3 3v5h-7V8z' }], ['circle', { cx: 5.5, cy: 18.5, r: 2.5 }], ['circle', { cx: 18.5, cy: 18.5, r: 2.5 }]],
+      delivered: [['path', { d: 'M20 6 9 17l-5-5' }]],
+      canceled: [['circle', { cx: 12, cy: 12, r: 10 }], ['line', { x1: 15, y1: 9, x2: 9, y2: 15 }], ['line', { x1: 9, y1: 9, x2: 15, y2: 15 }]],
+      returned: [['polyline', { points: '1 4 1 10 7 10' }], ['path', { d: 'M3.51 15a9 9 0 1 0 2.13-9.36L1 10' }]],
+      failed: [['circle', { cx: 12, cy: 12, r: 10 }], ['line', { x1: 12, y1: 8, x2: 12, y2: 12 }], ['line', { x1: 12, y1: 16, x2: 12.01, y2: 16 }]],
+    }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const chip = (bg) => "width:34px;height:34px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;background:" + bg;
+    const statusCards = [
+      { label: 'Pending', value: 3, icon: 'pending', bg: '#EAF1FC', c: '#2C5E9E', num: '#17151F' },
+      { label: 'Confirmed', value: 4, icon: 'confirmed', bg: '#E6F5EE', c: '#2E7D53', num: '#2E9E6B' },
+      { label: 'Packaging', value: 1, icon: 'packaging', bg: '#FBEFDD', c: '#B4741C', num: '#17151F' },
+      { label: 'Out For Delivery', value: 2, icon: 'outfor', bg: '#F5F2FF', c: '#6544E0', num: '#17151F' },
+      { label: 'Delivered', value: 11, icon: 'delivered', bg: '#E6F5EE', c: '#2E7D53', num: '#2E9E6B' },
+      { label: 'Canceled', value: 1, icon: 'canceled', bg: '#FDECEC', c: '#C0403F', num: '#17151F' },
+      { label: 'Returned', value: 1, icon: 'returned', bg: '#EAF1FC', c: '#2C5E9E', num: '#17151F' },
+      { label: 'Failed To Delivery', value: 2, icon: 'failed', bg: '#FDECEC', c: '#C0403F', num: '#E5484D' },
+    ].map(c => ({ label: c.label, value: c.value, numColor: c.num, iconWrap: chip(c.bg), svg: sIcon(c.icon, c.c) }));
+
+    const wIcon = (name) => { const p = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: '#6544E0', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = {
+      commission: [['line', { x1: 12, y1: 1, x2: 12, y2: 23 }], ['path', { d: 'M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' }]],
+      truck: [['rect', { x: 1, y: 3, width: 15, height: 13 }], ['path', { d: 'M16 8h4l3 3v5h-7V8z' }], ['circle', { cx: 5.5, cy: 18.5, r: 2.5 }], ['circle', { cx: 18.5, cy: 18.5, r: 2.5 }]],
+      tax: [['rect', { x: 3, y: 3, width: 18, height: 18, rx: 2 }], ['line', { x1: 8, y1: 16, x2: 16, y2: 8 }], ['circle', { cx: 9, cy: 9, r: 1 }], ['circle', { cx: 15, cy: 15, r: 1 }]],
+      clock: [['circle', { cx: 12, cy: 12, r: 9 }], ['polyline', { points: '12 7 12 12 15 14' }]],
+    }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const wChip = "width:44px;height:44px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;background:#F5F2FF";
+    const walletLeft = [ { value: '$12,927.52', label: 'Commission Earned', icon: 'commission' }, { value: '$5,240.00', label: 'Total Tax Collected', icon: 'tax' } ].map(w => ({ ...w, iconWrap: wChip, svg: wIcon(w.icon) }));
+    const walletRight = [ { value: '$1,660.00', label: 'Delivery Charge Earned', icon: 'truck' }, { value: '$7,687.00', label: 'Pending Amount', icon: 'clock' } ].map(w => ({ ...w, iconWrap: wChip, svg: wIcon(w.icon) }));
+
+    const userLegend = [ { label: 'Total Customer (7)', color: '#4C7DF0' }, { label: 'Total Vendor (10)', color: '#E0912F' }, { label: 'Total Delivery Man (4)', color: '#2E1F6B' } ];
+
+    const topCustomers = [
+      { name: 'Robert Downey', email: 'r****@**mer.com', orders: 140 },
+      { name: 'David Jack', email: 't****@**mer.com', orders: 17 },
+      { name: 'Chris Evans', email: 'c****@**mer.com', orders: 7 },
+      { name: 'Anthony Mackie', email: 't****@**mer.com', orders: 3 },
+    ];
+    const deliveryMen = [ { name: 'Will Smith', rating: '4.50', delivered: 10 }, { name: 'Marcus Reid', rating: '4.20', delivered: 6 } ];
+    const popularStores = [ { name: 'Book Store', likes: 3 }, { name: 'FootFinds', likes: 1 } ];
+    const topStores = [ { name: 'Bicycle Shop', sales: '$12,000.20' }, { name: 'Book Store', sales: '$10,081.50' }, { name: 'Hanover Electronics', sales: '$9,590.01' }, { name: 'Iiceria & co.', sales: '$408.00' } ];
+    const inhouseRated = [
+      { title: '4 French Door Refrigerator', rating: 5, reviews: 2 },
+      { title: 'Straps Plaid Patchwork Dress', rating: 5, reviews: 1 },
+      { title: 'T900 Smart Watch', rating: 4, reviews: 1 },
+    ];
+    const inhouseTop = [
+      { title: '4 French Door Refrigerator', price: '$5,400.00', sold: 12 },
+      { title: 'Straps Plaid Patchwork Dress', price: '$3,150.00', sold: 7 },
+      { title: 'Bohemiantee Shirt Tops', price: '$3,430.00', sold: 7 },
+      { title: 'T900 Smart Watch', price: '$31,500.00', sold: 7 },
+    ];
+    const vendorRated = [
+      { title: 'Copper Alloy Inlaid Zircon Ring', seller: 'Golden Jewellery', rating: 5, reviews: 3 },
+      { title: 'iPhone 14 Pro Max', seller: 'Hanover Electronics', rating: 5, reviews: 1 },
+      { title: 'Leather Single Shoes', seller: 'FootFinds', rating: 5, reviews: 1 },
+    ];
+    const vendorTop = [
+      { title: 'iPhone 14 Pro Max', seller: 'Hanover Electronics', price: '$4,950.00', sold: 11 },
+      { title: 'Vimly Women Blazer Suit', seller: 'Marchetti', price: '$22,500.00', sold: 5 },
+      { title: 'Copper Alloy Inlaid Zircon Ring', seller: 'Golden Jewellery', price: '$20,000.00', sold: 4 },
+      { title: 'Women Beautiful White Sneakers', seller: 'FootFinds', price: '$1,350.00', sold: 3 },
+    ];
+
+    return {
+      railItems, sideItems, railStyle, sidebarStyle, collapseIcon, profileMenuStyle,
+      toggleSidebar: () => this.setState(s => ({ sidebarOpen: !s.sidebarOpen })),
+      toggleProfile: () => this.setState(s => ({ profileOpen: !s.profileOpen })),
+      closeProfile: () => this.setState({ profileOpen: false }),
+      stateTabs, orderRange: mkRange('orderRange'), earnRange: mkRange('earnRange'),
+      orderChartRef: this.orderChartRef, userChartRef: this.userChartRef, earnChartRef: this.earnChartRef,
+      bizCards, statusCards, walletLeft, walletRight, userLegend,
+      topCustomers, deliveryMen, popularStores, topStores, inhouseRated, inhouseTop, vendorRated, vendorTop,
+      skel4: [0,1,2,3],
+      isDefault: this.state.viewState === 'default', isLoading: this.state.viewState === 'loading',
+      isEmpty: this.state.viewState === 'empty', isError: this.state.viewState === 'error',
+      retry: () => this.setState({ viewState: 'default' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

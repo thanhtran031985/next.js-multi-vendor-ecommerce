@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--container-max:1600px;--container-pad-desktop:40px;--container-pad-tablet:24px;--container-pad-mobile:16px;--cpad:var(--container-pad-desktop);}
+@media(max-width:1024px){:root{--cpad:var(--container-pad-tablet)}}
+@media(max-width:640px){:root{--cpad:var(--container-pad-mobile)}}
+*{box-sizing:border-box}
+html{font-size:17px}
+#covet-root{zoom:1.0625}
+body{margin:0;background:#FAFAFA;font-family:'Instrument Sans',system-ui,sans-serif;color:#3A3745;-webkit-font-smoothing:antialiased}
+a{color:#6544E0;text-decoration:none}
+a:hover{color:#5636C6}
+::selection{background:#EBE6FE;color:#472BA3}
+input::placeholder{color:#A5A2AE}
+@keyframes shimmer{0%{background-position:-450px 0}100%{background-position:450px 0}}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#6544E0">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#6544E0"></rect><circle cx="600" cy="320" r="70" fill="#EBE6FE"></circle><rect x="470" y="430" width="260" height="26" rx="13" fill="#fff" opacity=".9"></rect><text x="600" y="640" font-family="Sora, sans-serif" font-size="72" font-weight="800" fill="#fff" text-anchor="middle">Covet<tspan fill="#BCA9FB">.</tspan></text></svg>
+</template>
+
+<div id="covet-root" style="background:#FAFAFA;min-height:100vh">
+
+  <!-- ===================== TOP UTILITY BAR ===================== -->
+  <div style="background:#17151F;color:#C9C7D1">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:0 var(--cpad);height:40px;display:flex;align-items:center;justify-content:space-between;font:400 12.5px/1 'Instrument Sans',sans-serif">
+      <div style="display:flex;align-items:center;gap:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9B7DF5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><span>Free delivery on orders over <span style="color:#fff;font-weight:600">$50</span></span></div>
+      <div style="display:flex;align-items:center;gap:26px"><a href="Home.dc.html" style="color:#C9C7D1" style-hover="color:#fff">Home</a><a href="Vendors.dc.html" style="color:#C9C7D1" style-hover="color:#fff">All Sellers</a><a href="#" style="color:#C9C7D1" style-hover="color:#fff">Sell on Covet</a><a href="#" style="color:#C9C7D1" style-hover="color:#fff">Help Center</a></div>
+    </div>
+  </div>
+
+  <!-- ===================== HEADER ===================== -->
+  <header style="background:#fff;border-bottom:1px solid #F1F0F4;position:sticky;top:0;z-index:40">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:0 var(--cpad);height:80px;display:flex;align-items:center;gap:28px">
+      <a href="Home.dc.html" style="font:800 27px/1 'Sora',sans-serif;color:#17151F;letter-spacing:-.02em;flex:none">Covet<span style="color:#6544E0">.</span></a>
+      <div style="flex:1;display:flex;align-items:center;height:48px;background:#F5F4F7;border:1px solid #ECECF1;border-radius:12px;transition:border-color .2s,box-shadow .2s" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE">
+        <div style="position:relative;height:100%" onMouseEnter="{{ openHdr }}" onMouseLeave="{{ closeHdr }}">
+          <div style="display:flex;align-items:center;gap:6px;padding:0 16px;height:100%;border-right:1px solid #E6E4EC;color:#3A3745;font:500 13px/1 'Instrument Sans',sans-serif;white-space:nowrap;cursor:pointer">All Categories<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div style="{{ hdrWrapStyle }}">
+            <div style="{{ panelInner }}">
+              <div style="background:#FBFAFF;border-right:1px solid #F1F0F4;padding:12px;max-height:420px;overflow-y:auto"><sc-for list="{{ hdrCats }}" as="c" hint-placeholder-count="8"><a href="Category.dc.html" onMouseEnter="{{ c.open }}" style="{{ c.rowStyle }}"><span>{{ c.name }}</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ c.chevron }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a></sc-for></div>
+              <div style="padding:26px 28px;max-height:420px;overflow-y:auto"><div style="display:flex;flex-wrap:wrap;gap:24px 40px;align-items:flex-start"><sc-for list="{{ hdrGroups }}" as="g" hint-placeholder-count="4"><div style="min-width:130px"><h4 style="font:700 14px/1 'Sora',sans-serif;color:#17151F;margin:0 0 14px">{{ g.title }}</h4><div style="display:flex;flex-direction:column;gap:11px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="5"><a href="Category.dc.html" style="font:400 13px/1 'Instrument Sans',sans-serif;color:#6E6A7C" style-hover="color:#6544E0">{{ it }}</a></sc-for></div></div></sc-for></div></div>
+            </div>
+          </div>
+        </div>
+        <input placeholder="Search for items…" style="flex:1;border:none;outline:none;background:transparent;padding:0 16px;font:400 14px/1 'Instrument Sans',sans-serif;color:#17151F">
+        <button aria-label="Search" style="height:100%;padding:0 20px;border:none;border-radius:0 11px 11px 0;background:#6544E0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s" style-hover="background:#5636C6"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex:none">
+        <button style="position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:10px;color:#3A3745;transition:background .2s" style-hover="background:#F5F4F7"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg><span style="font:500 11px/1 'Instrument Sans',sans-serif;color:#75727F">Wishlist</span></button>
+        <button style="display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:10px;transition:background .2s" style-hover="background:#F5F4F7"><span style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);display:flex;align-items:center;justify-content:center;color:#6544E0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span><span style="text-align:left"><span style="display:block;font:400 11px/1 'Instrument Sans',sans-serif;color:#75727F;margin-bottom:3px">Hello, Test</span><span style="display:flex;align-items:center;gap:4px;font:600 13px/1 'Sora',sans-serif;color:#17151F">Dashboard<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span></span></button>
+        <div style="position:relative;margin-left:6px" onMouseEnter="{{ openCart }}" onMouseLeave="{{ closeCart }}">
+          <button style="display:flex;align-items:center;gap:12px;background:#F5F2FF;border:1px solid #EBE6FE;cursor:pointer;padding:9px 14px 9px 12px;border-radius:12px;transition:background .2s" style-hover="background:#EBE6FE"><div style="position:relative;color:#6544E0"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg><span style="position:absolute;top:-7px;right:-8px;min-width:18px;height:18px;padding:0 4px;background:#6544E0;color:#fff;font:600 10px/18px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">{{ cartCount }}</span></div><div style="text-align:left"><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#75727F;margin-bottom:3px">My cart</div><div style="font:700 14px/1 'Sora',sans-serif;color:#17151F">{{ headerTotal }}</div></div></button>
+          <div style="{{ cartPopupStyle }}">
+           <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 26px 64px -16px rgba(20,18,31,.30);overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#F5F2FF;border-bottom:1px solid #EBE6FE"><div style="display:flex;align-items:center;gap:10px"><span style="width:34px;height:34px;border-radius:10px;background:#6544E0;display:flex;align-items:center;justify-content:center;color:#fff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span><span style="font:700 16px/1 'Sora',sans-serif;color:#17151F">Shopping Cart</span></div><button onClick="{{ closeCart }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font:500 13px/1 'Instrument Sans',sans-serif;color:#75727F" style-hover="color:#17151F"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Close</button></div>
+            <div style="padding:8px 20px"><div style="font:600 10px/1 'Instrument Sans',sans-serif;color:#6544E0;text-transform:uppercase;letter-spacing:.07em;padding:14px 0 6px">Sold by Hanover Electronics</div><sc-for list="{{ cartRows }}" as="row" hint-placeholder-count="1"><div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid #F1F0F4"><div style="position:relative;width:66px;height:66px;border-radius:12px;background:#F5F4F7;flex:none;overflow:hidden"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 8px,transparent 8px 16px)"></div></div><div style="flex:1;min-width:0"><div style="font:600 9.5px/1 'Instrument Sans',sans-serif;color:#6544E0;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">{{ row.seller }}</div><div style="font:500 13px/1.35 'Instrument Sans',sans-serif;color:#17151F">{{ row.title }}</div><div style="font:700 14px/1 'Sora',sans-serif;color:#17151F;margin-top:6px">{{ row.lineText }}</div></div></div></sc-for></div>
+            <div style="padding:16px 20px 20px"><div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px"><span style="font:500 14px/1 'Instrument Sans',sans-serif;color:#75727F">Subtotal</span><span style="font:800 22px/1 'Sora',sans-serif;color:#17151F">{{ subtotalText }}</span></div><a href="Checkout.dc.html" style="display:flex;align-items:center;justify-content:center;width:100%;height:48px;border-radius:12px;background:#6544E0;color:#fff;font:700 14px/1 'Sora',sans-serif;transition:background .2s" style-hover="background:#5636C6">Proceed to Checkout</a></div>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== MEGA NAV ===================== -->
+  <nav style="background:#fff;border-bottom:1px solid #F1F0F4">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:0 var(--cpad);height:54px;display:flex;align-items:center;gap:8px">
+      <div style="position:relative;margin-right:14px" onMouseEnter="{{ openNav }}" onMouseLeave="{{ closeNav }}">
+        <button style="display:flex;align-items:center;gap:10px;height:38px;padding:0 18px;background:#17151F;color:#fff;border:none;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>All Categories<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <div style="{{ navWrapStyle }}">
+          <div style="{{ panelInner }}">
+            <div style="background:#FBFAFF;border-right:1px solid #F1F0F4;padding:12px;max-height:420px;overflow-y:auto"><sc-for list="{{ hdrCats }}" as="c" hint-placeholder-count="8"><a href="Category.dc.html" onMouseEnter="{{ c.open }}" style="{{ c.rowStyle }}"><span>{{ c.name }}</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ c.chevron }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a></sc-for></div>
+            <div style="padding:26px 28px;max-height:420px;overflow-y:auto"><div style="display:flex;flex-wrap:wrap;gap:24px 40px;align-items:flex-start"><sc-for list="{{ hdrGroups }}" as="g" hint-placeholder-count="4"><div style="min-width:130px"><h4 style="font:700 14px/1 'Sora',sans-serif;color:#17151F;margin:0 0 14px">{{ g.title }}</h4><div style="display:flex;flex-direction:column;gap:11px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="5"><a href="Category.dc.html" style="font:400 13px/1 'Instrument Sans',sans-serif;color:#6E6A7C" style-hover="color:#6544E0">{{ it }}</a></sc-for></div></div></sc-for></div></div>
+          </div>
+        </div>
+      </div>
+      <a href="Home.dc.html" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Home</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Brands</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Offers</a>
+      <a href="Vendors.dc.html" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">All Sellers</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Gift Cards</a>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font:500 13px/1 'Instrument Sans',sans-serif;color:#2E9E6B"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.91 8.84 8.56 2.23a1.93 1.93 0 0 0-1.81 0L3.1 4.13a2.12 2.12 0 0 0-.05 3.69l12.22 6.93a2 2 0 0 0 1.94 0L21 12.51a2.12 2.12 0 0 0-.09-3.67Z"></path><path d="m3.09 8.84 8.66 4.92v9.16"></path></svg>Sell on Covet — open a store free</div>
+    </div>
+  </nav>
+
+  <!-- ===================== BREADCRUMB ===================== -->
+  <div style="max-width:var(--container-max);margin:0 auto;padding:22px var(--cpad) 0;display:flex;align-items:center;gap:8px;font:400 13px/1 'Instrument Sans',sans-serif;color:#A5A2AE">
+    <a href="Home.dc.html" style="color:#75727F">Home</a><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg><span style="color:#17151F;font-weight:600">My Dashboard</span>
+  </div>
+
+  <!-- ===================== MAIN ===================== -->
+  <div style="max-width:var(--container-max);margin:0 auto;padding:20px var(--cpad) 0;display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start">
+
+    <!-- ACCOUNT SIDEBAR -->
+    <aside style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:14px;position:sticky;top:96px">
+      <div style="display:flex;align-items:center;gap:13px;padding:12px 12px 16px;margin-bottom:8px;border-bottom:1px solid #F1F0F4">
+        <span style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);display:flex;align-items:center;justify-content:center;color:#6544E0;flex:none"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+        <div style="min-width:0"><div style="font:700 15px/1.1 'Sora',sans-serif;color:#17151F">Test Khan</div><div style="font:400 12px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">test@gmail.com</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="11">
+          <a href="#" onClick="{{ n.pick }}" style="{{ n.style }}"><span style="{{ n.iconWrap }}">{{ n.svg }}</span><span style="flex:1">{{ n.label }}</span><sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}"><span style="min-width:22px;height:22px;padding:0 7px;display:flex;align-items:center;justify-content:center;background:#EBE6FE;color:#472BA3;border-radius:999px;font:600 11px/1 'Instrument Sans',sans-serif">{{ n.badge }}</span></sc-if></a>
+        </sc-for>
+      </div>
+      <div style="margin-top:10px;padding:14px 12px;border-top:1px solid #F1F0F4"><a href="#" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:11px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#E5484D;transition:background .15s" style-hover="background:#FDECEC"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>Sign out</a></div>
+    </aside>
+
+    <!-- CONTENT CARD -->
+    <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:32px 36px 40px;min-height:640px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:14px">
+        <div><h1 style="font:700 22px/1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">My Order <span style="color:#A5A2AE;font-weight:600">({{ orderCount }})</span></h1><div style="height:3px;width:44px;background:#6544E0;border-radius:2px;margin-top:12px"></div></div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:1px solid #ECECF1;border-radius:11px;background:#fff;font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="7" y1="12" x2="17" y2="12"></line><line x1="10" y1="18" x2="14" y2="18"></line></svg>Sort by latest<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div style="display:flex;gap:4px;background:#F1F0F4;border-radius:11px;padding:4px"><sc-for list="{{ stateTabs }}" as="s" hint-placeholder-count="4"><button onClick="{{ s.pick }}" style="{{ s.style }}">{{ s.label }}</button></sc-for></div>
+        </div>
+      </div>
+
+      <sc-if value="{{ isDefault }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <sc-for list="{{ orders }}" as="o" hint-placeholder-count="1">
+            <div style="position:relative;border:1px solid #F1F0F4;border-radius:16px;padding:18px 20px;background:#fff;transition:box-shadow .2s" style-hover="box-shadow:0 12px 30px -16px rgba(20,18,31,.20)">
+              <div style="display:flex;align-items:flex-start;gap:16px">
+                <div style="width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);display:flex;align-items:center;justify-content:center;color:#6544E0;flex:none"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg></div>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><a href="userorderdetails.dc.html" style="font:700 16px/1 'Sora',sans-serif;color:#17151F">Order #{{ o.id }}</a><span style="{{ o.badgeStyle }}">{{ o.status }}</span></div>
+                  <div style="font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-top:10px"><span style="color:#6544E0;font-weight:700">{{ o.products }}</span> Products</div>
+                  <div style="font:400 12.5px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-top:8px">{{ o.date }}</div>
+                  <div style="display:flex;align-items:center;gap:6px;font:400 12px/1 'Instrument Sans',sans-serif;color:#75727F;margin-top:12px;padding-top:12px;border-top:1px solid #F5F4F7"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9B7DF5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"></path><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"></path><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"></path></svg>Sold by <span style="color:#17151F;font-weight:600">{{ o.sellers }}</span></div>
+                </div>
+                <div style="text-align:right;flex:none"><div style="font:800 18px/1 'Sora',sans-serif;color:#17151F">{{ o.total }}</div><button onClick="{{ toggleMenu }}" aria-label="Order actions" style="width:34px;height:34px;margin-top:12px;border:none;background:#F5F4F7;border-radius:9px;color:#75727F;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s" style-hover="background:#EBE6FE;color:#472BA3"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg></button></div>
+              </div>
+              <div style="{{ menuStyle }}">
+                <a href="#" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 16px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:10px" style-hover="background:#F5F2FF;color:#6544E0">Download Invoice<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></a>
+                <a href="userorderdetails.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 16px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:10px" style-hover="background:#F5F2FF;color:#6544E0">View Order Details<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6544E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:16px"><sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="3"><div style="display:flex;gap:16px;border:1px solid #F1F0F4;border-radius:16px;padding:18px 20px"><div style="width:60px;height:60px;border-radius:14px;flex:none;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="flex:1;display:flex;flex-direction:column;gap:10px"><div style="height:14px;width:32%;border-radius:6px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="height:11px;width:20%;border-radius:5px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="height:11px;width:44%;border-radius:5px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div></div></div></sc-for></div>
+      </sc-if>
+
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:64px 32px;display:flex;flex-direction:column;align-items:center;text-align:center"><div style="width:78px;height:78px;border-radius:22px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#9B7DF5;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg></div><div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">No orders yet</div><div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 24px;max-width:340px">When you place an order across our sellers, it'll show up here so you can track it.</div><a href="Home.dc.html" style="display:inline-flex;align-items:center;height:46px;padding:0 24px;border-radius:12px;background:#6544E0;color:#fff;font:600 13.5px/1 'Instrument Sans',sans-serif;transition:background .2s" style-hover="background:#5636C6">Start shopping</a></div>
+      </sc-if>
+
+      <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:64px 32px;display:flex;flex-direction:column;align-items:center;text-align:center"><div style="width:78px;height:78px;border-radius:22px;background:#FDECEC;display:flex;align-items:center;justify-content:center;color:#E5484D;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div><div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">Couldn't load your orders</div><div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 24px;max-width:340px">Something went wrong while fetching your orders. Please try again.</div><button onClick="{{ retry }}" style="display:flex;align-items:center;gap:8px;height:46px;padding:0 24px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>Try again</button></div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- ===================== HELP CARDS ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:56px var(--cpad) 0">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+      <sc-for list="{{ helpCards }}" as="h" hint-placeholder-count="4"><a href="#" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:32px 24px;background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);transition:box-shadow .25s,transform .25s" style-hover="box-shadow:0 16px 34px -14px rgba(20,18,31,.18);transform:translateY(-3px)"><span style="width:56px;height:56px;border-radius:16px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#6544E0">{{ h.svg }}</span><div><div style="font:700 16px/1.1 'Sora',sans-serif;color:#17151F">{{ h.title }}</div><div style="font:400 13px/1.4 'Instrument Sans',sans-serif;color:#75727F;margin-top:7px">{{ h.sub }}</div></div></a></sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="background:#17151F;color:#B3B0BD;margin-top:56px">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:60px var(--cpad) 0;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.4fr;gap:40px">
+      <div><div style="font:800 26px/1 'Sora',sans-serif;color:#fff;letter-spacing:-.02em;margin-bottom:16px">Covet<span style="color:#9B7DF5">.</span></div><p style="font:400 13.5px/1.6 'Instrument Sans',sans-serif;color:#8B8895;margin:0 0 20px;max-width:280px">A curated multi-vendor marketplace bringing independent sellers and beloved brands under one trusted checkout.</p><div style="display:flex;gap:10px"><a href="#" aria-label="Facebook" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a><a href="#" aria-label="Instagram" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg></a><a href="#" aria-label="X" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5-6.6L5.4 22H2.3l8-9.2L1.5 2h6.9l4.5 6z"></path></svg></a></div></div>
+      <div><div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:18px">Quick Links</div><div style="display:flex;flex-direction:column;gap:12px;font:400 13.5px/1 'Instrument Sans',sans-serif"><a href="#" style="color:#8B8895" style-hover="color:#fff">Profile Info</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Wish List</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Featured Products</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Best Selling</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Track Order</a></div></div>
+      <div><div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:18px">Other</div><div style="display:flex;flex-direction:column;gap:12px;font:400 13.5px/1 'Instrument Sans',sans-serif"><a href="#" style="color:#8B8895" style-hover="color:#fff">About Us</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Terms &amp; Conditions</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Privacy Policy</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Refund Policy</a><a href="#" style="color:#8B8895" style-hover="color:#fff">Return Policy</a></div></div>
+      <div><div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:18px">Newsletter</div><p style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#8B8895;margin:0 0 14px">Subscribe to get the latest updates and members-only deals.</p><div style="display:flex;height:46px;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)"><input placeholder="Your email address" style="flex:1;border:none;background:transparent;outline:none;padding:0 14px;color:#fff;font:400 13.5px/1 'Instrument Sans',sans-serif"><button style="border:none;background:#6544E0;color:#fff;padding:0 18px;font:600 13px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Subscribe</button></div></div>
+    </div>
+    <div style="max-width:var(--container-max);margin:44px auto 0;padding:28px var(--cpad) 34px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px"><div style="display:flex;align-items:center;gap:8px;font:400 13px/1 'Instrument Sans',sans-serif;color:#8B8895"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9B7DF5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Kingston, New York 12401, United States</div><div style="font:400 12.5px/1 'Instrument Sans',sans-serif;color:#6C6976">© 2026 Covet Marketplace. All rights reserved.</div></div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1200}}">
+class Component extends DCLogic {
+  state = { viewState: 'default', active: 'orders', cartOpen: false, hdrOpen: false, navOpen: false, hdrCat: 0, menuOpen: false };
+
+  renderVals() {
+    const money = n => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const hdrMenu = [
+      { name: "Women's Fashion", groups: [ { title: 'Clothing', items: ['Dresses', 'Tops & Blouses', 'Knitwear', 'Jeans', 'Skirts'] }, { title: 'Footwear', items: ['Heels', 'Flats', 'Sneakers', 'Boots'] }, { title: 'Bags', items: ['Totes', 'Crossbody', 'Clutches'] }, { title: 'Jewelry', items: ['Necklaces', 'Earrings', 'Rings'] } ]},
+      { name: "Men's Fashion", groups: [ { title: 'Watches', items: ['Sports Watches', 'Business Watches', 'Smart Watches'] }, { title: 'Clothing', items: ['Shirts', 'T-Shirts', 'Hoodies', 'Jeans', 'Pants'] }, { title: 'Footwear', items: ['Shoes', 'Boots', 'Sneakers', 'Loafers'] }, { title: 'Bags & Wallets', items: ['Backpacks', 'Business Bags', 'Wallets'] } ]},
+      { name: 'Phones & Gadgets', groups: [ { title: 'Smartphones', items: ['iPhone', 'Samsung Galaxy', 'Google Pixel'] }, { title: 'Wearables', items: ['Smartwatches', 'Fitness Bands', 'Earbuds'] }, { title: 'Accessories', items: ['Cases & Covers', 'Chargers', 'Power Banks'] } ]},
+      { name: 'Electronics', groups: [ { title: 'Computers', items: ['Laptops', 'Desktops', 'Monitors'] }, { title: 'Audio', items: ['Headphones', 'Speakers', 'Soundbars'] }, { title: 'TV & Home', items: ['Smart TVs', 'Streaming Devices', 'Projectors'] }, { title: 'Storage', items: ['SSDs', 'Hard Drives', 'USB Hubs'] } ]},
+      { name: 'Health & Beauty', groups: [ { title: 'Skincare', items: ['Moisturizers', 'Serums', 'Cleansers'] }, { title: 'Makeup', items: ['Face', 'Eyes', 'Lips'] }, { title: 'Hair Care', items: ['Shampoo', 'Treatments'] }, { title: 'Wellness', items: ['Vitamins', 'Fragrance'] } ]},
+      { name: 'Home & Kitchen', groups: [ { title: 'Kitchen', items: ['Cookware', 'Small Appliances', 'Bakeware'] }, { title: 'Dining', items: ['Dinnerware', 'Glassware'] }, { title: 'Bedding', items: ['Sheet Sets', 'Duvets', 'Pillows'] }, { title: 'Decor', items: ['Lighting', 'Rugs', 'Wall Art'] } ]},
+      { name: "Kid's Fashion", groups: [ { title: 'Clothing', items: ['Tops', 'Dresses', 'Outerwear'] }, { title: 'Footwear', items: ['Sneakers', 'Sandals', 'Boots'] }, { title: 'Baby', items: ['Bodysuits', 'Rompers'] } ]},
+      { name: 'Sports & Outdoor', groups: [ { title: 'Fitness', items: ['Weights', 'Yoga', 'Cardio'] }, { title: 'Outdoor', items: ['Camping', 'Hiking', 'Cycling'] }, { title: 'Team Sports', items: ['Football', 'Basketball'] } ]},
+    ];
+    const hRowI = "display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer;transition:background .15s,color .15s";
+    const hRowA = "display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;background:#F5F2FF;cursor:pointer;transition:background .15s,color .15s";
+    const hcat = this.state.hdrCat;
+    const hdrCats = hdrMenu.map((c, i) => ({ name: c.name, rowStyle: i === hcat ? hRowA : hRowI, chevron: i === hcat ? '#6544E0' : '#C6C4CE', open: () => this.setState({ hdrCat: i }) }));
+    const hdrGroups = hdrMenu[hcat] ? hdrMenu[hcat].groups : [];
+    const menuWrap = (open) => "position:absolute;top:100%;left:0;padding-top:10px;z-index:60;transition:opacity .16s ease,transform .16s ease;" + (open ? "opacity:1;visibility:visible;transform:translateY(0)" : "opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none");
+    const panelInner = "position:relative;width:660px;background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 26px 64px -16px rgba(20,18,31,.28);overflow:hidden;display:grid;grid-template-columns:236px 1fr";
+
+    const cart = [ { title: 'AirPods Pro 2 USB-C', seller: 'Hanover Electronics', price: 249, qty: 1 } ];
+    const subtotal = cart.reduce((a, c) => a + c.price * c.qty, 0);
+    const cartRows = cart.map(c => ({ title: c.title, seller: c.seller, lineText: money(c.price * c.qty) + '  \u00b7  x' + c.qty }));
+    const cartPopupStyle = "position:absolute;top:100%;right:0;width:388px;padding-top:14px;z-index:60;transition:opacity .18s ease,transform .18s ease;" + (this.state.cartOpen ? "opacity:1;visibility:visible;transform:translateY(0)" : "opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none");
+
+    const navDefs = [
+      { k: 'profile', label: 'Profile Info', icon: 'user' },
+      { k: 'orders', label: 'My Orders', icon: 'box', badge: '8' },
+      { k: 'restock', label: 'Restock Requests', icon: 'refresh' },
+      { k: 'wishlist', label: 'Wish List', icon: 'heart', badge: '5' },
+      { k: 'wallet', label: 'My Wallet', icon: 'wallet' },
+      { k: 'loyalty', label: 'My Loyalty Point', icon: 'award' },
+      { k: 'inbox', label: 'Inbox', icon: 'mail', badge: '3' },
+      { k: 'address', label: 'My Address', icon: 'pin' },
+      { k: 'support', label: 'Support Ticket', icon: 'life' },
+      { k: 'refer', label: 'Refer & Earn', icon: 'share' },
+      { k: 'coupons', label: 'Coupons', icon: 'ticket' },
+      { k: 'track', label: 'Track Order', icon: 'truck' },
+    ];
+    const rowI = "display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:11px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer;transition:background .15s,color .15s";
+    const rowA = "display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:11px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;background:#F5F2FF;cursor:pointer;transition:background .15s,color .15s";
+    const iw = (active) => "width:30px;height:30px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;" + (active ? "background:#6544E0;color:#fff" : "background:#F3F2F6;color:#6E6A7C");
+    const navItems = navDefs.map(n => { const active = this.state.active === n.k; return { label: n.label, badge: n.badge || '', style: active ? rowA : rowI, iconWrap: iw(active), svg: this.iconFor(n.icon), pick: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ active: n.k }); } }; });
+
+    const tabI = "padding:0 14px;height:30px;border-radius:8px;border:none;background:transparent;color:#75727F;font:500 12px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:all .15s";
+    const tabA = "padding:0 14px;height:30px;border-radius:8px;border:none;background:#fff;color:#17151F;font:600 12px/1 'Instrument Sans',sans-serif;cursor:pointer;box-shadow:0 1px 3px rgba(20,18,31,.12)";
+    const stateTabs = [ { k: 'default', l: 'Default' }, { k: 'loading', l: 'Loading' }, { k: 'empty', l: 'Empty' }, { k: 'error', l: 'Error' } ].map(t => ({ label: t.l, style: this.state.viewState === t.k ? tabA : tabI, pick: () => this.setState({ viewState: t.k }) }));
+
+    const helpCards = [
+      { title: 'About us', sub: 'Know more about our company', icon: 'building' },
+      { title: 'Contact Us', sub: 'We are here to help', icon: 'chat' },
+      { title: 'FAQ', sub: 'Get all your answers', icon: 'help' },
+      { title: 'Blog', sub: 'Check our latest posts', icon: 'blog' },
+    ].map(h => ({ ...h, svg: this.iconFor(h.icon) }));
+
+    return {
+      cartCount: cart.reduce((a, c) => a + c.qty, 0), headerTotal: money(subtotal),
+      hdrCats, hdrGroups, panelInner, hdrWrapStyle: menuWrap(this.state.hdrOpen), navWrapStyle: menuWrap(this.state.navOpen),
+      openHdr: () => this.setState({ hdrOpen: true }), closeHdr: () => this.setState({ hdrOpen: false }),
+      openNav: () => this.setState({ navOpen: true }), closeNav: () => this.setState({ navOpen: false }),
+      cartRows, cartPopupStyle, subtotalText: money(subtotal),
+      openCart: () => this.setState({ cartOpen: true }), closeCart: () => this.setState({ cartOpen: false }),
+      navItems, stateTabs, helpCards, skeletons: [0,1,2],
+      orderCount: 1,
+      orders: [ { id: '100197', status: 'Pending', products: 14, date: '09 Jul, 2026  11:39 PM', sellers: 'Hanover Electronics, Home Atelier +1', total: money(976.80), badgeStyle: "display:inline-flex;align-items:center;padding:5px 11px;border-radius:999px;font:600 11px/1 'Instrument Sans',sans-serif;background:#FBEFDD;color:#B4741C" } ],
+      menuStyle: "position:absolute;top:58px;right:20px;z-index:20;width:236px;background:#fff;border:1px solid #F1F0F4;border-radius:14px;box-shadow:0 20px 48px -14px rgba(20,18,31,.28);padding:6px;transition:opacity .16s ease,transform .16s ease;" + (this.state.menuOpen ? "opacity:1;visibility:visible;transform:translateY(0)" : "opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none"),
+      toggleMenu: () => this.setState(st => ({ menuOpen: !st.menuOpen })),
+      isDefault: this.state.viewState === 'default', isLoading: this.state.viewState === 'loading',
+      isEmpty: this.state.viewState === 'empty', isError: this.state.viewState === 'error',
+      reset: () => this.setState({ viewState: 'default' }), retry: () => this.setState({ viewState: 'default' }),
+    };
+  }
+
+  iconFor(name) {
+    const p = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' };
+    const paths = {
+      user: [['path', { d: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2' }], ['circle', { cx: 12, cy: 7, r: 4 }]],
+      box: [['path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }], ['polyline', { points: '3.27 6.96 12 12.01 20.73 6.96' }], ['line', { x1: 12, y1: 22.08, x2: 12, y2: 12 }]],
+      refresh: [['polyline', { points: '23 4 23 10 17 10' }], ['path', { d: 'M20.49 15a9 9 0 1 1-2.12-9.36L23 10' }]],
+      heart: [['path', { d: 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z' }]],
+      wallet: [['path', { d: 'M21 12V7H5a2 2 0 0 1 0-4h14v4' }], ['path', { d: 'M3 5v14a2 2 0 0 0 2 2h16v-5' }], ['path', { d: 'M18 12a2 2 0 0 0 0 4h4v-4z' }]],
+      award: [['circle', { cx: 12, cy: 8, r: 6 }], ['path', { d: 'M15.477 12.89 17 22l-5-3-5 3 1.523-9.11' }]],
+      mail: [['rect', { x: 2, y: 4, width: 20, height: 16, rx: 2 }], ['path', { d: 'm22 7-10 5L2 7' }]],
+      pin: [['path', { d: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z' }], ['circle', { cx: 12, cy: 10, r: 3 }]],
+      life: [['circle', { cx: 12, cy: 12, r: 10 }], ['circle', { cx: 12, cy: 12, r: 4 }], ['line', { x1: 4.93, y1: 4.93, x2: 9.17, y2: 9.17 }], ['line', { x1: 14.83, y1: 14.83, x2: 19.07, y2: 19.07 }], ['line', { x1: 14.83, y1: 9.17, x2: 19.07, y2: 4.93 }], ['line', { x1: 4.93, y1: 19.07, x2: 9.17, y2: 14.83 }]],
+      share: [['circle', { cx: 18, cy: 5, r: 3 }], ['circle', { cx: 6, cy: 12, r: 3 }], ['circle', { cx: 18, cy: 19, r: 3 }], ['line', { x1: 8.59, y1: 13.51, x2: 15.42, y2: 17.49 }], ['line', { x1: 15.41, y1: 6.51, x2: 8.59, y2: 10.49 }]],
+      ticket: [['path', { d: 'M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z' }], ['line', { x1: 13, y1: 5, x2: 13, y2: 19 }]],
+      truck: [['rect', { x: 1, y: 3, width: 15, height: 13 }], ['path', { d: 'M16 8h4l3 3v5h-7V8z' }], ['circle', { cx: 5.5, cy: 18.5, r: 2.5 }], ['circle', { cx: 18.5, cy: 18.5, r: 2.5 }]],
+      building: [['path', { d: 'M3 21h18' }], ['path', { d: 'M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16' }], ['path', { d: 'M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1' }]],
+      chat: [['path', { d: 'M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z' }]],
+      help: [['circle', { cx: 12, cy: 12, r: 10 }], ['path', { d: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' }], ['line', { x1: 12, y1: 17, x2: 12.01, y2: 17 }]],
+      blog: [['path', { d: 'M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2' }], ['path', { d: 'M18 14h-8M15 18h-5M10 6h8v4h-8V6z' }]],
+    };
+    const sz = ['building','chat','help','blog'].includes(name) ? 22 : 18;
+    return React.createElement('svg', { ...p, width: sz, height: sz }, (paths[name] || []).map((seg, i) => React.createElement(seg[0], { key: i, ...seg[1] })));
+  }
+}
+</script>
+</body>
+</html>

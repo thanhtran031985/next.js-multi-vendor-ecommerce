@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#F4F3F7;font-family:'Instrument Sans',system-ui,sans-serif;color:#3A3745;-webkit-font-smoothing:antialiased}
+a{color:#6544E0;text-decoration:none}
+a:hover{color:#5636C6}
+::selection{background:#EBE6FE;color:#472BA3}
+input::placeholder{color:#A5A2AE}
+@keyframes shimmer{0%{background-position:-450px 0}100%{background-position:450px 0}}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#DCDAE3;border-radius:6px}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#6544E0">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#6544E0"></rect><rect x="330" y="300" width="150" height="90" rx="14" fill="#fff" opacity=".9"></rect><rect x="500" y="300" width="150" height="90" rx="14" fill="#fff" opacity=".7"></rect><rect x="670" y="300" width="150" height="90" rx="14" fill="#fff" opacity=".55"></rect><text x="600" y="560" font-family="Sora, sans-serif" font-size="70" font-weight="800" fill="#fff" text-anchor="middle">Covet<tspan fill="#BCA9FB">.</tspan></text></svg>
+</template>
+
+<div style="display:flex;min-height:100vh;background:#F4F3F7">
+
+  <!-- ===================== ICON RAIL ===================== -->
+  <div style="{{ railStyle }}">
+    <div style="width:38px;height:38px;border-radius:11px;background:#6544E0;display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:14px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
+    <sc-for list="{{ railItems }}" as="r" hint-placeholder-count="7"><button aria-label="{{ r.label }}" style="{{ r.style }}">{{ r.svg }}</button></sc-for>
+  </div>
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside style="{{ sidebarStyle }}">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 8px 20px;border-bottom:1px solid #F1F0F4;margin-bottom:16px"><span style="width:34px;height:34px;border-radius:10px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></span><span style="font:700 16px/1 'Sora',sans-serif;color:#17151F">Home</span></div>
+    <div style="font:600 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-transform:uppercase;letter-spacing:.08em;padding:0 8px;margin-bottom:10px">Overview</div>
+    <div style="display:flex;flex-direction:column;gap:3px">
+      <sc-for list="{{ sideItems }}" as="n" hint-placeholder-count="2"><a href="#" style="{{ n.style }}"><span style="{{ n.iconWrap }}">{{ n.svg }}</span><span>{{ n.label }}</span></a></sc-for>
+    </div>
+    <div style="margin-top:22px;background:linear-gradient(135deg,#6544E0,#472BA3);border-radius:14px;padding:16px;color:#fff">
+      <div style="display:flex;align-items:center;gap:10px"><span style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><div><div style="font:600 13px/1 'Sora',sans-serif">Setup Guide</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.75);margin-top:5px">20% Complete</div></div></div>
+      <div style="height:6px;border-radius:999px;background:rgba(255,255,255,.2);margin-top:12px;overflow:hidden"><div style="width:20%;height:100%;background:#fff;border-radius:999px"></div></div>
+    </div>
+  </aside>
+
+  <!-- ===================== MAIN COLUMN ===================== -->
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+
+    <!-- topbar -->
+    <div style="height:64px;background:#fff;border-bottom:1px solid #ECECF1;display:flex;align-items:center;gap:16px;padding:0 26px;position:sticky;top:0;z-index:30">
+      <button onClick="{{ toggleSidebar }}" aria-label="Toggle sidebar" style="width:30px;height:30px;border:1px solid #ECECF1;border-radius:8px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7">{{ collapseIcon }}</button>
+      <div style="display:flex;align-items:center;gap:8px;font:500 13px/1 'Instrument Sans',sans-serif"><a href="#" style="color:#6544E0">People</a><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg><a href="#" style="color:#75727F">Inbox</a><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg><span style="color:#75727F">Profile Settings</span></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+        <button aria-label="Visit store" style="width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button>
+        <button aria-label="Notifications" style="position:relative;width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span style="position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;background:#E5484D;color:#fff;font:600 10px/17px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">1</span></button>
+        <button aria-label="Messages" style="position:relative;width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span style="position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;background:#6544E0;color:#fff;font:600 10px/17px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">3</span></button>
+        <button aria-label="Fullscreen" style="width:38px;height:38px;border:1px solid #ECECF1;border-radius:10px;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F4F7;color:#6544E0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></button>
+        <div style="position:relative;margin-left:6px" onMouseLeave="{{ closeProfile }}">
+          <div onClick="{{ toggleProfile }}" style="display:flex;align-items:center;gap:10px;height:44px;padding:0 8px 0 6px;border:1px solid #ECECF1;border-radius:999px;background:#fff;cursor:pointer" style-hover="background:#F5F4F7"><span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);color:#6544E0;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span><div style="text-align:left"><div style="font:600 13px/1 'Sora',sans-serif;color:#17151F">James</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-top:4px">j****@g**il.com</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div style="{{ profileMenuStyle }}">
+           <div style="background:#fff;border:1px solid #F1F0F4;border-radius:14px;box-shadow:0 20px 48px -14px rgba(20,18,31,.28);padding:6px">
+            <div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:1px solid #F1F0F4;margin-bottom:6px"><span style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#EBE6FE,#F5F2FF);color:#6544E0;display:flex;align-items:center;justify-content:center;flex:none"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span><div><div style="font:700 13.5px/1 'Sora',sans-serif;color:#17151F">James Dawson</div><div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-top:5px">j****@g**il.com</div></div></div>
+            <a href="#" style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745" style-hover="background:#F5F2FF;color:#6544E0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Profile Setting</a>
+            <a href="#" style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745" style-hover="background:#F5F2FF;color:#6544E0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>Change Password</a>
+            <a href="login.dc.html" style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#E5484D;margin-top:2px;border-top:1px solid #F1F0F4;padding-top:12px" style-hover="background:#FDECEC"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>Logout</a>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- body -->
+    <div style="padding:26px;display:flex;flex-direction:column;gap:22px;max-width:1240px;width:100%;margin:0 auto">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:11px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span><h1 style="font:800 26px/1.1 'Sora',sans-serif;color:#17151F;letter-spacing:-.01em;margin:0">Profile Information</h1></div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font:500 12px/1 'Instrument Sans',sans-serif;color:#A5A2AE">Preview state</span>
+          <div style="display:flex;gap:4px;background:#EDECF1;border-radius:11px;padding:4px"><sc-for list="{{ stateTabs }}" as="s" hint-placeholder-count="4"><button onClick="{{ s.pick }}" style="{{ s.style }}">{{ s.label }}</button></sc-for></div>
+          <a href="vendordashboard.dc.html" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:11px;background:#6544E0;color:#fff;font:700 13px/1 'Sora',sans-serif;transition:background .2s" style-hover="background:#5636C6"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>Dashboard</a>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <a href="VendorProfile.dc.html" style="display:flex;align-items:center;gap:9px;height:46px;padding:0 22px;border-radius:12px;background:#6544E0;color:#fff;font:600 14px/1 'Instrument Sans',sans-serif;transition:background .2s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="14" height="10" rx="2"></rect><circle cx="9" cy="8" r="1.6"></circle><path d="M6 14c0-1.5 1.3-2.5 3-2.5s3 1 3 2.5"></path><line x1="19" y1="9" x2="22" y2="9"></line><line x1="19" y1="12" x2="22" y2="12"></line></svg>Basic Information</a>
+        <a href="VendorChangePassword.dc.html" style="display:flex;align-items:center;gap:9px;height:46px;padding:0 22px;border-radius:12px;background:transparent;color:#75727F;font:500 14px/1 'Instrument Sans',sans-serif;transition:all .2s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>Password</a>
+      </div>
+
+      <sc-if value="{{ isDefault }}" hint-placeholder-val="{{ true }}">
+        <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);overflow:hidden">
+          <div style="position:relative;height:200px;background:linear-gradient(120deg,#EBE6FE 0%,#F5F2FF 50%,#FBFAFF 100%)">
+            <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(115deg,rgba(101,68,224,0.05) 0 1px,transparent 1px 26px)"></div>
+            <div style="position:absolute;left:50%;bottom:-52px;transform:translateX(-50%)"><div style="position:relative;width:120px;height:120px;border-radius:50%;background:#fff;border:4px solid #fff;box-shadow:0 10px 30px -10px rgba(20,18,31,.3);display:flex;align-items:center;justify-content:center;color:#6544E0"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><button aria-label="Change photo" style="position:absolute;bottom:2px;right:2px;width:34px;height:34px;border-radius:50%;border:3px solid #fff;background:#6544E0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s" style-hover="background:#5636C6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg></button></div></div>
+          </div>
+          <div style="padding:72px 30px 30px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px"><span style="width:30px;height:30px;border-radius:9px;background:#F5F2FF;color:#6544E0;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span><span style="font:700 17px/1 'Sora',sans-serif;color:#17151F">Basic Information</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 24px">
+              <div><label style="display:flex;align-items:center;gap:7px;font:600 13px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:10px">First Name <span style="color:#E5484D">*</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></label><input value="James" style="width:100%;height:50px;border:1px solid #ECECF1;border-radius:12px;padding:0 15px;font:400 14px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+              <div><label style="display:flex;align-items:center;gap:7px;font:600 13px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:10px">Last Name <span style="color:#E5484D">*</span></label><input value="Dawson" style="width:100%;height:50px;border:1px solid #ECECF1;border-radius:12px;padding:0 15px;font:400 14px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+              <div><label style="display:flex;align-items:center;gap:7px;font:600 13px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:10px">Phone Number</label><div style="display:flex;align-items:center;height:50px;border:1px solid #ECECF1;border-radius:12px;overflow:hidden;background:#FBFAFC" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"><span style="display:flex;align-items:center;gap:6px;padding:0 12px;height:100%;border-right:1px solid #ECECF1;font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745;white-space:nowrap">+1<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span><input value="555 018 2245" style="flex:1;border:none;outline:none;background:transparent;padding:0 14px;font:400 14px/1 'Instrument Sans',sans-serif;color:#17151F"></div></div>
+              <div><label style="display:flex;align-items:center;gap:7px;font:600 13px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:10px">Email <span style="color:#E5484D">*</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6C4CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></label><input type="email" value="j****@g**il.com" style="width:100%;height:50px;border:1px solid #ECECF1;border-radius:12px;padding:0 15px;font:400 14px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"></div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:28px"><button style="height:48px;padding:0 30px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:700 14px/1 'Sora',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Save Changes</button></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);padding:28px 30px"><div style="height:160px;border-radius:14px;margin-bottom:24px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 24px"><div style="height:14px;width:40%;border-radius:6px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="height:50px;border-radius:12px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="height:14px;width:40%;border-radius:6px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="height:50px;border-radius:12px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="height:14px;width:40%;border-radius:6px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="height:50px;border-radius:12px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="height:14px;width:40%;border-radius:6px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div><div style="height:50px;border-radius:12px;background:linear-gradient(90deg,#EDECF1 25%,#F7F6F9 50%,#EDECF1 75%);background-size:400px 100%;animation:shimmer 1.4s infinite linear"></div></div></div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px dashed #DAD8E0;border-radius:18px;padding:72px 32px;display:flex;flex-direction:column;align-items:center;text-align:center"><div style="width:78px;height:78px;border-radius:22px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#9B7DF5;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div><div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">Profile not available</div><div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 24px;max-width:360px">Your details couldn't be found. Refresh to load your profile.</div><button onClick="{{ reset }}" style="height:46px;padding:0 24px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Reload</button></div>
+      </sc-if>
+      <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #F6D9DA;border-radius:18px;padding:72px 32px;display:flex;flex-direction:column;align-items:center;text-align:center"><div style="width:78px;height:78px;border-radius:22px;background:#FDECEC;display:flex;align-items:center;justify-content:center;color:#E5484D;margin-bottom:22px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div><div style="font:700 20px/1.2 'Sora',sans-serif;color:#17151F">Couldn't load your profile</div><div style="font:400 14px/1.5 'Instrument Sans',sans-serif;color:#75727F;margin:12px 0 24px;max-width:360px">Something went wrong. Please try again.</div><button onClick="{{ retry }}" style="display:flex;align-items:center;gap:8px;height:46px;padding:0 24px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>Try again</button></div>
+      </sc-if>
+
+    
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1600}}">
+class Component extends DCLogic {
+  state = { viewState: 'default', rail: 0, range: 'year', sidebarOpen: true, profileOpen: false };
+  chartRef = React.createRef();
+
+  componentDidMount() { this._draw(); }
+  componentDidUpdate() { this._draw(); }
+  componentWillUnmount() { if (this._chart) { this._chart.destroy(); this._chart = null; } }
+
+  _draw() {
+    if (this.state.viewState !== 'default') { if (this._chart) { this._chart.destroy(); this._chart = null; } return; }
+    const el = this.chartRef.current;
+    if (!el || typeof Chart === 'undefined') return;
+    const sets = {
+      year: { labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], income: [1.2,1.8,1.4,2.6,2.1,3.4,2.9,3.8,3.2,4.4,3.9,4.8], comm: [0.2,0.3,0.25,0.4,0.35,0.5,0.45,0.6,0.5,0.7,0.6,0.75] },
+      month: { labels: ['W1','W2','W3','W4'], income: [2.1,3.2,2.8,4.1], comm: [0.3,0.5,0.45,0.65] },
+      week: { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], income: [0.6,0.9,0.7,1.2,1.0,1.5,1.3], comm: [0.1,0.15,0.12,0.2,0.16,0.24,0.21] },
+    };
+    const d = sets[this.state.range] || sets.year;
+    if (this._chart) this._chart.destroy();
+    const ctx = el.getContext('2d');
+    const g = ctx.createLinearGradient(0, 0, 0, 300);
+    g.addColorStop(0, 'rgba(101,68,224,0.22)'); g.addColorStop(1, 'rgba(101,68,224,0)');
+    this._chart = new Chart(ctx, {
+      type: 'line',
+      data: { labels: d.labels, datasets: [
+        { label: 'Income', data: d.income, borderColor: '#6544E0', backgroundColor: g, borderWidth: 2.5, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#6544E0' },
+        { label: 'Commission given', data: d.comm, borderColor: '#2E9E6B', backgroundColor: 'rgba(46,158,107,0.08)', borderWidth: 2.5, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#2E9E6B' },
+      ]},
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + v, font: { family: 'Instrument Sans' }, color: '#A5A2AE' }, grid: { color: '#F1F0F4', borderDash: [4,4] }, border: { display: false } },
+          x: { ticks: { font: { family: 'Instrument Sans' }, color: '#A5A2AE' }, grid: { display: false }, border: { display: false } } } }
+    });
+  }
+
+  renderVals() {
+    const rail = (name) => { const p = { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = {
+      home: [['path', { d: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' }]],
+      box: [['path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }], ['polyline', { points: '3.27 6.96 12 12.01 20.73 6.96' }]],
+      bag: [['path', { d: 'M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z' }], ['line', { x1: 3, y1: 6, x2: 21, y2: 6 }], ['path', { d: 'M16 10a4 4 0 0 1-8 0' }]],
+      send: [['line', { x1: 22, y1: 2, x2: 11, y2: 13 }], ['polygon', { points: '22 2 15 22 11 13 2 9 22 2' }]],
+      speaker: [['polygon', { points: '11 5 6 9 2 9 2 15 6 15 11 19 11 5' }], ['path', { d: 'M15.54 8.46a5 5 0 0 1 0 7.07' }]],
+      chart: [['path', { d: 'M3 3v18h18' }], ['rect', { x: 7, y: 10, width: 3, height: 8 }], ['rect', { x: 12, y: 6, width: 3, height: 12 }]],
+      users: [['path', { d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' }], ['circle', { cx: 9, cy: 7, r: 4 }], ['path', { d: 'M23 21v-2a4 4 0 0 0-3-3.87' }]],
+      sliders: [['line', { x1: 4, y1: 21, x2: 4, y2: 14 }], ['line', { x1: 4, y1: 10, x2: 4, y2: 3 }], ['line', { x1: 12, y1: 21, x2: 12, y2: 12 }], ['line', { x1: 12, y1: 8, x2: 12, y2: 3 }], ['line', { x1: 20, y1: 21, x2: 20, y2: 16 }], ['line', { x1: 20, y1: 12, x2: 20, y2: 3 }], ['line', { x1: 1, y1: 14, x2: 7, y2: 14 }], ['line', { x1: 9, y1: 8, x2: 15, y2: 8 }], ['line', { x1: 17, y1: 16, x2: 23, y2: 16 }]],
+    }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+
+    const railDefs = ['home','box','bag','send','speaker','chart','users','sliders'];
+    const railItems = railDefs.map((k, i) => ({ label: k, svg: rail(k), style: (i === this.state.rail ? "width:40px;height:40px;border:none;border-radius:11px;background:#6544E0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s" : "width:40px;height:40px;border:none;border-radius:11px;background:transparent;color:#8B8895;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s") }));
+
+    const sideIcon = (name) => { const p = { width: 17, height: 17, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = { dash: [['rect', { x: 3, y: 3, width: 7, height: 9 }], ['rect', { x: 14, y: 3, width: 7, height: 5 }], ['rect', { x: 14, y: 12, width: 7, height: 9 }], ['rect', { x: 3, y: 16, width: 7, height: 5 }]], pos: [['rect', { x: 2, y: 3, width: 20, height: 14, rx: 2 }], ['line', { x1: 8, y1: 21, x2: 16, y2: 21 }], ['line', { x1: 12, y1: 17, x2: 12, y2: 21 }]] }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const sideDefs = [ { k: 'dashboard', l: 'Dashboard', icon: 'dash' }, { k: 'pos', l: 'POS', icon: 'pos' } ];
+    const rowA = "display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;background:#F5F2FF;cursor:pointer";
+    const rowI = "display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer;transition:background .15s";
+    const sideItems = sideDefs.map(n => ({ label: n.l, svg: sideIcon(n.icon), iconWrap: "display:flex;color:inherit", style: (n.k === 'dashboard' ? rowA : rowI) }));
+
+    const sIcon = (name, color) => { const p = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = {
+      pending: [['circle', { cx: 12, cy: 12, r: 10 }], ['polyline', { points: '12 6 12 12 16 14' }]],
+      confirmed: [['path', { d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14' }], ['polyline', { points: '22 4 12 14.01 9 11.01' }]],
+      packaging: [['path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }], ['polyline', { points: '3.27 6.96 12 12.01 20.73 6.96' }]],
+      outfor: [['rect', { x: 1, y: 3, width: 15, height: 13 }], ['path', { d: 'M16 8h4l3 3v5h-7V8z' }], ['circle', { cx: 5.5, cy: 18.5, r: 2.5 }], ['circle', { cx: 18.5, cy: 18.5, r: 2.5 }]],
+      delivered: [['path', { d: 'M20 6 9 17l-5-5' }]],
+      canceled: [['circle', { cx: 12, cy: 12, r: 10 }], ['line', { x1: 15, y1: 9, x2: 9, y2: 15 }], ['line', { x1: 9, y1: 9, x2: 15, y2: 15 }]],
+      returned: [['polyline', { points: '1 4 1 10 7 10' }], ['path', { d: 'M3.51 15a9 9 0 1 0 2.13-9.36L1 10' }]],
+      failed: [['circle', { cx: 12, cy: 12, r: 10 }], ['line', { x1: 12, y1: 8, x2: 12, y2: 12 }], ['line', { x1: 12, y1: 16, x2: 12.01, y2: 16 }]],
+    }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const chip = (bg) => "width:40px;height:40px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;background:" + bg;
+    const statCards = [
+      { label: 'Pending', value: 3, icon: 'pending', bg: '#EAF1FC', c: '#2C5E9E', num: '#17151F' },
+      { label: 'Confirmed', value: 4, icon: 'confirmed', bg: '#E6F5EE', c: '#2E7D53', num: '#2E9E6B' },
+      { label: 'Packaging', value: 1, icon: 'packaging', bg: '#FBEFDD', c: '#B4741C', num: '#17151F' },
+      { label: 'Out For Delivery', value: 2, icon: 'outfor', bg: '#F5F2FF', c: '#6544E0', num: '#17151F' },
+      { label: 'Delivered', value: 11, icon: 'delivered', bg: '#E6F5EE', c: '#2E7D53', num: '#2E9E6B' },
+      { label: 'Canceled', value: 1, icon: 'canceled', bg: '#FDECEC', c: '#C0403F', num: '#17151F' },
+      { label: 'Returned', value: 1, icon: 'returned', bg: '#EAF1FC', c: '#2C5E9E', num: '#17151F' },
+      { label: 'Failed To Deliver', value: 2, icon: 'failed', bg: '#FDECEC', c: '#C0403F', num: '#E5484D' },
+    ].map(c => ({ label: c.label, value: c.value, numColor: c.num, iconWrap: chip(c.bg), svg: sIcon(c.icon, c.c) }));
+
+    const wIcon = (name) => { const p = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: '#6544E0', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round' }; const paths = {
+      clock: [['circle', { cx: 12, cy: 12, r: 9 }], ['polyline', { points: '12 7 12 12 15 14' }]],
+      coins: [['circle', { cx: 8, cy: 8, r: 6 }], ['path', { d: 'M18.09 10.37A6 6 0 1 1 10.34 18' }], ['path', { d: 'M7 6h1v4M16.71 13.88l.7.71-2.82 2.82' }]],
+      dollar: [['line', { x1: 12, y1: 1, x2: 12, y2: 23 }], ['path', { d: 'M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' }]],
+      truck: [['rect', { x: 1, y: 3, width: 15, height: 13 }], ['path', { d: 'M16 8h4l3 3v5h-7V8z' }], ['circle', { cx: 5.5, cy: 18.5, r: 2.5 }], ['circle', { cx: 18.5, cy: 18.5, r: 2.5 }]],
+      cash: [['rect', { x: 2, y: 6, width: 20, height: 12, rx: 2 }], ['circle', { cx: 12, cy: 12, r: 2.5 }]],
+    }; return React.createElement('svg', p, (paths[name] || []).map((s, i) => React.createElement(s[0], { key: i, ...s[1] }))); };
+    const wcard = "display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex:1;padding:20px;border:1px solid #F1F0F4;border-radius:16px;background:#FBFAFC";
+    const wchip = "width:44px;height:44px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;background:#F5F2FF";
+    const walletLeft = [
+      { v1: '$500.00', l1: 'Pending Withdraw', two: false, icon: 'clock' },
+      { v1: '$600.00', l1: 'Already Withdrawn', two: true, v2: '$2,534.50', l2: 'Total Tax', icon: 'coins' },
+    ].map(w => ({ ...w, card: wcard, iconWrap: wchip, svg: wIcon(w.icon) }));
+    const walletRight = [
+      { v1: '$6,401.97', l1: 'Total Commission', two: false, icon: 'dollar' },
+      { v1: '$822.00', l1: 'Total Delivery Charge Earned', two: true, v2: '$25,756.80', l2: 'Collected Cash', icon: 'cash' },
+    ].map(w => ({ ...w, card: wcard, iconWrap: wchip, svg: wIcon(w.icon) }));
+
+    const rangeTabs = [ { k: 'year', l: 'This Year' }, { k: 'month', l: 'This Month' }, { k: 'week', l: 'This Week' } ].map(t => ({ label: t.l, style: (this.state.range === t.k ? "padding:0 14px;height:32px;border-radius:8px;border:none;background:#6544E0;color:#fff;font:600 12px/1 'Instrument Sans',sans-serif;cursor:pointer" : "padding:0 14px;height:32px;border-radius:8px;border:none;background:transparent;color:#75727F;font:500 12px/1 'Instrument Sans',sans-serif;cursor:pointer"), pick: () => this.setState({ range: t.k }) }));
+
+    const ratedProducts = [ { title: 'Leather Ladies Bag', seller: 'Marchetti', rating: '4.5', reviews: 2 } ];
+    const topProducts = [
+      { title: 'Vimly Women Blazer Suit', sales: '$22,500.00', sold: 5 },
+      { title: 'Leather Ladies Bag', sales: '$17,970.00', sold: 3 },
+      { title: 'Ladies Bag', sales: '$1,969.80', sold: 3 },
+      { title: 'Ugly Love: A Novel', sales: '$930.00', sold: 1 },
+      { title: 'Hydration Pack', sales: '$50.00', sold: 1 },
+    ];
+    const deliveryMen = [ { name: 'Marcus Reid', rating: '4.9', delivered: 2 }, { name: 'Jude Bellingham', rating: '4.7', delivered: 1 } ];
+
+    const tabI = "padding:0 14px;height:30px;border-radius:8px;border:none;background:transparent;color:#75727F;font:500 12px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:all .15s";
+    const tabA = "padding:0 14px;height:30px;border-radius:8px;border:none;background:#fff;color:#17151F;font:600 12px/1 'Instrument Sans',sans-serif;cursor:pointer;box-shadow:0 1px 3px rgba(20,18,31,.12)";
+    const stateTabs = [ { k: 'default', l: 'Default' }, { k: 'loading', l: 'Loading' }, { k: 'empty', l: 'Empty' }, { k: 'error', l: 'Error' } ].map(t => ({ label: t.l, style: this.state.viewState === t.k ? tabA : tabI, pick: () => this.setState({ viewState: t.k }) }));
+
+    const open = this.state.sidebarOpen;
+    const railStyle = "width:64px;flex:none;background:#17151F;flex-direction:column;align-items:center;padding:16px 0;gap:8px;position:sticky;top:0;height:100vh;display:" + (open ? 'flex' : 'none');
+    const sidebarStyle = "width:236px;flex:none;background:#fff;border-right:1px solid #ECECF1;padding:20px 16px;position:sticky;top:0;height:100vh;overflow-y:auto;display:" + (open ? 'block' : 'none');
+    const collapseIcon = React.createElement('svg', { width: 15, height: 15, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, open
+      ? React.createElement('polyline', { points: '15 18 9 12 15 6' })
+      : React.createElement('g', null, React.createElement('line', { x1: 3, y1: 6, x2: 21, y2: 6 }), React.createElement('line', { x1: 3, y1: 12, x2: 21, y2: 12 }), React.createElement('line', { x1: 3, y1: 18, x2: 21, y2: 18 })));
+    const profileMenuStyle = "position:absolute;top:100%;right:0;padding-top:10px;z-index:60;width:236px;transition:opacity .16s ease,transform .16s ease;" + (this.state.profileOpen ? "opacity:1;visibility:visible;transform:translateY(0)" : "opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none");
+
+    return {
+      railStyle, sidebarStyle, collapseIcon, profileMenuStyle,
+      toggleSidebar: () => this.setState(s => ({ sidebarOpen: !s.sidebarOpen })),
+      toggleProfile: () => this.setState(s => ({ profileOpen: !s.profileOpen })),
+      closeProfile: () => this.setState({ profileOpen: false }),
+      railItems, sideItems, statCards, walletLeft, walletRight, rangeTabs,
+      ratedProducts, topProducts, deliveryMen, stateTabs, skel8: [0,1,2,3,4,5,6,7],
+      chartRef: this.chartRef,
+      isDefault: this.state.viewState === 'default', isLoading: this.state.viewState === 'loading',
+      isEmpty: this.state.viewState === 'empty', isError: this.state.viewState === 'error',
+      reset: () => this.setState({ viewState: 'default' }), retry: () => this.setState({ viewState: 'default' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

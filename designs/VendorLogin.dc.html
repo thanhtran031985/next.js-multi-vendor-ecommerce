@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;font-family:'Instrument Sans',system-ui,sans-serif;color:#3A3745;-webkit-font-smoothing:antialiased}
+a{color:#6544E0;text-decoration:none}a:hover{color:#5636C6}
+::selection{background:#EBE6FE;color:#472BA3}input::placeholder{color:#A5A2AE}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#6544E0">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#6544E0"></rect><rect x="360" y="330" width="480" height="60" rx="12" fill="#fff" opacity=".9"></rect><rect x="360" y="410" width="320" height="48" rx="10" fill="#fff" opacity=".55"></rect><text x="600" y="600" font-family="Sora, sans-serif" font-size="72" font-weight="800" fill="#fff" text-anchor="middle">Covet<tspan fill="#BCA9FB">.</tspan></text></svg>
+</template>
+
+<div style="display:flex;min-height:100vh">
+  <!-- LEFT brand panel -->
+  <div style="flex:1;background:#F4F3F7;display:flex;flex-direction:column;justify-content:center;padding:64px 7%;position:relative;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:60px"><span style="width:44px;height:44px;border-radius:13px;background:#6544E0;display:flex;align-items:center;justify-content:center;color:#fff"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span><span style="font:800 30px/1 'Sora',sans-serif;color:#17151F;letter-spacing:-.02em">Covet<span style="color:#6544E0">.</span></span></div>
+    <h1 style="font:800 56px/1.05 'Sora',sans-serif;color:#17151F;letter-spacing:-.02em;margin:0;max-width:560px">Make Your Business <span style="color:#6544E0">Profitable...</span></h1>
+    <p style="font:400 16px/1.6 'Instrument Sans',sans-serif;color:#75727F;margin:26px 0 40px;max-width:440px">Reach thousands of shoppers across the Covet marketplace. Set up your store, list products, and grow — all from one seller dashboard.</p>
+    <div style="position:relative;width:100%;max-width:520px;aspect-ratio:16/9;border-radius:18px;background:#EAE8F0;border:1px dashed #C9C6D3;display:flex;align-items:center;justify-content:center;overflow:hidden"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.02) 0 12px,transparent 12px 24px)"></div><span style="position:relative;font:500 12px/1.4 ui-monospace,Menlo,monospace;color:#A5A2AE;text-align:center;padding:0 24px">seller lifestyle image</span></div>
+  </div>
+
+  <!-- RIGHT form -->
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 7%">
+    <div style="width:100%;max-width:440px">
+      <h2 style="font:800 30px/1 'Sora',sans-serif;color:#17151F;letter-spacing:-.01em;margin:0">Sign in</h2>
+      <div style="font:600 15px/1 'Instrument Sans',sans-serif;color:#17151F;margin:16px 0 36px">Welcome back to Vendor Login</div>
+
+      <label style="display:block;font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:10px">Your Email</label>
+      <input type="email" placeholder="email@address.com" style="width:100%;height:52px;border:1px solid #ECECF1;border-radius:12px;padding:0 16px;font:400 14px/1 'Instrument Sans',sans-serif;color:#17151F;outline:none;background:#FBFAFC;margin-bottom:22px" style-focus="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><label style="font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745">Password</label><a href="#" style="font:600 13px/1 'Instrument Sans',sans-serif;color:#6544E0">Forgot Password</a></div>
+      <div style="display:flex;align-items:center;height:52px;border:1px solid #ECECF1;border-radius:12px;overflow:hidden;background:#FBFAFC;margin-bottom:22px" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE;background:#fff"><input type="{{ pwType }}" placeholder="8+ characters required" style="flex:1;min-width:0;border:none;outline:none;background:transparent;padding:0 16px;font:400 14px/1 'Instrument Sans',sans-serif;color:#17151F"><button onClick="{{ togglePw }}" aria-label="Toggle password" style="padding:0 16px;height:100%;border:none;background:none;color:#A5A2AE;cursor:pointer;display:flex;align-items:center">{{ eyeIcon }}</button></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px"><label style="display:flex;align-items:center;gap:9px;cursor:pointer"><span style="width:19px;height:19px;flex:none;border-radius:6px;border:1.5px solid #D6D4DD;background:#fff"></span><span style="font:500 13px/1 'Instrument Sans',sans-serif;color:#3A3745">Remember Me</span></label><a href="VendorRegister.dc.html" style="font:600 13px/1 'Instrument Sans',sans-serif;color:#6544E0">Register New Account</a></div>
+
+      <a href="vendordashboard.dc.html" style="display:flex;align-items:center;justify-content:center;width:100%;height:54px;border-radius:12px;background:#6544E0;color:#fff;font:700 15px/1 'Sora',sans-serif;transition:background .2s;margin-bottom:26px" style-hover="background:#5636C6">Sign in</a>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;background:#F5F2FF;border:1px solid #EBE6FE;border-radius:12px;padding:16px 18px">
+        <div style="font:400 13px/1.7 'Instrument Sans',sans-serif;color:#3A3745">Email : <span style="font-weight:600;color:#17151F">test.seller@gmail.com</span><br>Password : <span style="font-weight:600;color:#17151F">12345678</span></div>
+        <button onClick="{{ copyCreds }}" aria-label="Copy credentials" style="width:42px;height:42px;flex:none;border:none;border-radius:11px;background:#6544E0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">{{ copyIcon }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:820}}">
+class Component extends DCLogic {
+  state = { showPw: false, copied: false };
+  renderVals() {
+    const showPw = this.state.showPw;
+    const eyeOpen = React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' }), React.createElement('circle', { cx: 12, cy: 12, r: 3 }));
+    const eyeOff = React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24' }), React.createElement('line', { x1: 1, y1: 1, x2: 23, y2: 23 }));
+    const check = React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2.4, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('polyline', { points: '20 6 9 17 4 12' }));
+    const copy = React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('rect', { x: 9, y: 9, width: 13, height: 13, rx: 2 }), React.createElement('path', { d: 'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1' }));
+    return {
+      pwType: showPw ? 'text' : 'password',
+      eyeIcon: showPw ? eyeOpen : eyeOff,
+      togglePw: () => this.setState(s => ({ showPw: !s.showPw })),
+      copyIcon: this.state.copied ? check : copy,
+      copyCreds: () => { this.setState({ copied: true }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ copied: false }), 1500); },
+    };
+  }
+}
+</script>
+</body>
+</html>

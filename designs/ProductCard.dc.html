@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div onMouseEnter="{{ setHover }}" onMouseLeave="{{ clearHover }}" style="display:flex;flex-direction:column;background:#FFFFFF;border-radius:16px;box-shadow:0 1px 2px rgba(20,18,31,0.05);border:1px solid #F1F0F4;overflow:hidden;transition:box-shadow .25s ease, transform .25s ease;cursor:pointer;height:100%" style-hover="box-shadow:0 18px 40px -14px rgba(20,18,31,0.20);transform:translateY(-4px)">
+  <div style="position:relative;aspect-ratio:1/1;background:#F5F4F7;display:flex;align-items:center;justify-content:center;overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,0.022) 0 10px,transparent 10px 20px)"></div>
+    <span style="position:relative;font:500 11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#A5A2AE;text-align:center;padding:0 18px;letter-spacing:.02em">{{ imgLabel }}</span>
+    <button onClick="{{ quickView }}" aria-label="Quick view" style="{{ eyeStyle }}" style-hover="background:#6544E0;color:#fff">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+    </button>
+    <sc-if value="{{ hasDiscount }}" hint-placeholder-val="{{ true }}">
+      <span style="position:absolute;top:12px;left:12px;font:600 11px/1 'Instrument Sans',system-ui,sans-serif;color:#472BA3;background:#EBE6FE;padding:6px 9px;border-radius:999px;letter-spacing:.01em">{{ discountText }}</span>
+    </sc-if>
+    <sc-if value="{{ hasTag }}" hint-placeholder-val="{{ false }}">
+      <span style="position:absolute;bottom:12px;left:12px;font:600 10px/1 'Instrument Sans',system-ui,sans-serif;color:#2E9E6B;background:#E6F5EE;padding:5px 9px;border-radius:999px;letter-spacing:.04em;text-transform:uppercase">{{ tag }}</span>
+    </sc-if>
+    <button onClick="{{ toggleWish }}" aria-label="Add to wishlist" style="position:absolute;top:10px;right:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.92);backdrop-filter:blur(4px);border:none;border-radius:999px;box-shadow:0 2px 8px rgba(20,18,31,0.1);cursor:pointer;transition:transform .2s" style-hover="transform:scale(1.1)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg>
+    </button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:7px;padding:16px 16px 18px;flex:1">
+    <span style="font:600 10.5px/1 'Instrument Sans',system-ui,sans-serif;color:#6544E0;text-transform:uppercase;letter-spacing:.07em">{{ seller }}</span>
+    <span style="font:500 14px/1.4 'Instrument Sans',system-ui,sans-serif;color:#17151F;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:39px">{{ title }}</span>
+    <div style="display:flex;align-items:center;gap:6px">
+      <div style="display:flex;gap:2px">
+        <sc-for list="{{ stars }}" as="s" hint-placeholder-count="5">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="{{ s.fill }}" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+        </sc-for>
+      </div>
+      <span style="font:400 12px/1 'Instrument Sans',system-ui,sans-serif;color:#75727F">({{ reviews }})</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:8px;margin-top:auto;padding-top:6px">
+      <span style="font:700 17px/1 'Sora',system-ui,sans-serif;color:#17151F">{{ priceText }}</span>
+      <sc-if value="{{ hasCompare }}" hint-placeholder-val="{{ true }}"><span style="font:400 13px/1 'Instrument Sans',system-ui,sans-serif;color:#A5A2AE;text-decoration:line-through">{{ compareText }}</span></sc-if>
+    </div>
+    <button onClick="{{ addToCart }}" style="{{ cartStyle }}" style-hover="background:#6544E0;color:#FFFFFF;border-color:#6544E0">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+      <span>{{ cartLabel }}</span>
+    </button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:260,&quot;height&quot;:380},&quot;product&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{title:string;seller:string;price:number;compare?:number;rating?:number;reviews?:number;discount?:number;tag?:string}&quot;,&quot;default&quot;:{&quot;title&quot;:&quot;Sony WH-1000XM5 Wireless Headphones&quot;,&quot;seller&quot;:&quot;Hanover Electronics&quot;,&quot;price&quot;:328,&quot;compare&quot;:399.99,&quot;rating&quot;:5,&quot;reviews&quot;:214,&quot;discount&quot;:18}}}">
+class Component extends DCLogic {
+  state = { wished: false, added: false, hovered: false };
+  renderVals() {
+    const p = this.props.product || {};
+    const eyeBase = "position:absolute;top:50%;left:50%;width:50px;height:50px;border-radius:999px;background:#fff;box-shadow:0 10px 24px -6px rgba(20,18,31,.32);display:flex;align-items:center;justify-content:center;color:#6544E0;border:none;cursor:pointer;z-index:3;transition:opacity .22s ease,transform .22s ease;";
+    const eyeStyle = eyeBase + (this.state.hovered
+      ? "opacity:1;transform:translate(-50%,-50%) scale(1)"
+      : "opacity:0;transform:translate(-50%,-50%) scale(.78);pointer-events:none");
+    const fmt = n => (n == null || n === '') ? '' : '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const rating = p.rating || 0;
+    const filled = Math.round(rating);
+    const stars = [0,1,2,3,4].map(i => ({ fill: i < filled ? '#E8A13A' : '#E4E2E9' }));
+    const wished = this.state.wished;
+    const added = this.state.added;
+    const cartStyle = added
+      ? "margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;height:40px;border-radius:10px;border:1px solid #2E9E6B;background:#E6F5EE;color:#2E9E6B;font:600 13px/1 'Instrument Sans',system-ui,sans-serif;cursor:pointer;transition:all .2s;white-space:nowrap"
+      : "margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;height:40px;border-radius:10px;border:1px solid #E6E4EC;background:#FFFFFF;color:#17151F;font:600 13px/1 'Instrument Sans',system-ui,sans-serif;cursor:pointer;transition:all .2s;white-space:nowrap";
+    return {
+      imgLabel: p.title || '',
+      seller: p.seller || '',
+      title: p.title || '',
+      priceText: fmt(p.price),
+      compareText: fmt(p.compare),
+      hasCompare: !!p.compare,
+      rating,
+      reviews: p.reviews || 0,
+      hasDiscount: !!p.discount,
+      discountText: p.discount ? ('\u2212' + p.discount + '%') : '',
+      hasTag: !!p.tag,
+      tag: p.tag || '',
+      stars,
+      wished, added,
+      heartFill: wished ? '#E5484D' : 'none',
+      heartColor: wished ? '#E5484D' : '#75727F',
+      cartStyle,
+      cartLabel: added ? 'Added to cart' : 'Add to cart',
+      eyeStyle,
+      setHover: () => this.setState({ hovered: true }),
+      clearHover: () => this.setState({ hovered: false }),
+      quickView: () => { const f = this.props.onQuickView; if (typeof f === 'function') f(p); },
+      toggleWish: () => this.setState(s => ({ wished: !s.wished })),
+      addToCart: () => { this.setState({ added: true }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ added: false }), 1600); },
+    };
+  }
+}
+</script>
+</body>
+</html>

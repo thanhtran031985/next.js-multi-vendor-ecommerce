@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --container-max:1600px;
+  --container-pad-desktop:40px;
+  --container-pad-tablet:24px;
+  --container-pad-mobile:16px;
+  --cpad:var(--container-pad-desktop);
+}
+@media(max-width:1024px){:root{--cpad:var(--container-pad-tablet)}}
+@media(max-width:640px){:root{--cpad:var(--container-pad-mobile)}}
+*{box-sizing:border-box}
+/* Base type scale bump ~6% — reads like a 110% zoom without touching component styles */
+html{font-size:17px}
+#covet-root{zoom:1.0625}
+body{margin:0;background:#FAFAFA;font-family:'Instrument Sans',system-ui,sans-serif;color:#3A3745;-webkit-font-smoothing:antialiased}
+a{color:#6544E0;text-decoration:none}
+a:hover{color:#5636C6}
+::selection{background:#EBE6FE;color:#472BA3}
+@keyframes shimmer{0%{background-position:-450px 0}100%{background-position:450px 0}}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#6544E0">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#6544E0"></rect>
+    <rect x="470" y="300" width="260" height="220" rx="26" fill="none" stroke="#ffffff" stroke-width="18"></rect>
+    <path d="M540 300 v-30 a60 60 0 0 1 120 0 v30" fill="none" stroke="#ffffff" stroke-width="18"></path>
+    <text x="600" y="640" font-family="Sora, sans-serif" font-size="92" font-weight="800" fill="#ffffff" text-anchor="middle">Covet<tspan fill="#BCA9FB">.</tspan></text>
+  </svg>
+</template>
+
+<div id="covet-root" style="background:#FAFAFA">
+
+  <!-- ===================== TOP UTILITY BAR ===================== -->
+  <div style="background:#17151F;color:#C9C7D1">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:0 var(--cpad);height:40px;display:flex;align-items:center;justify-content:space-between;font:400 12.5px/1 'Instrument Sans',sans-serif">
+      <div style="display:flex;align-items:center;gap:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9B7DF5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        <span>Free delivery on orders over <span style="color:#fff;font-weight:600">$50</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:26px">
+        <a href="Design System.dc.html" style="color:#C9C7D1" style-hover="color:#fff">Design System</a>
+        <a href="#" style="color:#C9C7D1" style-hover="color:#fff">Sell on Covet</a>
+        <a href="#" style="color:#C9C7D1" style-hover="color:#fff">Track order</a>
+        <a href="#" style="color:#C9C7D1" style-hover="color:#fff">Help Center</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== HEADER ===================== -->
+  <header style="background:#fff;border-bottom:1px solid #F1F0F4;position:sticky;top:0;z-index:40">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:0 var(--cpad);height:80px;display:flex;align-items:center;gap:28px">
+      <div style="font:800 27px/1 'Sora',sans-serif;color:#17151F;letter-spacing:-.02em;flex:none">Covet<span style="color:#6544E0">.</span></div>
+      <div style="flex:1;display:flex;align-items:center;height:48px;background:#F5F4F7;border:1px solid #ECECF1;border-radius:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s" style-focus-within="border-color:#6544E0;box-shadow:0 0 0 3px #EBE6FE">
+        <div style="display:flex;align-items:center;gap:6px;padding:0 16px;height:100%;border-right:1px solid #E6E4EC;color:#3A3745;font:500 13px/1 'Instrument Sans',sans-serif;white-space:nowrap;cursor:pointer">All Categories
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#75727F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <input placeholder="Search products, brands and sellers…" style="flex:1;border:none;outline:none;background:transparent;padding:0 16px;font:400 14px/1 'Instrument Sans',sans-serif;color:#17151F">
+        <button aria-label="Search" style="height:100%;padding:0 20px;border:none;background:#6544E0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex:none">
+        <button style="position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:10px;color:#3A3745;transition:background .2s" style-hover="background:#F5F4F7">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg>
+          <span style="font:500 11px/1 'Instrument Sans',sans-serif;color:#75727F">Wishlist</span>
+          <span style="position:absolute;top:2px;right:4px;min-width:17px;height:17px;padding:0 4px;background:#E5484D;color:#fff;font:600 10px/17px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">5</span>
+        </button>
+        <button style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:10px;color:#3A3745;transition:background .2s" style-hover="background:#F5F4F7">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span style="font:500 11px/1 'Instrument Sans',sans-serif;color:#75727F">Account</span>
+        </button>
+        <div style="position:relative;margin-left:6px" onMouseEnter="{{ openCart }}" onMouseLeave="{{ closeCart }}">
+          <button style="display:flex;align-items:center;gap:12px;background:#F5F2FF;border:1px solid #EBE6FE;cursor:pointer;padding:9px 14px 9px 12px;border-radius:12px;transition:background .2s" style-hover="background:#EBE6FE">
+            <div style="position:relative;color:#6544E0">
+              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+              <span style="position:absolute;top:-7px;right:-8px;min-width:18px;height:18px;padding:0 4px;background:#6544E0;color:#fff;font:600 10px/18px 'Instrument Sans',sans-serif;text-align:center;border-radius:999px">{{ cartCount }}</span>
+            </div>
+            <div style="text-align:left">
+              <div style="font:400 11px/1 'Instrument Sans',sans-serif;color:#75727F;margin-bottom:3px">My cart</div>
+              <div style="font:700 14px/1 'Sora',sans-serif;color:#17151F">{{ headerTotal }}</div>
+            </div>
+          </button>
+
+          <!-- SHOPPING CART POPUP -->
+          <div style="{{ cartPopupStyle }}">
+           <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 26px 64px -16px rgba(20,18,31,.30);overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#F5F2FF;border-bottom:1px solid #EBE6FE">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:34px;height:34px;border-radius:10px;background:#6544E0;display:flex;align-items:center;justify-content:center;color:#fff">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </span>
+                <span style="font:700 16px/1 'Sora',sans-serif;color:#17151F">Shopping Cart</span>
+              </div>
+              <button onClick="{{ closeCart }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font:500 13px/1 'Instrument Sans',sans-serif;color:#75727F" style-hover="color:#17151F">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                Close
+              </button>
+            </div>
+
+            <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+              <div style="max-height:280px;overflow-y:auto;padding:8px 20px">
+                <sc-for list="{{ cartRows }}" as="row" hint-placeholder-count="1">
+                  <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #F1F0F4">
+                    <div style="position:relative;width:74px;height:74px;border-radius:12px;background:#F5F4F7;flex:none;overflow:hidden">
+                      <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 8px,transparent 8px 16px)"></div>
+                    </div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font:600 9.5px/1 'Instrument Sans',sans-serif;color:#6544E0;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">{{ row.seller }}</div>
+                      <div style="font:500 13.5px/1.35 'Instrument Sans',sans-serif;color:#17151F;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ row.title }}</div>
+                      <div style="font:700 15px/1 'Sora',sans-serif;color:#17151F;margin-top:7px">{{ row.lineText }}</div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:none">
+                      <button onClick="{{ row.remove }}" aria-label="Remove" style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:none;background:none;color:#E5484D;cursor:pointer;border-radius:8px" style-hover="background:#FDECEC">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                      </button>
+                      <div style="display:flex;flex-direction:column;align-items:center;border:1px solid #E6E4EC;border-radius:10px;overflow:hidden">
+                        <button onClick="{{ row.inc }}" aria-label="Increase" style="width:30px;height:28px;display:flex;align-items:center;justify-content:center;border:none;background:#fff;color:#6544E0;cursor:pointer" style-hover="background:#F5F2FF">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                        <span style="width:30px;text-align:center;font:700 13px/1 'Sora',sans-serif;color:#17151F;padding:5px 0;border-top:1px solid #F1F0F4;border-bottom:1px solid #F1F0F4">{{ row.qty }}</span>
+                        <button onClick="{{ row.dec }}" aria-label="Decrease" style="width:30px;height:28px;display:flex;align-items:center;justify-content:center;border:none;background:#fff;color:#75727F;cursor:pointer" style-hover="background:#F5F4F7">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="padding:18px 20px 20px">
+                <div style="display:flex;align-items:center;gap:8px;font:400 13px/1 'Instrument Sans',sans-serif;margin-bottom:10px">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6544E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                  <sc-if value="{{ freeUnlocked }}" hint-placeholder-val="{{ false }}"><span style="color:#2E9E6B;font-weight:600">You've unlocked free delivery</span></sc-if>
+                  <sc-if value="{{ notFree }}" hint-placeholder-val="{{ true }}"><span style="color:#3A3745"><span style="color:#6544E0;font-weight:700">{{ remainingText }}</span> away from free delivery</span></sc-if>
+                </div>
+                <div style="height:7px;border-radius:999px;background:#EDECF1;overflow:hidden;margin-bottom:18px">
+                  <div style="{{ barFillStyle }}"></div>
+                </div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
+                  <span style="font:500 14px/1 'Instrument Sans',sans-serif;color:#75727F">Subtotal</span>
+                  <span style="font:800 22px/1 'Sora',sans-serif;color:#17151F">{{ subtotalText }}</span>
+                </div>
+                <div style="display:flex;gap:10px">
+                  <button style="flex:none;display:flex;align-items:center;gap:6px;height:48px;padding:0 16px;border-radius:12px;border:1px solid #E6E4EC;background:#fff;color:#17151F;font:600 13px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s;white-space:nowrap" style-hover="background:#F5F4F7">Expand cart
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
+                  <button style="flex:1;height:48px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:700 14px/1 'Sora',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Proceed to Checkout</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:40px 28px;text-align:center">
+                <div style="width:60px;height:60px;border-radius:16px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#9B7DF5;margin:0 auto 16px">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </div>
+                <div style="font:700 16px/1.2 'Sora',sans-serif;color:#17151F;margin-bottom:8px">Your cart is empty</div>
+                <div style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#75727F">Browse the marketplace and add something you love.</div>
+              </div>
+            </sc-if>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== CATEGORY MEGA-NAV ===================== -->
+  <nav style="background:#fff;border-bottom:1px solid #F1F0F4">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:0 var(--cpad);height:54px;display:flex;align-items:center;gap:8px">
+      <button style="display:flex;align-items:center;gap:10px;height:38px;padding:0 18px;background:#17151F;color:#fff;border:none;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer;margin-right:14px">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        All Categories
+      </button>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;border-radius:8px">Home</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Brands</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Offers</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Sellers</a>
+      <a href="#" style="padding:0 14px;height:38px;display:flex;align-items:center;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;border-radius:8px" style-hover="color:#6544E0">Gift Cards</a>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font:500 13px/1 'Instrument Sans',sans-serif;color:#2E9E6B">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.91 8.84 8.56 2.23a1.93 1.93 0 0 0-1.81 0L3.1 4.13a2.12 2.12 0 0 0-.05 3.69l12.22 6.93a2 2 0 0 0 1.94 0L21 12.51a2.12 2.12 0 0 0-.09-3.67Z"></path><path d="m3.09 8.84 8.66 4.92v9.16"></path></svg>
+        Sell on Covet — open a store free
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:32px 32px 0">
+    <div style="position:relative;display:grid;grid-template-columns:250px 1fr;gap:24px" onMouseLeave="{{ closeMega }}">
+      <!-- category rail -->
+      <aside style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;padding:10px;box-shadow:0 1px 2px rgba(20,18,31,.05)">
+        <sc-for list="{{ heroCats }}" as="c" hint-placeholder-count="8">
+          <a href="#" onMouseEnter="{{ c.open }}" style="{{ c.rowStyle }}">
+            <span>{{ c.name }}</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ c.chevron }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </sc-for>
+      </aside>
+
+      <!-- MEGA MENU PANEL -->
+      <div style="{{ megaStyle }}">
+        <div style="display:flex;flex-wrap:wrap;gap:26px 46px;align-items:flex-start">
+          <sc-for list="{{ activeGroups }}" as="g" hint-placeholder-count="5">
+            <div style="min-width:158px">
+              <h4 style="font:700 15px/1 'Sora',sans-serif;color:#17151F;margin:0 0 16px">{{ g.title }}</h4>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="5">
+                  <a href="#" style="font:400 13.5px/1 'Instrument Sans',sans-serif;color:#6E6A7C" style-hover="color:#6544E0">{{ it }}</a>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- hero banner -->
+      <div style="position:relative;border-radius:22px;overflow:hidden;background:linear-gradient(120deg,#2E1F6B 0%,#472BA3 45%,#6544E0 100%);min-height:380px;display:flex">
+        <div style="position:absolute;top:-80px;right:-40px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.06)"></div>
+        <div style="position:absolute;bottom:-120px;right:120px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.05)"></div>
+        <div style="position:relative;z-index:2;padding:56px 52px;display:flex;flex-direction:column;justify-content:center;max-width:56%">
+          <span style="display:inline-flex;align-self:flex-start;align-items:center;gap:7px;background:rgba(255,255,255,.14);color:#fff;font:600 12px/1 'Instrument Sans',sans-serif;letter-spacing:.04em;padding:8px 13px;border-radius:999px;margin-bottom:22px">New season · 2,400+ sellers</span>
+          <h1 style="font:800 46px/1.05 'Sora',sans-serif;color:#fff;letter-spacing:-.02em;margin:0 0 18px">Everything you love, from sellers you trust.</h1>
+          <p style="font:400 16px/1.55 'Instrument Sans',sans-serif;color:rgba(255,255,255,.82);margin:0 0 30px;max-width:400px">One storefront, one checkout, thousands of independent makers and brands. Discover today's best.</p>
+          <div style="display:flex;gap:12px">
+            <button style="height:50px;padding:0 26px;background:#fff;color:#17151F;border:none;border-radius:12px;font:700 14px/1 'Sora',sans-serif;cursor:pointer;display:flex;align-items:center;gap:9px;transition:transform .2s" style-hover="transform:translateY(-2px)">Shop new arrivals
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+            <button style="height:50px;padding:0 24px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:12px;font:600 14px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:rgba(255,255,255,.12)">Explore deals</button>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:38px">
+            <div style="width:26px;height:5px;border-radius:3px;background:#fff"></div><div style="width:9px;height:5px;border-radius:3px;background:rgba(255,255,255,.4)"></div><div style="width:9px;height:5px;border-radius:3px;background:rgba(255,255,255,.4)"></div>
+          </div>
+        </div>
+        <div style="position:relative;z-index:2;flex:1;display:flex;align-items:center;justify-content:center;padding:30px 40px 30px 0">
+          <div style="width:100%;height:280px;border-radius:16px;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font:500 12px/1.4 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.65);text-align:center">hero lifestyle image</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FLASH DEAL ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:64px 32px 0">
+    <div style="background:linear-gradient(120deg,#F5F2FF 0%,#FBFAFF 100%);border:1px solid #EBE6FE;border-radius:22px;padding:28px 28px 30px">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:26px">
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="width:48px;height:48px;border-radius:14px;background:#6544E0;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px -6px rgba(101,68,224,.6)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"></path></svg>
+          </div>
+          <div>
+            <h2 style="font:700 26px/1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">Flash Deal</h2>
+            <p style="font:400 13.5px/1 'Instrument Sans',sans-serif;color:#75727F;margin:8px 0 0">Limited stock — prices climb back when the timer ends.</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <span style="font:500 13px/1 'Instrument Sans',sans-serif;color:#75727F">Ends in</span>
+          <div style="display:flex;align-items:center;gap:7px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="min-width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#17151F;color:#fff;border-radius:12px;font:700 20px/1 'Sora',sans-serif">{{ fd.d }}</span><span style="font:500 10px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-transform:uppercase;letter-spacing:.08em">Days</span></div>
+            <span style="font:700 20px/1 'Sora',sans-serif;color:#BCA9FB;margin-bottom:16px">:</span>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="min-width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#17151F;color:#fff;border-radius:12px;font:700 20px/1 'Sora',sans-serif">{{ fd.h }}</span><span style="font:500 10px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-transform:uppercase;letter-spacing:.08em">Hrs</span></div>
+            <span style="font:700 20px/1 'Sora',sans-serif;color:#BCA9FB;margin-bottom:16px">:</span>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="min-width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#17151F;color:#fff;border-radius:12px;font:700 20px/1 'Sora',sans-serif">{{ fd.m }}</span><span style="font:500 10px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-transform:uppercase;letter-spacing:.08em">Min</span></div>
+            <span style="font:700 20px/1 'Sora',sans-serif;color:#BCA9FB;margin-bottom:16px">:</span>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="min-width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#6544E0;color:#fff;border-radius:12px;font:700 20px/1 'Sora',sans-serif">{{ fd.s }}</span><span style="font:500 10px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-transform:uppercase;letter-spacing:.08em">Sec</span></div>
+          </div>
+        </div>
+        <a href="#" style="display:flex;align-items:center;gap:6px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;white-space:nowrap">View all
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px">
+        <sc-for list="{{ flashDeals }}" as="item" hint-placeholder-count="5">
+          <dc-import name="ProductCard" product="{{ item }}" on-quick-view="{{ openQuickView }}" hint-size="100%,380px"></dc-import>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURED PRODUCTS ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px">
+      <div>
+        <h2 style="font:700 27px/1.1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">Featured Products</h2>
+        <p style="font:400 14px/1 'Instrument Sans',sans-serif;color:#75727F;margin:9px 0 0">Hand-picked by our merchandising team this week.</p>
+      </div>
+      <a href="#" style="display:flex;align-items:center;gap:6px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;white-space:nowrap">View all
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px">
+      <sc-for list="{{ featured }}" as="item" hint-placeholder-count="6">
+        <dc-import name="ProductCard" product="{{ item }}" on-quick-view="{{ openQuickView }}" hint-size="100%,380px"></dc-import>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== CATEGORY TILES ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px">
+      <h2 style="font:700 27px/1.1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">Shop by Category</h2>
+      <a href="#" style="display:flex;align-items:center;gap:6px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0">All categories
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px">
+      <sc-for list="{{ catTiles }}" as="c" hint-placeholder-count="8">
+        <a href="#" style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:26px 16px;background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);transition:box-shadow .25s,transform .25s;cursor:pointer" style-hover="box-shadow:0 16px 34px -14px rgba(20,18,31,.18);transform:translateY(-3px)">
+          <div style="width:66px;height:66px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#EBE6FE,#F5F2FF);display:flex;align-items:center;justify-content:center;color:#6544E0">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </div>
+          <div style="text-align:center">
+            <div style="font:600 14px/1.2 'Instrument Sans',sans-serif;color:#17151F">{{ c.name }}</div>
+            <div style="font:400 12px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-top:6px">{{ c.count }}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURED DEALS ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px">
+      <div>
+        <h2 style="font:700 27px/1.1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">Featured Deals</h2>
+        <p style="font:400 14px/1 'Instrument Sans',sans-serif;color:#75727F;margin:9px 0 0">Save more on our most-loved products.</p>
+      </div>
+      <a href="#" style="display:flex;align-items:center;gap:6px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;white-space:nowrap">View all
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px">
+      <sc-for list="{{ featuredDeals }}" as="d" hint-placeholder-count="5">
+        <div style="display:flex;gap:14px;align-items:center;padding:14px;background:#fff;border:1px solid #F1F0F4;border-radius:16px;box-shadow:0 1px 2px rgba(20,18,31,.05);transition:box-shadow .25s,transform .25s;cursor:pointer" style-hover="box-shadow:0 14px 32px -14px rgba(20,18,31,.18);transform:translateY(-3px)">
+          <div style="position:relative;width:82px;height:82px;border-radius:12px;background:#F5F4F7;flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center">
+            <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 8px,transparent 8px 16px)"></div>
+            <span style="position:absolute;top:6px;left:6px;font:600 9.5px/1 'Instrument Sans',sans-serif;color:#472BA3;background:#EBE6FE;padding:4px 6px;border-radius:6px">&minus;{{ d.discount }}%</span>
+          </div>
+          <div style="min-width:0">
+            <div style="font:500 14px/1.35 'Instrument Sans',sans-serif;color:#17151F;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px">{{ d.title }}</div>
+            <div style="display:flex;align-items:baseline;gap:8px">
+              <span style="font:700 16px/1 'Sora',sans-serif;color:#6544E0">${{ d.price }}</span>
+              <span style="font:400 12.5px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-decoration:line-through">${{ d.compare }}</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== WIDE PROMO BANNER ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+    <div style="position:relative;border-radius:24px;overflow:hidden;background:linear-gradient(115deg,#17151F 0%,#2E1F6B 60%,#472BA3 100%);display:flex;align-items:center;min-height:240px">
+      <div style="position:absolute;top:-90px;right:180px;width:300px;height:300px;border-radius:50%;background:rgba(155,125,245,.18)"></div>
+      <div style="position:relative;z-index:2;padding:44px 52px;max-width:56%">
+        <span style="display:inline-block;font:600 12px/1 'Instrument Sans',sans-serif;color:#BCA9FB;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px">Audio · Hanover Electronics</span>
+        <h2 style="font:800 38px/1.1 'Sora',sans-serif;color:#fff;letter-spacing:-.02em;margin:0 0 22px">Dive into a world of<br>crystal-clear sound.</h2>
+        <button style="height:48px;padding:0 26px;background:#fff;color:#17151F;border:none;border-radius:12px;font:700 14px/1 'Sora',sans-serif;cursor:pointer;display:flex;align-items:center;gap:9px;transition:transform .2s" style-hover="transform:translateY(-2px)">Shop audio
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </div>
+      <div style="position:relative;z-index:2;flex:1;align-self:stretch;margin:24px 40px 24px 0;border-radius:16px;background:rgba(255,255,255,.07);border:1px dashed rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font:500 12px/1 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.6)">product image</div>
+    </div>
+  </section>
+
+  <!-- ===================== TOP SELLERS ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px">
+      <div>
+        <h2 style="font:700 27px/1.1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">Top Sellers</h2>
+        <p style="font:400 14px/1 'Instrument Sans',sans-serif;color:#75727F;margin:9px 0 0">Independent stores our shoppers rate highest.</p>
+      </div>
+      <a href="#" style="display:flex;align-items:center;gap:6px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;white-space:nowrap">All sellers
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px">
+      <sc-for list="{{ topSellers }}" as="s" hint-placeholder-count="5">
+        <div style="background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 1px 2px rgba(20,18,31,.05);overflow:hidden;transition:box-shadow .25s,transform .25s" style-hover="box-shadow:0 16px 34px -14px rgba(20,18,31,.18);transform:translateY(-3px)">
+          <div style="height:60px;background:linear-gradient(120deg,#EBE6FE,#F5F2FF)"></div>
+          <div style="padding:0 18px 20px">
+            <div style="width:56px;height:56px;border-radius:16px;background:#fff;border:1px solid #F1F0F4;box-shadow:0 4px 12px -4px rgba(20,18,31,.16);margin-top:-28px;display:flex;align-items:center;justify-content:center;color:#6544E0">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"></path><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"></path><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"></path></svg>
+            </div>
+            <div style="font:700 16px/1.2 'Sora',sans-serif;color:#17151F;margin-top:14px">{{ s.name }}</div>
+            <div style="font:400 12.5px/1 'Instrument Sans',sans-serif;color:#75727F;margin-top:6px">{{ s.tag }}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:14px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#E8A13A" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+              <span style="font:700 13px/1 'Sora',sans-serif;color:#17151F">{{ s.rating }}</span>
+              <span style="font:400 12px/1 'Instrument Sans',sans-serif;color:#A5A2AE">({{ s.reviews }})</span>
+              <span style="font:400 12px/1 'Instrument Sans',sans-serif;color:#A5A2AE;margin-left:auto">{{ s.products }} products</span>
+            </div>
+            <button style="width:100%;height:40px;margin-top:16px;border-radius:10px;border:1px solid #E6E4EC;background:#fff;color:#17151F;font:600 13px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:all .2s" style-hover="background:#6544E0;color:#fff;border-color:#6544E0">Visit store</button>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== DEAL OF THE DAY + LATEST ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+    <div style="display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start">
+      <div style="background:linear-gradient(160deg,#17151F,#2E1F6B);border-radius:22px;padding:26px;color:#fff;position:sticky;top:100px">
+        <div style="display:inline-flex;align-items:center;gap:8px;font:600 11px/1 'Instrument Sans',sans-serif;color:#BCA9FB;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#E5484D;box-shadow:0 0 0 4px rgba(229,72,77,.25)"></span>Deal of the Day
+        </div>
+        <div style="position:relative;aspect-ratio:1/1;border-radius:16px;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+          <span style="position:absolute;top:12px;left:12px;font:700 12px/1 'Sora',sans-serif;background:#E5484D;color:#fff;padding:6px 10px;border-radius:999px">&minus;{{ dealOfDay.discount }}%</span>
+          <span style="font:500 11px/1.4 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.55);text-align:center;padding:0 20px">{{ dealOfDay.title }}</span>
+        </div>
+        <div style="font:600 11px/1 'Instrument Sans',sans-serif;color:#BCA9FB;text-transform:uppercase;letter-spacing:.06em">{{ dealOfDay.seller }}</div>
+        <div style="font:600 17px/1.35 'Sora',sans-serif;color:#fff;margin:8px 0 14px">{{ dealOfDay.title }}</div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:18px">
+          <span style="font:800 26px/1 'Sora',sans-serif;color:#fff">${{ dealOfDay.price }}</span>
+          <span style="font:400 15px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.45);text-decoration:line-through">${{ dealOfDay.compare }}</span>
+        </div>
+        <div style="height:8px;border-radius:999px;background:rgba(255,255,255,.14);overflow:hidden;margin-bottom:9px">
+          <div style="width:{{ dodPercent }};height:100%;border-radius:999px;background:linear-gradient(90deg,#9B7DF5,#6544E0)"></div>
+        </div>
+        <div style="font:400 12px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.7);margin-bottom:20px">Sold <span style="color:#fff;font-weight:600">{{ dodSold }}</span> of {{ dodTotal }} — going fast</div>
+        <div style="display:flex;gap:8px;margin-bottom:20px">
+          <div style="flex:1;text-align:center;background:rgba(255,255,255,.08);border-radius:10px;padding:10px 0"><div style="font:700 18px/1 'Sora',sans-serif;color:#fff">{{ dod.h }}</div><div style="font:500 9px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:5px;text-transform:uppercase;letter-spacing:.06em">Hrs</div></div>
+          <div style="flex:1;text-align:center;background:rgba(255,255,255,.08);border-radius:10px;padding:10px 0"><div style="font:700 18px/1 'Sora',sans-serif;color:#fff">{{ dod.m }}</div><div style="font:500 9px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:5px;text-transform:uppercase;letter-spacing:.06em">Min</div></div>
+          <div style="flex:1;text-align:center;background:rgba(255,255,255,.08);border-radius:10px;padding:10px 0"><div style="font:700 18px/1 'Sora',sans-serif;color:#fff">{{ dod.s }}</div><div style="font:500 9px/1 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:5px;text-transform:uppercase;letter-spacing:.06em">Sec</div></div>
+        </div>
+        <button style="width:100%;height:48px;border-radius:12px;border:none;background:#fff;color:#17151F;font:700 14px/1 'Sora',sans-serif;cursor:pointer;transition:transform .2s" style-hover="transform:translateY(-2px)">Grab the deal</button>
+      </div>
+      <div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px">
+          <h2 style="font:700 27px/1.1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">Latest Products</h2>
+          <a href="#" style="display:flex;align-items:center;gap:6px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;white-space:nowrap">View all
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px">
+          <sc-for list="{{ latest }}" as="item" hint-placeholder-count="8">
+            <dc-import name="ProductCard" product="{{ item }}" on-quick-view="{{ openQuickView }}" hint-size="100%,370px"></dc-import>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== NEW ARRIVALS ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px">
+      <div>
+        <h2 style="font:700 27px/1.1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">New Arrivals</h2>
+        <p style="font:400 14px/1 'Instrument Sans',sans-serif;color:#75727F;margin:9px 0 0">Fresh drops from across the marketplace.</p>
+      </div>
+      <a href="#" style="display:flex;align-items:center;gap:6px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;white-space:nowrap">View all
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px">
+      <sc-for list="{{ newArrivals }}" as="item" hint-placeholder-count="5">
+        <dc-import name="ProductCard" product="{{ item }}" on-quick-view="{{ openQuickView }}" hint-size="100%,380px"></dc-import>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== BEST SELLING / TOP RATED (TABS) ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+      <button onClick="{{ setBest }}" style="{{ bestBtnStyle }}">Best Selling</button>
+      <button onClick="{{ setRated }}" style="{{ ratedBtnStyle }}">Top Rated</button>
+      <a href="#" style="margin-left:auto;display:flex;align-items:center;gap:6px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;white-space:nowrap">View all
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px">
+      <sc-for list="{{ tabProducts }}" as="item" hint-placeholder-count="4">
+        <dc-import name="ProductCard" product="{{ item }}" on-quick-view="{{ openQuickView }}" hint-size="100%,380px"></dc-import>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== BRANDS ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px">
+      <h2 style="font:700 27px/1.1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">Shop by Brand</h2>
+      <a href="#" style="display:flex;align-items:center;gap:6px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;white-space:nowrap">All brands
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px">
+      <sc-for list="{{ brands }}" as="b" hint-placeholder-count="10">
+        <a href="#" style="height:76px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #F1F0F4;border-radius:14px;box-shadow:0 1px 2px rgba(20,18,31,.05);font:600 18px/1 'Sora',sans-serif;color:#75727F;transition:color .2s,box-shadow .25s" style-hover="color:#17151F;box-shadow:0 12px 26px -12px rgba(20,18,31,.18)">{{ b }}</a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== CATEGORY RAILS ===================== -->
+  <sc-for list="{{ categoryRails }}" as="rail" hint-placeholder-count="3">
+    <section style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 0">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid #ECECF1">
+        <h2 style="font:700 22px/1.1 'Sora',sans-serif;color:#17151F;margin:0;letter-spacing:-.01em">{{ rail.title }}</h2>
+        <a href="#" style="display:flex;align-items:center;gap:6px;font:600 13px/1 'Instrument Sans',sans-serif;color:#6544E0;white-space:nowrap">View all
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px">
+        <sc-for list="{{ rail.products }}" as="item" hint-placeholder-count="5">
+          <dc-import name="ProductCard" product="{{ item }}" on-quick-view="{{ openQuickView }}" hint-size="100%,380px"></dc-import>
+        </sc-for>
+      </div>
+    </section>
+  </sc-for>
+
+  <!-- ===================== TRUST BADGES ===================== -->
+  <section style="max-width:var(--container-max);margin:0 auto;padding:80px 32px 0">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;background:#fff;border:1px solid #F1F0F4;border-radius:20px;padding:34px;box-shadow:0 1px 2px rgba(20,18,31,.05)">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="width:52px;height:52px;border-radius:14px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#6544E0;flex:none">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        </div>
+        <div><div style="font:600 14.5px/1.2 'Sora',sans-serif;color:#17151F">Fast delivery</div><div style="font:400 12.5px/1.3 'Instrument Sans',sans-serif;color:#75727F;margin-top:5px">Nationwide, 2–4 days</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="width:52px;height:52px;border-radius:14px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#6544E0;flex:none">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <div><div style="font:600 14.5px/1.2 'Sora',sans-serif;color:#17151F">Secure payment</div><div style="font:400 12.5px/1.3 'Instrument Sans',sans-serif;color:#75727F;margin-top:5px">Encrypted checkout</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="width:52px;height:52px;border-radius:14px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#6544E0;flex:none">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+        </div>
+        <div><div style="font:600 14.5px/1.2 'Sora',sans-serif;color:#17151F">7-day returns</div><div style="font:400 12.5px/1.3 'Instrument Sans',sans-serif;color:#75727F;margin-top:5px">Hassle-free refunds</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="width:52px;height:52px;border-radius:14px;background:#F5F2FF;display:flex;align-items:center;justify-content:center;color:#6544E0;flex:none">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"></path><path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7z"></path></svg>
+        </div>
+        <div><div style="font:600 14.5px/1.2 'Sora',sans-serif;color:#17151F">100% authentic</div><div style="font:400 12.5px/1.3 'Instrument Sans',sans-serif;color:#75727F;margin-top:5px">Verified sellers only</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="background:#17151F;color:#B3B0BD;margin-top:0">
+    <div style="max-width:var(--container-max);margin:0 auto;padding:60px 32px 0;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.4fr;gap:40px">
+      <div>
+        <div style="font:800 26px/1 'Sora',sans-serif;color:#fff;letter-spacing:-.02em;margin-bottom:16px">Covet<span style="color:#9B7DF5">.</span></div>
+        <p style="font:400 13.5px/1.6 'Instrument Sans',sans-serif;color:#8B8895;margin:0 0 20px;max-width:280px">A curated multi-vendor marketplace bringing independent sellers and beloved brands under one trusted checkout.</p>
+        <div style="display:flex;gap:10px">
+          <a href="#" aria-label="Facebook" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+          <a href="#" aria-label="Instagram" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg></a>
+          <a href="#" aria-label="X" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5-6.6L5.4 22H2.3l8-9.2L1.5 2h6.9l4.5 6z"></path></svg></a>
+          <a href="#" aria-label="YouTube" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#B3B0BD" style-hover="background:#6544E0;color:#fff"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.7 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1c.3-1.9.3-3.8.3-3.8s0-1.9-.3-3.8zM10 15V9l5 3z"></path></svg></a>
+        </div>
+      </div>
+      <div>
+        <div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:18px">Quick Links</div>
+        <div style="display:flex;flex-direction:column;gap:12px;font:400 13.5px/1 'Instrument Sans',sans-serif">
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">All products</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Featured deals</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Top sellers</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">New arrivals</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Brands</a>
+        </div>
+      </div>
+      <div>
+        <div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:18px">Customer Care</div>
+        <div style="display:flex;flex-direction:column;gap:12px;font:400 13.5px/1 'Instrument Sans',sans-serif">
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Help center</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Track your order</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Returns &amp; refunds</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Shipping policy</a>
+          <a href="#" style="color:#8B8895" style-hover="color:#fff">Privacy &amp; terms</a>
+        </div>
+      </div>
+      <div>
+        <div style="font:600 14px/1 'Sora',sans-serif;color:#fff;margin-bottom:18px">Stay in the loop</div>
+        <p style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#8B8895;margin:0 0 14px">New drops and members-only deals, weekly.</p>
+        <div style="display:flex;height:46px;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);margin-bottom:20px">
+          <input placeholder="Your email address" style="flex:1;border:none;background:transparent;outline:none;padding:0 14px;color:#fff;font:400 13.5px/1 'Instrument Sans',sans-serif">
+          <button style="border:none;background:#6544E0;color:#fff;padding:0 18px;font:600 13px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Subscribe</button>
+        </div>
+        <div style="font:500 11px/1 'Instrument Sans',sans-serif;color:#6C6976;margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em">Get the app</div>
+        <div style="display:flex;gap:10px">
+          <div style="display:flex;align-items:center;gap:9px;height:44px;padding:0 15px;border:1px solid rgba(255,255,255,.14);border-radius:11px;cursor:pointer"><svg width="19" height="19" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M17.05 12.5c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.15-2.8.85-3.5.85-.7 0-1.85-.83-3-.8-1.55.02-3 .9-3.8 2.3-1.6 2.8-.4 7 1.15 9.3.77 1.13 1.68 2.4 2.87 2.35 1.15-.05 1.58-.75 2.97-.75s1.78.75 3 .72c1.24-.02 2.02-1.14 2.78-2.28.88-1.3 1.24-2.57 1.26-2.63-.03-.01-2.42-.93-2.44-3.7zM14.8 5.3c.63-.77 1.06-1.83.94-2.9-.9.04-2 .6-2.65 1.36-.58.68-1.1 1.77-.96 2.8 1 .08 2.03-.5 2.67-1.26z"></path></svg><div><div style="font:400 8px/1 'Instrument Sans',sans-serif;color:#8B8895">Download on the</div><div style="font:600 12px/1.2 'Instrument Sans',sans-serif;color:#fff;margin-top:2px">App Store</div></div></div>
+          <div style="display:flex;align-items:center;gap:9px;height:44px;padding:0 15px;border:1px solid rgba(255,255,255,.14);border-radius:11px;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M3 2l16 10L3 22z" opacity=".9"></path></svg><div><div style="font:400 8px/1 'Instrument Sans',sans-serif;color:#8B8895">Get it on</div><div style="font:600 12px/1.2 'Instrument Sans',sans-serif;color:#fff;margin-top:2px">Google Play</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:var(--container-max);margin:0 auto;padding:28px 32px 34px;margin-top:44px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div style="font:400 12.5px/1 'Instrument Sans',sans-serif;color:#6C6976">© 2026 Covet Marketplace. All rights reserved.</div>
+      <div style="display:flex;gap:8px">
+        <div style="width:44px;height:28px;border-radius:6px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font:700 9px/1 'Instrument Sans',sans-serif;color:#B3B0BD">VISA</div>
+        <div style="width:44px;height:28px;border-radius:6px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font:700 8px/1 'Instrument Sans',sans-serif;color:#B3B0BD">MC</div>
+        <div style="width:44px;height:28px;border-radius:6px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font:700 7px/1 'Instrument Sans',sans-serif;color:#B3B0BD">AMEX</div>
+        <div style="width:44px;height:28px;border-radius:6px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font:700 7px/1 'Instrument Sans',sans-serif;color:#B3B0BD">PAYPAL</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================== QUICK VIEW MODAL ===================== -->
+  <sc-if value="{{ qvOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeQuickView }}" style="position:fixed;inset:0;z-index:200;background:rgba(20,18,31,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px">
+      <div onClick="{{ stop }}" style="position:relative;width:100%;max-width:940px;max-height:90vh;overflow-y:auto;background:#fff;border-radius:22px;box-shadow:0 40px 90px -20px rgba(20,18,31,.5);display:grid;grid-template-columns:1fr 1fr;gap:0">
+        <button onClick="{{ closeQuickView }}" aria-label="Close" style="position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:999px;border:none;background:#F3F2F6;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;transition:background .2s,color .2s" style-hover="background:#EBE6FE;color:#472BA3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+
+        <!-- image side -->
+        <div style="padding:30px;border-right:1px solid #F1F0F4">
+          <div style="position:relative;aspect-ratio:1/1;border:1px solid #F1F0F4;border-radius:16px;background:#F5F4F7;display:flex;align-items:center;justify-content:center;overflow:hidden">
+            <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.022) 0 12px,transparent 12px 24px)"></div>
+            <sc-if value="{{ qvHasDiscount }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:14px;left:14px;font:600 12px/1 'Instrument Sans',sans-serif;color:#472BA3;background:#EBE6FE;padding:7px 11px;border-radius:999px">{{ qvDiscountText }}</span></sc-if>
+            <div style="position:absolute;top:14px;right:14px;display:flex;flex-direction:column;gap:10px">
+              <span style="width:40px;height:40px;border-radius:999px;background:#fff;box-shadow:0 4px 12px -4px rgba(20,18,31,.2);display:flex;align-items:center;justify-content:center;color:#E0912F"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><path d="M3.27 6.96 12 12.01l8.73-5.05"></path><path d="M12 22.08V12"></path></svg></span>
+              <span style="width:40px;height:40px;border-radius:999px;background:#fff;border:1px solid #EBE6FE;box-shadow:0 4px 12px -4px rgba(20,18,31,.2);display:flex;align-items:center;justify-content:center;color:#6544E0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></span>
+            </div>
+            <span style="position:relative;font:500 12px/1.5 ui-monospace,Menlo,monospace;color:#A5A2AE;text-align:center;padding:0 24px">{{ qvImgLabel }}</span>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:16px">
+            <sc-for list="{{ qvThumbs }}" as="t" hint-placeholder-count="3">
+              <div onClick="{{ t.pick }}" style="{{ t.style }}">
+                <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(20,18,31,.03) 0 6px,transparent 6px 12px)"></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- details side -->
+        <div style="padding:34px 34px 34px">
+          <div style="font:600 11px/1 'Instrument Sans',sans-serif;color:#6544E0;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">{{ qvSeller }}</div>
+          <h2 style="font:700 26px/1.25 'Sora',sans-serif;color:#17151F;margin:0 0 16px;letter-spacing:-.01em">{{ qvTitle }}</h2>
+          <div style="display:flex;align-items:center;gap:16px;font:400 13.5px/1 'Instrument Sans',sans-serif;color:#75727F;padding-bottom:18px;border-bottom:1px solid #F1F0F4">
+            <span><span style="color:#17151F;font-weight:600">{{ qvReviews }}</span> Reviews</span>
+            <span style="width:1px;height:14px;background:#E6E4EC"></span>
+            <span><span style="color:#17151F;font-weight:600">0</span> Wish Listed</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin:20px 0 22px">
+            <span style="font:800 34px/1 'Sora',sans-serif;color:#6544E0">{{ qvPriceText }}</span>
+            <sc-if value="{{ qvHasCompare }}" hint-placeholder-val="{{ false }}"><span style="font:400 17px/1 'Instrument Sans',sans-serif;color:#A5A2AE;text-decoration:line-through">{{ qvCompareText }}</span></sc-if>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:22px">
+            <span style="font:500 14px/1 'Instrument Sans',sans-serif;color:#3A3745">Qty</span>
+            <div style="display:flex;align-items:center;border:1px solid #E6E4EC;border-radius:12px;overflow:hidden">
+              <button onClick="{{ qvDec }}" aria-label="Decrease" style="width:44px;height:46px;border:none;background:#fff;color:#75727F;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#F5F4F7"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+              <span style="width:56px;text-align:center;font:700 15px/1 'Sora',sans-serif;color:#17151F;border-left:1px solid #F1F0F4;border-right:1px solid #F1F0F4;line-height:46px">{{ qvQty }}</span>
+              <button onClick="{{ qvInc }}" aria-label="Increase" style="width:44px;height:46px;border:none;background:#fff;color:#6544E0;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#F5F2FF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+            </div>
+          </div>
+          <div style="font:500 15px/1 'Instrument Sans',sans-serif;color:#3A3745;margin-bottom:24px">Total Price : <span style="font:800 20px/1 'Sora',sans-serif;color:#6544E0;margin-left:4px">{{ qvTotalText }}</span></div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <button style="flex:1;height:52px;border-radius:12px;border:none;background:#6544E0;color:#fff;font:700 14px/1 'Sora',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#5636C6">Buy now</button>
+            <button style="flex:1;height:52px;border-radius:12px;border:none;background:#17151F;color:#fff;font:700 14px/1 'Sora',sans-serif;cursor:pointer;transition:opacity .2s" style-hover="opacity:.88">Add to cart</button>
+            <button aria-label="Add to wishlist" style="width:52px;height:52px;flex:none;border-radius:12px;border:1px solid #E6E4EC;background:#fff;color:#75727F;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color .2s,border-color .2s" style-hover="color:#E5484D;border-color:#F3C9CB">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!--SECTIONS-->
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    tab: 'best',
+    activeCat: null,
+    quickView: null,
+    qvQty: 1,
+    qvThumb: 0,
+    cartOpen: false,
+    cart: [
+      { title: 'Stanley Quencher 40oz Tumbler', seller: 'Home Atelier', price: 45, qty: 1 },
+    ],
+  };
+  constructor(props) {
+    super(props);
+    const now = Date.now();
+    this.fdDeadline = now + (2 * 86400 + 9 * 3600 + 41 * 60 + 12) * 1000;
+    this.dodDeadline = now + (8 * 3600 + 24 * 60 + 6) * 1000;
+  }
+  componentDidMount() { this._iv = setInterval(() => this.forceUpdate(), 1000); }
+  componentWillUnmount() { clearInterval(this._iv); }
+  renderVals() {
+    const pad = n => String(Math.max(0, n)).padStart(2, '0');
+    const parts = d => { let x = Math.max(0, d - Date.now()); return { d: pad(Math.floor(x / 86400000)), h: pad(Math.floor(x / 3600000) % 24), m: pad(Math.floor(x / 60000) % 60), s: pad(Math.floor(x / 1000) % 60) }; };
+
+    const categoryMenu = [
+      { name: "Women's Fashion", groups: [
+        { title: 'Clothing', items: ['Dresses', 'Tops & Blouses', 'Knitwear', 'Jeans', 'Skirts', 'Activewear'] },
+        { title: 'Footwear', items: ['Heels', 'Flats', 'Sneakers', 'Boots', 'Sandals'] },
+        { title: 'Bags', items: ['Totes', 'Crossbody', 'Clutches', 'Backpacks'] },
+        { title: 'Jewelry', items: ['Necklaces', 'Earrings', 'Rings', 'Bracelets'] },
+        { title: 'Accessories', items: ['Sunglasses', 'Scarves', 'Belts', 'Watches'] },
+      ]},
+      { name: "Men's Fashion", groups: [
+        { title: 'Watches', items: ['Sports Watches', 'Business Watches', 'Smart Watches'] },
+        { title: 'Clothing', items: ['Shirts', 'T-Shirts', 'Hoodies', 'Sweaters', 'Jeans', 'Pants'] },
+        { title: 'Footwear', items: ['Shoes', 'Boots', 'Sneakers', 'Loafers', 'Sandals'] },
+        { title: 'Bags & Wallets', items: ['Backpacks', 'Business Bags', 'Wallets'] },
+        { title: 'Eyewear', items: ['Eyeglasses', 'Sunglasses'] },
+      ]},
+      { name: 'Phones & Gadgets', groups: [
+        { title: 'Smartphones', items: ['iPhone', 'Samsung Galaxy', 'Google Pixel', 'OnePlus'] },
+        { title: 'Wearables', items: ['Smartwatches', 'Fitness Bands', 'Earbuds'] },
+        { title: 'Accessories', items: ['Cases & Covers', 'Chargers', 'Power Banks', 'Cables'] },
+        { title: 'Tablets', items: ['iPad', 'Android Tablets', 'E-Readers'] },
+      ]},
+      { name: 'Electronics', groups: [
+        { title: 'Computers', items: ['Laptops', 'Desktops', 'Monitors', 'Keyboards & Mice'] },
+        { title: 'Audio', items: ['Headphones', 'Speakers', 'Soundbars', 'Microphones'] },
+        { title: 'TV & Home', items: ['Smart TVs', 'Streaming Devices', 'Projectors'] },
+        { title: 'Storage', items: ['SSDs', 'Hard Drives', 'USB Hubs', 'Memory Cards'] },
+      ]},
+      { name: 'Health & Beauty', groups: [
+        { title: 'Skincare', items: ['Moisturizers', 'Serums', 'Cleansers', 'Sunscreen'] },
+        { title: 'Makeup', items: ['Face', 'Eyes', 'Lips', 'Brushes'] },
+        { title: 'Hair Care', items: ['Shampoo', 'Treatments', 'Styling Tools'] },
+        { title: 'Wellness', items: ['Vitamins', 'Supplements', 'Fragrance'] },
+      ]},
+      { name: 'Home & Kitchen', groups: [
+        { title: 'Kitchen', items: ['Cookware', 'Small Appliances', 'Bakeware', 'Utensils'] },
+        { title: 'Dining', items: ['Dinnerware', 'Glassware', 'Cutlery'] },
+        { title: 'Bedding', items: ['Sheet Sets', 'Duvets', 'Pillows'] },
+        { title: 'Decor', items: ['Lighting', 'Rugs', 'Wall Art', 'Storage'] },
+      ]},
+      { name: "Kid's Fashion", groups: [
+        { title: 'Clothing', items: ['Tops', 'Dresses', 'Outerwear', 'Sleepwear'] },
+        { title: 'Footwear', items: ['Sneakers', 'Sandals', 'Boots'] },
+        { title: 'Baby', items: ['Bodysuits', 'Rompers', 'Accessories'] },
+      ]},
+      { name: 'Books & Stationery', groups: [
+        { title: 'Books', items: ['Fiction', 'Non-Fiction', "Children's", 'Comics & Manga'] },
+        { title: 'Stationery', items: ['Notebooks', 'Pens', 'Planners', 'Art Supplies'] },
+        { title: 'Office', items: ['Desk Organizers', 'Folders', 'Calendars'] },
+      ]},
+      { name: 'Sports & Outdoor', groups: [
+        { title: 'Fitness', items: ['Weights', 'Yoga', 'Cardio', 'Apparel'] },
+        { title: 'Outdoor', items: ['Camping', 'Hiking', 'Cycling', 'Water Sports'] },
+        { title: 'Team Sports', items: ['Football', 'Basketball', 'Tennis'] },
+      ]},
+      { name: 'Grocery', groups: [
+        { title: 'Pantry', items: ['Snacks', 'Beverages', 'Breakfast', 'Cooking Essentials'] },
+        { title: 'Fresh', items: ['Coffee & Tea', 'Chocolate', 'Organic'] },
+        { title: 'Household', items: ['Cleaning', 'Paper Goods', 'Laundry'] },
+      ]},
+    ];
+    const rowIdle = "display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:10px;font:500 13.5px/1 'Instrument Sans',sans-serif;color:#3A3745;cursor:pointer;transition:background .18s,color .18s";
+    const rowActive = "display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:10px;font:600 13.5px/1 'Instrument Sans',sans-serif;color:#6544E0;background:#F5F2FF;cursor:pointer;transition:background .18s,color .18s";
+    const actCat = this.state.activeCat;
+    const heroCats = categoryMenu.map((cat, i) => ({
+      name: cat.name, i,
+      rowStyle: i === actCat ? rowActive : rowIdle,
+      chevron: i === actCat ? '#6544E0' : '#C6C4CE',
+      open: () => this.setState({ activeCat: i }),
+    }));
+    const activeGroups = (actCat != null && categoryMenu[actCat]) ? categoryMenu[actCat].groups : [];
+    const megaBase = "position:absolute;top:0;left:274px;right:0;min-height:100%;background:#fff;border:1px solid #F1F0F4;border-radius:18px;box-shadow:0 26px 64px -16px rgba(20,18,31,.26);z-index:30;padding:30px 34px;overflow-y:auto;transition:opacity .16s ease,transform .16s ease;";
+    const megaStyle = megaBase + (actCat != null
+      ? "opacity:1;visibility:visible;transform:translateX(0)"
+      : "opacity:0;visibility:hidden;transform:translateX(-6px);pointer-events:none");
+
+    const flashDeals = [
+      { title: 'iPhone 15 Pro Max 256GB', seller: 'TechNova', price: 1149, compare: 1299, rating: 5, reviews: 842, discount: 12 },
+      { title: 'Dyson Airwrap Complete Styler', seller: 'Beauty Loft', price: 549, compare: 599, rating: 5, reviews: 318, discount: 8 },
+      { title: 'Marc Jacobs Leather Tote Bag', seller: 'Marchetti', price: 289, compare: 380, rating: 4, reviews: 96, discount: 24 },
+      { title: 'Samsung Galaxy S24 Ultra', seller: 'Hanover Electronics', price: 1099, compare: 1199, rating: 5, reviews: 512, discount: 8 },
+      { title: 'Bose QuietComfort Ultra', seller: 'Hanover Electronics', price: 379, compare: 429, rating: 5, reviews: 264, discount: 12 },
+    ];
+    const featured = [
+      { title: 'Aesop Resurrection Hand Cream', seller: 'Beauty Loft', price: 41, rating: 5, reviews: 128 },
+      { title: 'Longchamp Le Pliage Tote', seller: 'Marchetti', price: 145, rating: 4, reviews: 210 },
+      { title: 'Garmin Venu 3 Smartwatch', seller: 'TechNova', price: 399, compare: 449, rating: 5, reviews: 176, discount: 11 },
+      { title: 'Apple Watch Series 9 GPS', seller: 'Hanover Electronics', price: 429, rating: 5, reviews: 388 },
+      { title: 'Samsung Galaxy Tab S9', seller: 'TechNova', price: 799, compare: 899, rating: 5, reviews: 142, discount: 11, tag: 'New' },
+      { title: 'Vitamix A3500 Blender', seller: 'Home Atelier', price: 549, rating: 4, reviews: 233 },
+    ];
+    const catTiles = [
+      { name: "Women's Fashion", count: '4,120 items' }, { name: "Men's Fashion", count: '3,480 items' },
+      { name: "Kid's Fashion", count: '1,260 items' }, { name: 'Health & Beauty', count: '2,890 items' },
+      { name: 'Home & Kitchen', count: '5,040 items' }, { name: 'Phones & Gadgets', count: '1,730 items' },
+      { name: 'Electronics', count: '2,610 items' }, { name: 'Books & Stationery', count: '980 items' },
+    ];
+    const featuredDeals = [
+      { title: 'Anker 737 Power Bank', price: 89, compare: 129, discount: 31 },
+      { title: 'Nike Pegasus 41 Running', price: 118, compare: 150, discount: 21 },
+      { title: 'Herschel Little America Backpack', price: 64, compare: 90, discount: 29 },
+      { title: 'Ember Travel Mug 2', price: 149, compare: 199, discount: 25 },
+      { title: 'JBL Flip 6 Speaker', price: 99, compare: 129, discount: 23 },
+    ];
+    const topSellers = [
+      { name: 'Hanover Electronics', tag: 'Premium electronics', rating: '4.9', reviews: '1,204', products: 320 },
+      { name: 'Beauty Loft', tag: 'Skincare & cosmetics', rating: '4.8', reviews: '894', products: 210 },
+      { name: 'Marchetti', tag: 'Italian leather goods', rating: '4.9', reviews: '512', products: 88 },
+      { name: 'Home Atelier', tag: 'Kitchen & living', rating: '4.7', reviews: '640', products: 176 },
+      { name: 'Peak Outdoors', tag: 'Gear & apparel', rating: '4.8', reviews: '388', products: 142 },
+    ];
+    const dealOfDay = { title: '18K Gold Diamond Pendant Necklace', seller: 'Marchetti', price: 1680, compare: 2100, rating: 5, reviews: 64, discount: 20 };
+    const latest = [
+      { title: 'Logitech MX Master 3S Mouse', seller: 'TechNova', price: 99, rating: 5, reviews: 210 },
+      { title: 'Keychron K8 Pro Keyboard', seller: 'TechNova', price: 119, rating: 4, reviews: 88 },
+      { title: 'Anker USB-C 7-in-1 Hub', seller: 'TechNova', price: 45, rating: 5, reviews: 132 },
+      { title: 'Sonos Era 100 Speaker', seller: 'Hanover Electronics', price: 249, rating: 5, reviews: 96 },
+      { title: 'Baseus 65W GaN Charger', seller: 'TechNova', price: 39, compare: 49, rating: 4, reviews: 300, discount: 20 },
+      { title: 'Ugreen Aluminum Laptop Stand', seller: 'Home Atelier', price: 34, rating: 4, reviews: 76 },
+      { title: 'Twelve South BookArc Stand', seller: 'TechNova', price: 59, rating: 5, reviews: 41 },
+      { title: 'Satechi Eco Leather Desk Mat', seller: 'Home Atelier', price: 29, rating: 4, reviews: 58 },
+    ];
+    const newArrivals = [
+      { title: 'On Cloudmonster Sneakers', seller: 'Peak Outdoors', price: 170, rating: 5, reviews: 42, tag: 'New' },
+      { title: 'Le Creuset Dutch Oven 5.5qt', seller: 'Home Atelier', price: 380, rating: 5, reviews: 88, tag: 'New' },
+      { title: 'Ray-Ban Wayfarer Classic', seller: 'Marchetti', price: 161, rating: 5, reviews: 120, tag: 'New' },
+      { title: 'Stanley Quencher 40oz Tumbler', seller: 'Home Atelier', price: 45, rating: 4, reviews: 210, tag: 'New' },
+      { title: 'Patagonia Nano Puff Jacket', seller: 'Peak Outdoors', price: 239, rating: 5, reviews: 64, tag: 'New' },
+    ];
+    const bestSelling = [
+      { title: 'iPhone 15 Pro 128GB', seller: 'TechNova', price: 999, rating: 5, reviews: 842 },
+      { title: 'AirPods Pro 2 USB-C', seller: 'Hanover Electronics', price: 249, rating: 5, reviews: 1204 },
+      { title: 'Stanley Quencher 40oz', seller: 'Home Atelier', price: 45, rating: 4, reviews: 210 },
+      { title: 'Nike Pegasus 41', seller: 'Peak Outdoors', price: 118, rating: 5, reviews: 388 },
+    ];
+    const topRated = [
+      { title: 'Sony WH-1000XM5 Headphones', seller: 'Hanover Electronics', price: 328, compare: 399, rating: 5, reviews: 214, discount: 18 },
+      { title: 'Aesop Resurrection Hand Cream', seller: 'Beauty Loft', price: 41, rating: 5, reviews: 128 },
+      { title: 'Le Creuset Dutch Oven 5.5qt', seller: 'Home Atelier', price: 380, rating: 5, reviews: 88 },
+      { title: 'Kindle Paperwhite 16GB', seller: 'TechNova', price: 149, rating: 5, reviews: 512 },
+    ];
+    const brands = ['Sony', 'Samsung', 'Apple', 'Bose', 'Nike', 'Dyson', 'Logitech', 'Anker', 'Le Creuset', 'Ray-Ban'];
+    const categoryRails = [
+      { title: "Women's Fashion", products: [
+        { title: 'Reformation Kourtney Midi Dress', seller: 'Marchetti', price: 218, rating: 4, reviews: 64 },
+        { title: 'Everlane Cashmere Crew', seller: 'Marchetti', price: 130, rating: 5, reviews: 88 },
+        { title: 'Adidas Samba OG Sneakers', seller: 'Peak Outdoors', price: 100, rating: 5, reviews: 320 },
+        { title: 'Coach Willow Shoulder Tote', seller: 'Marchetti', price: 350, rating: 5, reviews: 42 },
+        { title: 'Mejuri Bold Gold Hoops', seller: 'Marchetti', price: 120, rating: 5, reviews: 156 },
+      ]},
+      { title: 'Phones & Gadgets', products: [
+        { title: 'iPhone 15 128GB', seller: 'TechNova', price: 799, rating: 5, reviews: 512 },
+        { title: 'Google Pixel 8 Pro', seller: 'TechNova', price: 899, rating: 5, reviews: 188 },
+        { title: 'Samsung Galaxy S24', seller: 'Hanover Electronics', price: 799, rating: 5, reviews: 264 },
+        { title: 'Nothing Phone (2)', seller: 'TechNova', price: 599, rating: 4, reviews: 96 },
+        { title: 'OnePlus 12 5G', seller: 'TechNova', price: 699, rating: 5, reviews: 142 },
+      ]},
+      { title: 'Health & Beauty', products: [
+        { title: 'CeraVe Moisturizing Cream', seller: 'Beauty Loft', price: 16, rating: 5, reviews: 640 },
+        { title: 'The Ordinary Niacinamide 10%', seller: 'Beauty Loft', price: 12, rating: 5, reviews: 1204 },
+        { title: 'Olaplex No.3 Hair Perfector', seller: 'Beauty Loft', price: 30, rating: 5, reviews: 388 },
+        { title: 'La Roche-Posay Sunscreen SPF50', seller: 'Beauty Loft', price: 20, rating: 5, reviews: 210 },
+        { title: 'Sol de Janeiro Cheirosa 62 Mist', seller: 'Beauty Loft', price: 38, rating: 5, reviews: 156 },
+      ]},
+      { title: 'Electronics & Gadgets', products: [
+        { title: 'MacBook Air M3 13"', seller: 'Hanover Electronics', price: 1099, compare: 1199, rating: 5, reviews: 320, discount: 8 },
+        { title: 'iPad Air 11" M2', seller: 'Hanover Electronics', price: 599, rating: 5, reviews: 188 },
+        { title: 'LG C4 48" OLED TV', seller: 'Hanover Electronics', price: 1299, rating: 5, reviews: 96 },
+        { title: 'AirPods Max USB-C', seller: 'Hanover Electronics', price: 549, rating: 5, reviews: 142 },
+        { title: 'Samsung T7 Portable SSD 1TB', seller: 'TechNova', price: 89, compare: 109, rating: 5, reviews: 512, discount: 18 },
+      ]},
+      { title: 'Home & Kitchen', products: [
+        { title: 'KitchenAid Artisan Stand Mixer', seller: 'Home Atelier', price: 449, rating: 5, reviews: 264 },
+        { title: 'Ninja CREAMi Ice Cream Maker', seller: 'Home Atelier', price: 199, rating: 5, reviews: 388 },
+        { title: 'Lodge Cast Iron Skillet 12"', seller: 'Home Atelier', price: 25, rating: 5, reviews: 1204 },
+        { title: 'Brooklinen Luxe Core Sheet Set', seller: 'Home Atelier', price: 179, rating: 5, reviews: 156 },
+        { title: 'Simplehuman Sensor Trash Can', seller: 'Home Atelier', price: 200, rating: 4, reviews: 88 },
+      ]},
+      { title: "Men's Fashion", products: [
+        { title: 'Carhartt WIP Detroit Jacket', seller: 'Peak Outdoors', price: 178, rating: 5, reviews: 96 },
+        { title: "Levi's 501 Original Jeans", seller: 'Peak Outdoors', price: 98, rating: 5, reviews: 640 },
+        { title: 'Common Projects Achilles Low', seller: 'Marchetti', price: 425, rating: 5, reviews: 42 },
+        { title: 'Timex Weekender 40mm Watch', seller: 'Marchetti', price: 55, compare: 69, rating: 4, reviews: 210, discount: 20 },
+        { title: 'Bellroy Slim Sleeve Wallet', seller: 'Marchetti', price: 89, rating: 5, reviews: 156 },
+      ]},
+      { title: "Kid's Fashion", products: [
+        { title: 'Mini Rodini Organic Print Tee', seller: 'Marchetti', price: 34, rating: 5, reviews: 42 },
+        { title: 'Veja Small V-10 Kids Sneakers', seller: 'Peak Outdoors', price: 75, rating: 5, reviews: 88 },
+        { title: 'Petit Bateau Smocked Dress', seller: 'Marchetti', price: 45, rating: 5, reviews: 64 },
+        { title: 'Patagonia Kids Retro-X Fleece', seller: 'Peak Outdoors', price: 69, rating: 5, reviews: 120 },
+        { title: 'Melissa Mini Possession Sandals', seller: 'Marchetti', price: 50, rating: 4, reviews: 96 },
+      ]},
+    ];
+
+    const money = n => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const cart = this.state.cart;
+    const threshold = 50;
+    const subtotal = cart.reduce((a, c) => a + c.price * c.qty, 0);
+    const count = cart.reduce((a, c) => a + c.qty, 0);
+    const remaining = Math.max(0, threshold - subtotal);
+    const freeUnlocked = remaining <= 0;
+    const cartRows = cart.map((c, i) => ({
+      title: c.title, seller: c.seller, i, qty: c.qty, lineText: money(c.price * c.qty),
+      inc: () => this.setState(s => ({ cart: s.cart.map((x, k) => k === i ? { ...x, qty: x.qty + 1 } : x) })),
+      dec: () => this.setState(s => ({ cart: s.cart.map((x, k) => k === i ? { ...x, qty: Math.max(1, x.qty - 1) } : x) })),
+      remove: () => this.setState(s => ({ cart: s.cart.filter((_, k) => k !== i) })),
+    }));
+    const cartOpen = this.state.cartOpen;
+    const popupBase = "position:absolute;top:100%;right:0;width:388px;padding-top:14px;z-index:60;transition:opacity .18s ease,transform .18s ease;";
+    const cartPopupStyle = popupBase + (cartOpen
+      ? "opacity:1;visibility:visible;transform:translateY(0)"
+      : "opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none");
+    const barFillStyle = "height:100%;border-radius:999px;transition:width .3s ease;width:" + Math.min(100, subtotal / threshold * 100) + "%;background:" + (freeUnlocked ? "#2E9E6B" : "linear-gradient(90deg,#9B7DF5,#6544E0)");
+
+    const qv = this.state.quickView || {};
+    const qvOpen = !!this.state.quickView;
+    const qvQty = this.state.qvQty;
+    const qvThumb = this.state.qvThumb;
+    const qvThumbs = [0, 1, 2].map(k => ({
+      k,
+      style: "width:60px;height:60px;border-radius:10px;background:#F5F4F7;flex:none;overflow:hidden;cursor:pointer;position:relative;border:2px solid " + (k === qvThumb ? '#6544E0' : '#ECECF1'),
+      pick: () => this.setState({ qvThumb: k }),
+    }));
+
+    const tab = this.state.tab;
+    const activeBtn = "padding:0 20px;height:40px;border-radius:10px;border:none;background:#17151F;color:#fff;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:all .2s";
+    const idleBtn = "padding:0 20px;height:40px;border-radius:10px;border:1px solid #ECECF1;background:#fff;color:#75727F;font:600 13.5px/1 'Instrument Sans',sans-serif;cursor:pointer;transition:all .2s";
+
+    return {
+      cartOpen, cartPopupStyle, cartRows, barFillStyle, freeUnlocked,
+      cartCount: count,
+      hasItems: cart.length > 0,
+      cartEmpty: cart.length === 0,
+      notFree: !freeUnlocked,
+      qvOpen, qvThumbs, qvQty,
+      qvTitle: qv.title, qvSeller: qv.seller, qvImgLabel: qv.title,
+      qvPriceText: money(qv.price || 0),
+      qvCompareText: money(qv.compare || 0),
+      qvHasCompare: !!qv.compare,
+      qvHasDiscount: !!qv.discount,
+      qvDiscountText: qv.discount ? ('\u2212' + qv.discount + '%') : '',
+      qvReviews: qv.reviews || 0,
+      qvTotalText: money((qv.price || 0) * qvQty),
+      stop: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
+      openQuickView: (p) => this.setState({ quickView: p, qvQty: 1, qvThumb: 0 }),
+      closeQuickView: () => this.setState({ quickView: null }),
+      qvInc: () => this.setState(s => ({ qvQty: s.qvQty + 1 })),
+      qvDec: () => this.setState(s => ({ qvQty: Math.max(1, s.qvQty - 1) })),
+      headerTotal: money(subtotal),
+      subtotalText: money(subtotal),
+      remainingText: money(remaining),
+      openCart: () => this.setState({ cartOpen: true }),
+      closeCart: () => this.setState({ cartOpen: false }),
+      incItem: i => this.setState(s => { const c = s.cart.map((x, k) => k === i ? { ...x, qty: x.qty + 1 } : x); return { cart: c }; }),
+      decItem: i => this.setState(s => { const c = s.cart.map((x, k) => k === i ? { ...x, qty: Math.max(1, x.qty - 1) } : x); return { cart: c }; }),
+      removeItem: i => this.setState(s => ({ cart: s.cart.filter((_, k) => k !== i) })),
+      fd: parts(this.fdDeadline), dod: parts(this.dodDeadline),
+      heroCats, activeGroups, megaStyle,
+      closeMega: () => this.setState({ activeCat: null }),
+      catTiles, dealOfDay, latest, newArrivals, brands, categoryRails,
+      flashDeals: flashDeals.slice(0, 4),
+      featured: featured.slice(0, 5),
+      featuredDeals: featuredDeals.slice(0, 4),
+      topSellers: topSellers.slice(0, 4),
+      tabProducts: tab === 'best' ? bestSelling : topRated,
+      bestBtnStyle: tab === 'best' ? activeBtn : idleBtn,
+      ratedBtnStyle: tab === 'rated' ? activeBtn : idleBtn,
+      setBest: () => this.setState({ tab: 'best' }),
+      setRated: () => this.setState({ tab: 'rated' }),
+      dodPercent: '40%', dodSold: 32, dodTotal: 80,
+    };
+  }
+}
+</script>
+</body>
+</html>
