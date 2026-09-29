@@ -1,6 +1,6 @@
 # Tiến độ — 03-brands
 
-Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
+Trạng thái chung: ✅ · Cập nhật lần cuối: 2026-09-30
 
 | Bước | Tên | Trạng thái | Ghi chú |
 |------|-----|------------|---------|
@@ -11,9 +11,9 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | 4 | Server actions | ✅ | 4 action; helper ở `lib/actions/` |
 | 5 | Trang danh sách (`/admin/brands`) | ✅ | Build OK; `verify-brands.ts` 22/22 |
 | 6 | Modal thêm/sửa | ✅ | Gọi action thật qua HTTP 18/18; sửa lỗi "sửa không ảnh" |
-| 7 | Trang chi tiết (`/admin/brands/[id]`) | ⬜ | |
-| 8 | Luồng xóa | ⬜ | |
-| 9 | Kiểm tra tổng | ⬜ | |
+| 7 | Trang chi tiết (`/admin/brands/[id]`) | ✅ | Danh sách chuyển vào route group `(list)` để id sai trả 404 thật |
+| 8 | Luồng xóa | ✅ | `DeleteBrandButton` dùng ở danh sách và trang chi tiết |
+| 9 | Kiểm tra tổng | ✅ | Tự động đạt; checklist thủ công chờ chủ dự án |
 
 ## Nhật ký
 <!-- Mỗi bước thêm một mục:
@@ -250,6 +250,83 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
     kéo-thả, xem trước, giữ dữ liệu khi lỗi) → checklist thủ công.
 - Việc tôi cần làm thủ công (có thể làm ngay, `npm run dev`): mở `/admin/brands` → Add Brand →
   thử tên trùng và ảnh > 2 MB (modal giữ dữ liệu), thêm thành công; Edit một brand, đổi ảnh.
+### Bước 7 — Trang chi tiết (2026-09-30)
+- Đã làm:
+  - `brands/[id]/page.tsx`: `requireRole("ADMIN")`, `getBrandById` → `notFound()`. Thẻ đầu trang
+    (ảnh 96px, tên, badge trạng thái, slug, ngày tạo, nút Edit mở `BrandFormDialog`, nút Delete);
+    3 ô thống kê (Total products / On sale / Not on sale) qua `countProductsByBrand`; khối
+    Products với empty state "No products yet". Title trang theo tên brand.
+  - Breadcrumb "Dashboard / Brands / {tên}" qua slot `@breadcrumb/brands/[id]/page.tsx`.
+  - Nút Delete tạm "Coming soon" (nối ở Bước 8).
+  - **Sửa cấu trúc:** `page.tsx` + `loading.tsx` của danh sách chuyển vào route group
+    `brands/(list)/` (URL không đổi). Lý do: `loading.tsx` ở `brands/` bọc cả `[id]`, response
+    được stream với 200 trước khi `notFound()` chạy → id sai trả 200. `error.tsx` vẫn ở `brands/`.
+  - `scripts/verify-brands.ts`: thêm phần trang chi tiết (chuyển hướng theo role, 200, nội dung,
+    breadcrumb, id không tồn tại/sai định dạng → 404).
+- File tạo/sửa: `app/(admin)/admin/(protected)/brands/[id]/page.tsx`,
+  `…/@breadcrumb/brands/[id]/page.tsx`, `…/brands/(list)/{page,loading}.tsx` (git mv),
+  `scripts/verify-brands.ts`.
+- Kết quả kiểm tra:
+  - `npx tsc --noEmit`, `npm run lint`, `npm run build`: không lỗi (build có `/admin/brands/[id]`).
+    Grep hex/`rgba(`/px trong file mới: không có.
+  - `verify-brands.ts` (dev server): tất cả PASS, gồm phần list (22) + detail: khách → login,
+    khách hàng → `/dashboard`, vendor → `/vendor/dashboard`, admin id đúng → 200 (tên, slug,
+    badge Inactive, breadcrumb, thống kê, "No products yet", nút Edit), id không tồn tại → 404,
+    id sai định dạng → 404. Dọn sạch dữ liệu thử.
+  - Lưu ý môi trường: MySQL (XAMPP) đang tắt nên tôi khởi động `mysqld` để chạy kiểm tra.
+- Việc tôi cần làm thủ công: mở một brand từ danh sách, thử nút Edit trong trang chi tiết.
+### Bước 8 — Luồng xóa (2026-09-30)
+- Đã làm: `components/brands/DeleteBrandButton.tsx` (client) — nút Delete + modal xác nhận
+  "Delete “{tên}”?" (dùng `Dialog` size sm). Hai kiểu nút: icon 32px (danh sách), nút viền
+  (trang chi tiết, `redirectToList` → về `/admin/brands` sau khi xóa).
+  - Được xóa: `deleteBrandAction` → toast, đóng modal (danh sách tự bỏ dòng nhờ revalidate).
+  - Còn sản phẩm (`productCount > 0`): chặn, giải thích lý do, nút "Deactivate instead"
+    (gọi `toggleBrandStatusAction(id, "INACTIVE")`; brand đã Inactive thì chỉ hiện Cancel và lời nhắc).
+  - Lỗi từ action/mạng: hiện trong modal, modal giữ nguyên; đang gửi thì không đóng được.
+  - Thay hai nút "Coming soon" ở `BrandTable` và trang chi tiết (xóa `PendingAction`).
+- File tạo/sửa: `components/brands/DeleteBrandButton.tsx`, `components/brands/BrandTable.tsx`,
+  `app/(admin)/admin/(protected)/brands/[id]/page.tsx`.
+- Kết quả kiểm tra: `npx tsc --noEmit`, `npm run lint`, `npm run build`: không lỗi; grep hex/px: không có.
+  Action xóa + service xóa (bản ghi và file) sẽ được chạy thật trong `verify-brands.ts` ở Bước 9;
+  nhánh chặn khi còn sản phẩm chưa kích hoạt được (chưa có Product).
+- Việc tôi cần làm thủ công: xóa thử một brand ở danh sách và ở trang chi tiết (về danh sách).
+### Bước 9 — Kiểm tra tổng (2026-09-30)
+- Đã làm: bổ sung phần service + storage vào `scripts/verify-brands.ts` (gọi schema, service,
+  storage, `listBrands` trực tiếp; dọn dữ liệu và file sau khi chạy). Chạy toàn bộ kiểm tra.
+- File tạo/sửa: `scripts/verify-brands.ts`.
+- Kết quả kiểm tra (đã chạy, dev server + MySQL):
+  - `npx tsc --noEmit`: không lỗi. `npm run lint`: không lỗi. `npm run build`: thành công
+    (có `/admin/brands`, `/admin/brands/[id]`, `/media/brands/[file]`).
+  - `verify-auth.ts`: ALL CHECKS PASSED. `verify-dashboards.ts` (task 02): ALL CHECKS PASSED.
+  - `verify-brands.ts`: **All checks passed** (HTTP: list 22, detail 10; service/storage 19):
+    - tạo có ảnh → có bản ghi, file `<uuid>.png` tồn tại;
+    - trùng tên (cùng tên / khác hoa-thường / khác dấu) → "A brand with this name already exists",
+      không để lại file; ảnh 5 MB → bị schema từ chối; PDF đổi đuôi `.jpg` (MIME image/jpeg) → bị
+      magic bytes từ chối, không file, không bản ghi;
+    - hai tên sinh cùng slug → `-2`; sửa tên → slug giữ nguyên;
+    - sửa không ảnh → giữ ảnh (file còn); sửa có ảnh mới → file cũ bị xóa, file mới có;
+    - đổi trạng thái → lưu bền; `listBrands`: tìm kiếm, lọc trạng thái, phân trang (12 dòng →
+      10 + 2, không trùng, page vượt → trang cuối);
+    - xóa → bản ghi và file mất; xóa lần hai → báo "no longer exists";
+    - khách / khách hàng / vendor vào `/admin/brands` và `/admin/brands/<id>` → bị chuyển đúng;
+      id không tồn tại / sai định dạng → 404. Cleanup: 0 brand, 0 file còn lại.
+    - Dòng `prisma:error … No record was found for a delete` trong log là do ca "xóa lần hai"
+      cố ý; service bắt P2025 và trả lỗi thân thiện.
+  - Grep: không có hex/`rgba(` trong file mới; chỉ còn `sizes="46px"/"96px"` là thuộc tính HTML
+    của `next/image` (không phải style) ở `BrandTable.tsx`. 4/4 action export đều gọi
+    `await requireAdminAction()` ngay đầu.
+- Việc tôi cần làm thủ công — checklist (`npm run dev`, đăng nhập admin):
+  - [ ] So sánh trang danh sách và modal với `VendorProductList` / `VendorAddProduct`: bố cục, khoảng cách, màu.
+  - [ ] Thêm brand có ảnh; thêm trùng tên; thử ảnh > 2 MB (báo lỗi, modal giữ dữ liệu).
+  - [ ] Sửa tên và thay ảnh; ảnh mới hiện đúng.
+  - [ ] Bật/tắt trạng thái trên danh sách; F5 vẫn giữ.
+  - [ ] Tìm kiếm, lọc, đổi số dòng/trang, chuyển trang; URL phản ánh bộ lọc.
+  - [ ] Xóa brand (danh sách và trang chi tiết → về danh sách); mở id không tồn tại → 404.
+  - [ ] Xóa hết brand → empty state; lọc không ra kết quả → thông báo riêng.
+  - [ ] Mục "Brand Setup" trong sidebar admin hoạt động.
+  - [ ] Modal: Esc đóng, focus giữ trong modal, kéo-thả ảnh, xem trước ảnh.
+- Chưa kiểm tra được (chờ task Product): cột số sản phẩm, thống kê trang chi tiết, bảng sản phẩm,
+  chặn xóa khi còn sản phẩm + "Deactivate instead". Danh sách việc nối lại: cuối decisions.md.
 
 ## Bước tiếp theo
-Bước 7 — trang chi tiết `/admin/brands/[id]`.
+Task đã xong các bước. Còn checklist thủ công ở Bước 9; sau đó commit và gộp nhánh `feat/03-brands`.

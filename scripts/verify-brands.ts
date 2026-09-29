@@ -10,8 +10,13 @@
 // Exits with code 1 if any check fails.
 
 import bcrypt from "bcryptjs";
+import { existsSync, readdirSync } from "node:fs";
+import path from "node:path";
 import type { Role } from "@/lib/auth/roles";
 import { prisma } from "@/lib/prisma";
+import { countProductsByBrand, listBrands } from "@/lib/brands/queries";
+import { createBrandSchema, parseBrandListParams, updateBrandSchema } from "@/lib/brands/schema";
+import { createBrand, deleteBrand, setBrandStatus, updateBrand } from "@/lib/brands/service";
 
 const BASE = (process.env.VERIFY_BASE_URL ?? "http://localhost:3000").replace(/\/$/, "");
 const DOMAIN = "@brands.verify.covet.test";
@@ -181,6 +186,118 @@ async function checkListPage(admin: Jar, customer: Jar, vendor: Jar) {
   check("guest: /admin/login still the login page (200)", login.status === 200 && /sign in/i.test(login.body), login.status);
 }
 
+// ------------------------------------------------------------------------------ detail page
+
+async function checkDetailPage(admin: Jar, customer: Jar, vendor: Jar) {
+  console.log("\n# /admin/brands/[id]");
+  const brand = await prisma.brand.create({
+    data: { name: "Verify Detail Brand", slug: `${SLUG_PREFIX}detail`, status: "INACTIVE" },
+  });
+  const path = `/admin/brands/${brand.id}`;
+  await expectRedirect("guest", undefined, path, "/admin/login");
+  await expectRedirect("customer", customer, path, "/dashboard");
+  await expectRedirect("vendor", vendor, path, "/vendor/dashboard");
+
+  const ok = await get(path, admin);
+  check("admin: existing id -> 200", ok.status === 200, ok.status);
+  check("admin: name, slug and Inactive badge shown", ok.body.includes("Verify Detail Brand") && ok.body.includes(`${SLUG_PREFIX}detail`) && ok.body.includes(">Inactive<"));
+  check("admin: breadcrumb Dashboard / Brands / name", /aria-label="Breadcrumb"[\s\S]*?href="\/admin\/brands"[^>]*>Brands<[\s\S]*?aria-current="page"[^>]*>Verify Detail Brand</.test(ok.body));
+  check("admin: stats show 0 products", ok.body.includes("Total products") && ok.body.includes("On sale") && ok.body.includes("Not on sale"));
+  check("admin: empty product table 'No products yet'", ok.body.includes("No products yet"));
+  check("admin: Edit button present", ok.body.includes(">Edit<"));
+
+  const missing = await get("/admin/brands/cm0000000000000000000000", admin);
+  check("admin: unknown id -> 404", missing.status === 404, missing.status);
+  const junk = await get("/admin/brands/not-an-id", admin);
+  check("admin: malformed id -> 404", junk.status === 404, junk.status);
+}
+
+// ------------------------------------------------------------------------------ service + storage
+
+const PNG_1x1 = Uint8Array.from(
+  Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/iZk9HQAAAABJRU5ErkJggg==", "base64"),
+);
+const png = (name = "a.png") => new File([PNG_1x1], name, { type: "image/png" });
+const diskPath = (publicPath: string | null) =>
+  publicPath ? path.join(process.cwd(), "storage", "uploads", "brands", path.basename(publicPath)) : "";
+const storedFiles = () => {
+  const dir = path.join(process.cwd(), "storage", "uploads", "brands");
+  return existsSync(dir) ? readdirSync(dir).length : 0;
+};
+
+async function checkServiceAndStorage() {
+  console.log("\n# service + storage");
+  const filesBefore = storedFiles();
+
+  // Create with an image.
+  const a = await createBrand(createBrandSchema.parse({ name: "Brands Verify Alpha", image: png(), status: "ACTIVE" }));
+  if (!a.ok) return check("create with image", false, a);
+  const alpha = a.data;
+  check("create: record exists, slug from name", (await prisma.brand.count({ where: { id: alpha.id } })) === 1 && alpha.slug === "brands-verify-alpha", alpha.slug);
+  check("create: image file exists on disk (uuid.png)", /^\/media\/brands\/[0-9a-f-]{36}\.png$/.test(alpha.image ?? "") && existsSync(diskPath(alpha.image)), alpha.image);
+  const afterCreate = storedFiles();
+
+  // Duplicate names: same, other case, other accents.
+  for (const [label, name] of [["same name", "Brands Verify Alpha"], ["other case", "BRANDS VERIFY alpha"], ["other accents", "Brands Vérify Álpha"]] as const) {
+    const dup = await createBrand(createBrandSchema.parse({ name, image: png(), status: "ACTIVE" }));
+    check(`duplicate (${label}) -> friendly error, no leftover file`, !dup.ok && dup.error === "A brand with this name already exists" && dup.field === "name" && storedFiles() === afterCreate, dup);
+  }
+
+  // Image rules.
+  const big = createBrandSchema.safeParse({ name: "Brands Verify Big", image: new File([new Uint8Array(5 * 1024 * 1024)], "big.png", { type: "image/png" }), status: "ACTIVE" });
+  check("5 MB image -> rejected by schema", !big.success);
+  const pdf = new File([Buffer.from("%PDF-1.4\n%fake\n")], "doc.jpg", { type: "image/jpeg" });
+  const pdfParsed = createBrandSchema.safeParse({ name: "Brands Verify Pdf", image: pdf, status: "ACTIVE" });
+  const pdfResult = pdfParsed.success ? await createBrand(pdfParsed.data) : null;
+  check("PDF renamed .jpg (MIME image/jpeg) -> rejected by magic bytes", pdfResult !== null && !pdfResult.ok && pdfResult.field === "image", pdfResult);
+  check("rejected uploads leave no file and no record", storedFiles() === afterCreate && (await prisma.brand.count({ where: { slug: { in: ["brands-verify-big", "brands-verify-pdf"] } } })) === 0);
+
+  // Slugs.
+  const b = await createBrand(createBrandSchema.parse({ name: "Brands-Verify Alpha!", image: png(), status: "ACTIVE" }));
+  check("same slug from another name -> '-2' suffix", b.ok && b.data.slug === "brands-verify-alpha-2", b.ok ? b.data.slug : b);
+
+  // Update: rename keeps slug, no image keeps image.
+  const upd = await updateBrand(alpha.id, updateBrandSchema.parse({ name: "Brands Verify Renamed", status: "ACTIVE" }));
+  check("update without image: slug unchanged, image unchanged", upd.ok && upd.data.slug === alpha.slug && upd.data.image === alpha.image && upd.data.name === "Brands Verify Renamed", upd);
+  check("update without image: file still there", existsSync(diskPath(alpha.image)));
+
+  // Update with a new image deletes the old file.
+  const withNew = await updateBrand(alpha.id, updateBrandSchema.parse({ name: "Brands Verify Renamed", image: png("b.png"), status: "ACTIVE" }));
+  check("update with new image: image changed, new file exists, old file deleted", withNew.ok && withNew.data.image !== alpha.image && existsSync(diskPath(withNew.data.image)) && !existsSync(diskPath(alpha.image)), withNew);
+
+  // Status persists.
+  await setBrandStatus(alpha.id, "INACTIVE");
+  check("status change persisted", (await prisma.brand.findUnique({ where: { id: alpha.id } }))?.status === "INACTIVE");
+
+  // listBrands: search, status filter, pagination.
+  await prisma.brand.createMany({
+    data: Array.from({ length: 12 }, (_, i) => ({ name: `Brands Verify List ${String(i + 1).padStart(2, "0")}`, slug: `${SLUG_PREFIX}list-${i + 1}`, status: i % 3 === 0 ? ("INACTIVE" as const) : ("ACTIVE" as const) })),
+  });
+  const q = (o: Record<string, string>) => parseBrandListParams(o);
+  const searched = await listBrands(q({ q: "verify list 05", pageSize: "50" }));
+  check("listBrands: search -> 1", searched.total === 1 && searched.items.length === 1, searched.total);
+  const inactive = await listBrands(q({ q: "Brands Verify List", status: "INACTIVE", pageSize: "50" }));
+  check("listBrands: status filter -> 4 inactive", inactive.total === 4 && inactive.items.every((x) => x.status === "INACTIVE"), inactive.total);
+  const p1 = await listBrands(q({ q: "Brands Verify List", pageSize: "10" }));
+  const p2 = await listBrands(q({ q: "Brands Verify List", pageSize: "10", page: "2" }));
+  const p9 = await listBrands(q({ q: "Brands Verify List", pageSize: "10", page: "9" }));
+  check("listBrands: pagination 12 rows -> 10 + 2, no overlap, page past end -> last page",
+    p1.items.length === 10 && p2.items.length === 2 && p1.pageCount === 2 && new Set([...p1.items, ...p2.items].map((x) => x.id)).size === 12 && p9.page === 2 && p9.items.length === 2,
+    { p1: p1.items.length, p2: p2.items.length, p9: p9.page });
+  check("countProductsByBrand -> 0 (no Product model yet)", (await countProductsByBrand(alpha.id)) === 0);
+
+  // Delete removes record and file.
+  const lastImage = withNew.ok ? withNew.data.image : null;
+  const del = await deleteBrand(alpha.id);
+  check("delete: record and image file gone", del.ok && (await prisma.brand.count({ where: { id: alpha.id } })) === 0 && !existsSync(diskPath(lastImage)), del);
+  const again = await deleteBrand(alpha.id);
+  check("delete again -> 'no longer exists'", !again.ok, again);
+
+  // Clean the files of everything created here (cleanup() removes the rows after this).
+  for (const row of await prisma.brand.findMany({ where: { slug: { startsWith: SLUG_PREFIX } }, select: { id: true } })) await deleteBrand(row.id);
+  check("no image files left behind by this section", storedFiles() === filesBefore, { before: filesBefore, after: storedFiles() });
+}
+
 // ------------------------------------------------------------------------------ main
 
 async function main() {
@@ -198,6 +315,8 @@ async function main() {
   ]);
 
   await checkListPage(admin, customer, vendor);
+  await checkDetailPage(admin, customer, vendor);
+  await checkServiceAndStorage();
 }
 
 main()

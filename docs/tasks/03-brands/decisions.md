@@ -134,3 +134,31 @@
 - **File 0 byte = chưa chọn ảnh** (sửa lỗi phát hiện khi gọi action thật; xem progress.md).
 - **Nút Cancel** thay cho "Reset" của mockup (trong modal, Cancel là hành động đúng); nút gửi
   "Add Brand" / "Save Changes".
+
+### 2026-09-30 — Bước 7: trang chi tiết
+- **Route group `(list)`:** `page.tsx` và `loading.tsx` của danh sách nằm trong `brands/(list)/`.
+  `loading.tsx` đặt ở `brands/` sẽ bọc cả `[id]`, khiến id sai trả 200 (stream trước `notFound()`).
+  URL không đổi; `error.tsx` giữ ở `brands/` để phủ cả hai trang. Trang chi tiết chưa có skeleton
+  riêng (truy vấn một dòng, nhanh).
+- **Thống kê:** "On sale" / "Not on sale" gọi `countProductsByBrand(id, "active" | "inactive")`;
+  task Product cần định nghĩa lại hai nhãn này theo trạng thái sản phẩm.
+- **Việc task Product phải nối lại:** `countProductsByBrand` (một chỗ), cột Products ở danh sách,
+  3 ô thống kê và bảng sản phẩm ở trang chi tiết, chặn xóa khi còn sản phẩm.
+
+### 2026-09-30 — Bước 8: luồng xóa
+- **Một component `DeleteBrandButton`** cho cả danh sách và trang chi tiết; nhận `productCount`
+  từ `countProductsByBrand` nên task Product không phải sửa gì ở UI.
+- **Chặn xóa ở cả UI và server:** UI hiện nhánh "blocked" theo `productCount`; server
+  (`deleteBrand`) vẫn từ chối nếu số sản phẩm > 0, nên UI cũ/lệch dữ liệu không xóa nhầm.
+- **Brand đã INACTIVE mà còn sản phẩm:** không có "Deactivate instead", chỉ nhắc chuyển/xóa sản phẩm.
+- **Task Product cần kiểm tra lại:** nhánh chặn xóa và "Deactivate instead" (hiện không kích hoạt được).
+
+### 2026-09-30 — Việc task Product phải nối lại (tổng hợp)
+1. `lib/brands/queries.ts` → `countProductsByBrand(brandId, status?)`: thay `return 0` bằng `_count`
+   (gỡ `TODO(product task)`); định nghĩa "active"/"inactive" theo trạng thái sản phẩm.
+2. Thêm quan hệ `products` vào `Brand` (và migration) khi tạo model Product.
+3. Trang chi tiết `brands/[id]/page.tsx`: 3 ô thống kê (đang lấy từ hàm trên) và bảng sản phẩm
+   (hiện là empty state "No products yet").
+4. Cột Products ở danh sách (`BrandTable`) — gọi từ `listBrands`, đổi sang `_count` trong một truy vấn.
+5. Kiểm tra lại: chặn xóa khi còn sản phẩm (service + `DeleteBrandButton` nhánh blocked) và nút
+   "Deactivate instead"; thêm ca kiểm tra vào `scripts/verify-brands.ts`.
