@@ -10,7 +10,7 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | 3 | Lưu trữ ảnh | ✅ | Route `/media/brands/[file]`, `bodySizeLimit: "3mb"`, `/storage/` ignored |
 | 4 | Server actions | ✅ | 4 action; helper ở `lib/actions/` |
 | 5 | Trang danh sách (`/admin/brands`) | ✅ | Build OK; `verify-brands.ts` 22/22 |
-| 6 | Modal thêm/sửa | ⬜ | |
+| 6 | Modal thêm/sửa | ✅ | Gọi action thật qua HTTP 18/18; sửa lỗi "sửa không ảnh" |
 | 7 | Trang chi tiết (`/admin/brands/[id]`) | ⬜ | |
 | 8 | Luồng xóa | ⬜ | |
 | 9 | Kiểm tra tổng | ⬜ | |
@@ -208,5 +208,48 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
     trên `/admin/brands`), dọn sạch 23 brand + 3 user thử.
 - Việc tôi cần làm thủ công: không có.
 
+### Bước 6 — Modal thêm/sửa (2026-09-29)
+- Đã làm:
+  - `components/ui/Dialog.tsx`: `<dialog>` + `showModal()` (focus bị giữ trong modal, Esc /
+    nút X / bấm nền để đóng, khóa đóng khi đang gửi), mount = mở, unmount = đóng, trả focus về
+    nút đã mở; focus vào ô có `data-autofocus`. Token `--backdrop`; `html:has(dialog[open]:modal)`
+    khóa cuộn trang.
+  - `components/brands/BrandFormDialog.tsx`: MỘT component cho tạo và sửa (`brand` khi sửa).
+    Trường: tên (46px, `maxLength` 60), ảnh (bấm hoặc kéo-thả, xem trước bằng
+    `URL.createObjectURL`, thu hồi khi đổi/đóng, nút "Remove" chỉ bỏ ảnh vừa chọn; khi sửa hiện
+    ảnh hiện tại + "Leave empty to keep the current image"), trạng thái (Switch). Kiểm tra trước
+    bằng cùng schema Zod; lỗi dưới từng trường; nút gửi có spinner, bị vô hiệu khi đang gửi.
+    Gửi bằng `onSubmit` gọi action trực tiếp (không dùng `<form action>`, vì React tự reset form
+    sau action) → lỗi thì modal giữ nguyên dữ liệu, kể cả file. Thành công → toast, đóng, danh
+    sách tự cập nhật (revalidatePath).
+  - `components/brands/BrandFormTriggers.tsx`: `AddBrandButton` (thanh công cụ + empty state),
+    `EditBrandButton` (nút 32px trên dòng; bản "button" cho trang chi tiết ở Bước 7).
+    `components/brands/styles.ts`: class nút dùng chung.
+  - **Sửa lỗi** trong `lib/brands/schema.ts`: input file trống gửi file 0 byte mà tên sau khi
+    server giải mã không phải "" → sửa brand không kèm ảnh bị báo "Use a JPG, PNG or WEBP image".
+    Nay mọi file 0 byte = chưa chọn ảnh.
+- File tạo/sửa: `components/ui/Dialog.tsx`, `components/brands/{BrandFormDialog,
+  BrandFormTriggers,styles}.tsx|ts`, `components/brands/BrandTable.tsx`,
+  `app/(admin)/admin/(protected)/brands/page.tsx`, `lib/brands/schema.ts`, `app/globals.css`.
+- Kết quả kiểm tra:
+  - `npx tsc --noEmit`, `npm run lint`, `npm run build`: không lỗi. Grep file mới: không còn
+    hex/`rgba(`/px (chỉ còn trong comment).
+  - Gọi 3 server action thật qua HTTP trên dev server (script nháp; ID lấy từ manifest,
+    tham số mã hóa như `encodeReply` của React): **18/18 PASS**
+    - khách hàng → proxy chuyển hướng; admin bị hạ role trong DB (token vẫn ADMIN) →
+      `requireAdminAction` trả "Unauthorized", không tạo gì, không ghi file;
+    - tạo → tên được trim, slug `brands-verify-alpha`, ảnh `/media/brands/<uuid>.png`, GET 200;
+    - trùng tên khác hoa/thường + dấu ("brands verify ÁLPHA") → lỗi ở trường name, không để lại file;
+    - PDF đổi tên `.jpg`, MIME `image/jpeg` → "Use a JPG, PNG or WEBP image";
+    - ảnh 2,5 MB vào tới action (giới hạn body > 1 MB mặc định) → "Image must be 2 MB or smaller";
+      body 3,5 MB → bị từ chối trước action (≥ 400);
+    - sửa không ảnh → slug giữ nguyên, ảnh giữ nguyên, công tắc không tick → INACTIVE;
+    - sửa có ảnh mới → file cũ bị xóa, file mới tồn tại; toggle → INACTIVE lưu bền; toggle
+      trạng thái sai → lỗi validate. Dọn sạch: 0 file còn lại.
+  - Chưa kiểm được bằng máy (không có trình duyệt tự động): tương tác trong modal (focus, Esc,
+    kéo-thả, xem trước, giữ dữ liệu khi lỗi) → checklist thủ công.
+- Việc tôi cần làm thủ công (có thể làm ngay, `npm run dev`): mở `/admin/brands` → Add Brand →
+  thử tên trùng và ảnh > 2 MB (modal giữ dữ liệu), thêm thành công; Edit một brand, đổi ảnh.
+
 ## Bước tiếp theo
-Bước 6 — modal thêm/sửa (`BrandFormDialog`).
+Bước 7 — trang chi tiết `/admin/brands/[id]`.

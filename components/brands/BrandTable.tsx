@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { EyeIcon } from "@/components/icons";
-import { EditIcon, TrashIcon } from "@/components/icons/dashboard";
+import { TrashIcon } from "@/components/icons/dashboard";
+import { EditBrandButton } from "@/components/brands/BrandFormTriggers";
 import { BrandStatusToggle } from "@/components/brands/BrandStatusToggle";
+import { rowActionClass } from "@/components/brands/styles";
 import { comingSoonProps } from "@/components/dashboard/coming-soon";
 import { brandDetailHref } from "@/lib/brands/list-url";
 import type { BrandListItem } from "@/lib/brands/queries";
@@ -12,14 +14,6 @@ import type { BrandListItem } from "@/lib/brands/queries";
 // status / actions, 14px apart, 18px side padding. A real <table> (fixed layout) keeps table
 // semantics for screen readers; it scrolls sideways below 60rem instead of squeezing.
 const CELL = "py-3.5 pr-3.5 align-middle first:pl-4.5 last:pr-4.5";
-
-/** 32px square row-action button tones (View green, Edit iris, Delete red). */
-export const rowActionClass = {
-  base: "flex size-8 flex-none items-center justify-center rounded-sm border transition-colors focus-visible:ring-3 focus-visible:ring-iris-100 focus-visible:outline-none",
-  view: "border-success-bg bg-success-soft text-success-solid hover:bg-success-bg hover:text-success-solid",
-  edit: "border-iris-100 bg-iris-50 text-iris-500 hover:bg-iris-100 hover:text-iris-500",
-  delete: "border-error-line bg-error-bg text-error-solid hover:border-error-solid/30",
-};
 
 /** Brand rows. `startIndex` = rows before this page, for the # column. */
 export function BrandTable({ items, startIndex }: { items: BrandListItem[]; startIndex: number }) {
@@ -79,10 +73,10 @@ export function BrandTable({ items, startIndex }: { items: BrandListItem[]; star
                   >
                     <EyeIcon size={15} />
                   </Link>
-                  {/* Wired up in step 6 (edit dialog) and step 8 (delete flow). */}
-                  <PendingAction label={`Edit ${brand.name}`} tone="edit">
-                    <EditIcon size={15} />
-                  </PendingAction>
+                  <EditBrandButton
+                    brand={{ id: brand.id, name: brand.name, image: brand.image, status: brand.status }}
+                  />
+                  {/* Wired up in step 8 (delete flow). */}
                   <PendingAction label={`Delete ${brand.name}`} tone="delete">
                     <TrashIcon size={15} />
                   </PendingAction>
@@ -110,7 +104,7 @@ export function BrandThumb({ image, size = "row" }: { image: string | null; size
   );
 }
 
-function PendingAction({ label, tone, children }: { label: string; tone: "edit" | "delete"; children: ReactNode }) {
+function PendingAction({ label, tone, children }: { label: string; tone: "delete"; children: ReactNode }) {
   return (
     <span
       role="button"

@@ -40,10 +40,14 @@ const brandImageFile = z
   .max(BRAND_IMAGE_MAX_BYTES, IMAGE_TOO_LARGE)
   .mime([...BRAND_IMAGE_TYPES], IMAGE_BAD_TYPE);
 
-/** An empty file input submits a 0-byte File with no name: treat it as "no file chosen". */
+/**
+ * An empty file input still submits a 0-byte File; its name is "" in the browser but not
+ * always after the server decodes the request. Any 0-byte file means "no file chosen" (it
+ * could never be a valid image anyway).
+ */
 function emptyFileToUndefined(value: unknown): unknown {
   if (value === null || value === "") return undefined;
-  if (typeof File !== "undefined" && value instanceof File && value.size === 0 && value.name === "") return undefined;
+  if (typeof File !== "undefined" && value instanceof File && value.size === 0) return undefined;
   return value;
 }
 

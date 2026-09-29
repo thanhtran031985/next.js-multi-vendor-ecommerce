@@ -48,6 +48,7 @@
   --track-highlight: #f7f6f9; /* skeleton shimmer highlight */
   /* lists (task 03) */
   --toggle-off: #e4e2e9; /* switch track when off (DESIGN_SYSTEM Toggle/Switch) */
+  --backdrop: rgba(20, 18, 31, 0.55); /* behind modal dialogs (DESIGN_SYSTEM Dialog) */
 
   /* text on dark surfaces (--ink utility bar, footer) */
   --on-dark-soft: #c9c7d1;
@@ -158,6 +159,7 @@
   --color-track: var(--track);
   --color-track-highlight: var(--track-highlight);
   --color-toggle-off: var(--toggle-off);
+  --color-backdrop: var(--backdrop);
   --color-on-dark-soft: var(--on-dark-soft);
   --color-on-dark-muted: var(--on-dark-muted);
   --color-on-dark-subtle: var(--on-dark-subtle);
@@ -306,5 +308,9 @@
   }
   input::placeholder {
     color: var(--muted-soft);
+  }
+  /* The page behind an open modal <dialog> does not scroll. */
+  html:has(dialog[open]:modal) {
+    overflow: hidden;
   }
 }

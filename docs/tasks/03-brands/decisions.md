@@ -122,3 +122,15 @@
   quy ước task 02); trang chi tiết không làm sáng mục nào. Rail không có mục nào sáng (mục
   Products của rail vẫn "Coming soon").
 - **`scripts/verify-brands.ts`** bắt đầu từ Bước 5 (phần HTTP), Bước 9 bổ sung phần service.
+
+### 2026-09-29 — Bước 6: modal thêm/sửa
+- **Form gửi bằng `onSubmit` + gọi action trực tiếp**, không `<form action>` / `useActionState`:
+  React 19 tự reset form sau khi action chạy xong, sẽ làm mất dữ liệu và file đã chọn khi lỗi
+  (task.md yêu cầu giữ). Kiểm tra trước bằng cùng schema Zod.
+- **Modal chỉ render khi mở** (mount = `showModal()`, unmount = đóng): mỗi lần mở là form mới,
+  mỗi dòng không giữ sẵn một `<dialog>` ẩn. Khi đang gửi không đóng được (Esc/X/nền).
+- **Tái sử dụng** `FieldError`, `SubmitButton` (`components/auth/form-kit.tsx`) và
+  `firstFieldErrors` (`lib/validation/auth.ts`) — chỉ import, không sửa.
+- **File 0 byte = chưa chọn ảnh** (sửa lỗi phát hiện khi gọi action thật; xem progress.md).
+- **Nút Cancel** thay cho "Reset" của mockup (trong modal, Cancel là hành động đúng); nút gửi
+  "Add Brand" / "Save Changes".
