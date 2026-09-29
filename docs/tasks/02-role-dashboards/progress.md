@@ -528,5 +528,13 @@ Chuẩn bị:
   - Khách hàng mở `/admin/dashboard` bị chuyển về `/dashboard`.
   - Vendor PENDING mở `/vendor/dashboard` bị chuyển về `/vendor/pending`.
 
+### Ghi chú khi kiểm tra thủ công (2026-09-29)
+- **Chủ dự án xác nhận:** mỗi role (customer, vendor, admin) vào đúng dashboard của mình.
+- **`/admin/dashboard` chuyển sang `/vendor/dashboard`:** không phải lỗi. Trình duyệt lúc đó đang đăng nhập vendor, và quy tắc "sai role → dashboard của mình" có từ task 01. Muốn vào admin thì phải Logout rồi đăng nhập ở `/admin/login`.
+- **"Issues 1" / "The children should not have changed if we pass in the same set" khi bấm `<`:** lỗi này đến từ extension React Developer Tools (`installHook.js`), không phải từ code.
+  - Extension vẫn chạy trong cửa sổ ẩn danh nếu bật "Allow in Incognito".
+  - Đã tái hiện bằng Chrome headless không có extension, trên dev server: sidebar thu gọn/mở lại đúng, 0 lỗi, 0 cảnh báo.
+  - Không sửa code.
+
 ## Bước tiếp theo
-Task hoàn thành. Chờ chủ dự án kiểm tra checklist thủ công.
+Task hoàn thành. Chờ chủ dự án kiểm tra nốt các mục còn lại của checklist thủ công.
