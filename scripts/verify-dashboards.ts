@@ -136,7 +136,18 @@ async function main() {
   }
 
   console.log("\n# Customer");
-  await expectPage("customer", jars.customer, "/dashboard", ["Hello, Cora", "Profile Info", "Cora Buyer", `cora${DOMAIN}`, "Sign out", "Coming soon"], [
+  await expectPage("customer", jars.customer, "/dashboard", [
+    "Hello, Cora",
+    "Profile Info",
+    "Cora Buyer",
+    'value="Cora"',
+    'value="Buyer"',
+    `value="cora${DOMAIN}"`,
+    "Member since",
+    "Update Profile",
+    "Sign out",
+    "Coming soon",
+  ], [
     'href="/dashboard/orders"',
     "passwordHash",
   ]);

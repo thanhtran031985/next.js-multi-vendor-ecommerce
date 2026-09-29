@@ -5,8 +5,8 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | Bước | Tên | Trạng thái | Ghi chú |
 |------|-----|------------|---------|
 | 0 | Kiểm tra (không sửa code) | ✅ | Q1–Q4 đã chốt, xem decisions.md |
-| 1 | Thành phần dùng chung | ✅ | tsc/lint/build đạt; kiểm tra HTTP chờ MySQL |
-| 2 | Dashboard khách hàng (`/dashboard`) | ⬜ | |
+| 1 | Thành phần dùng chung | ✅ | tsc/lint/build đạt; HTTP đạt (chạy cùng Bước 2) |
+| 2 | Dashboard khách hàng (`/dashboard`) | ✅ | HTTP: 42/42 kiểm tra đạt |
 | 3 | Dashboard người bán (`/vendor/dashboard`) | ⬜ | |
 | 4 | Dashboard admin (`/admin/dashboard`) | ⬜ | |
 | 5 | Kiểm tra tổng | ⬜ | |
@@ -315,5 +315,45 @@ Chi tiết ở `decisions.md`.
   - Kiểm tra HTTP (`verify-dashboards.ts`) **chưa chạy được**: MySQL `localhost:3306` không chạy ("Can't reach database server"). Script đã sẵn sàng, sẽ chạy ở Bước 2.
 - Việc tôi cần làm thủ công: bật MySQL (database `covetecom`) trước Bước 2.
 
+### Bước 2 — Dashboard khách hàng (2026-09-29)
+- Đã làm:
+  - Loader `lib/dashboard/customer.ts` (`getCustomerDashboard`):
+    - Chỉ select `name`, `email`, `createdAt`.
+    - Tách First/Last Name bằng `splitName`.
+    - `phone: null` kèm `// TODO(customer-profile)`.
+  - Page `/dashboard` (Profile Info, chỉ đọc, theo Q1). Page chỉ gọi loader, không query Prisma trực tiếp.
+    - Avatar mặc định, tên đầy đủ, "Member since <ngày>".
+    - 6 ô form:
+      - Name/Email: `readOnly`, lấy từ DB.
+      - Phone: trống, placeholder "Not added yet".
+      - Mật khẩu: `disabled`, có "Coming soon".
+    - Nút đổi ảnh và "Update Profile" bị vô hiệu, có "Coming soon".
+    - Page vẫn gọi `requireRole("CUSTOMER")`.
+  - `loading.tsx`: skeleton theo trạng thái Loading của thiết kế.
+  - `error.tsx`: thẻ lỗi của thiết kế + "Try again". Dùng prop `retry` của Next 16.
+  - Component mới:
+    - `DashboardError` (client, dùng chung cho 3 dashboard).
+    - `ProfileHeading`.
+    - `EmptyState` thêm prop `framed`, để hiện trạng thái bên trong một thẻ có sẵn.
+- File tạo/sửa:
+  - `lib/dashboard/customer.ts`.
+  - `app/(account)/dashboard/{page,loading,error}.tsx`.
+  - `components/dashboard/{DashboardError,ProfileHeading}.tsx`, `components/dashboard/EmptyState.tsx`.
+  - `scripts/verify-dashboards.ts`: thêm marker của trang khách hàng.
+- Kết quả kiểm tra:
+  - `npx tsc --noEmit`: không lỗi.
+  - `npm run lint`: không lỗi.
+  - `npm run build`: thành công.
+  - HTTP (sau khi bật MySQL): `next start` + `npx tsx --env-file=.env scripts/verify-dashboards.ts` → **ALL CHECKS PASSED**, 42/42, đã xóa 5 user test.
+    - Khách hàng:
+      - `/dashboard` trả 200. Hiện "Hello, Cora", tên/email thật, First/Last Name, "Member since", "Coming soon".
+      - Không có link `/dashboard/orders`. Không có `passwordHash`.
+    - Vendor và admin vào `/dashboard` bị chuyển 1 lần về dashboard của họ (không vòng lặp).
+    - Kiểm tra luôn shell của Bước 1:
+      - Vendor APPROVED → 200, PENDING/SUSPENDED → `/vendor/pending`.
+      - Admin → 200.
+      - Chưa đăng nhập → trang login đúng khu vực.
+- Việc tôi cần làm thủ công: không có. (Checklist trình duyệt để ở Bước 5.)
+
 ## Bước tiếp theo
-Bước 2 — Dashboard khách hàng (`/dashboard`). Cần MySQL đang chạy để kiểm tra HTTP.
+Bước 3 — Dashboard người bán (`/vendor/dashboard`).

@@ -78,3 +78,8 @@
 - **Chưa có số liệu:** `StatCard` với `value = null` hiện "—" (màu `muted-soft`) kèm "No data yet" cho trình đọc màn hình. Không hiện 0, vì 0 cũng là một con số khẳng định.
 - **Breadcrumb "Home"** trỏ về `/`, theo thiết kế vendor (`Home.dc.html`).
 - **Script HTTP của Bước 5** (`scripts/verify-dashboards.ts`) được viết từ Bước 1 để kiểm tra shell. Script nằm trong `scripts/` giống `verify-auth.ts`.
+
+### 2026-09-29 — Bước 2: ô Phone không có mã vùng "+1"
+- **Bối cảnh:** thiết kế có ô chọn mã vùng "+1" trước số điện thoại. Đây là dữ liệu demo, và `User` chưa có trường phone.
+- **Quyết định:** ô Phone chỉ là input trống với placeholder "Not added yet", không có ô mã vùng.
+- **Ảnh hưởng:** task hồ sơ khách hàng sẽ thêm lại ô mã vùng khi có trường `phone`.
