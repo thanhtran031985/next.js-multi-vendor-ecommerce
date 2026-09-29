@@ -5,8 +5,8 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | Bước | Tên | Trạng thái | Ghi chú |
 |------|-----|------------|---------|
 | 0 | Kiểm tra (không sửa code) | ✅ | Q1–Q3 đã chốt (decisions.md) |
-| 1 | Prisma model | 🔄 | Migration `20260929142159_add_brand` xong; Q4 = phân biệt dấu, còn migration đổi collation |
-| 2 | Schema, truy vấn, service | ⬜ | |
+| 1 | Prisma model | ✅ | Migration `20260929142159_add_brand`; Q4: giữ `unicode_ci` (khác dấu cũng trùng) |
+| 2 | Schema, truy vấn, service | ✅ | `lib/storage/images.ts` làm sớm ở bước này (service cần) |
 | 3 | Lưu trữ ảnh | ⬜ | |
 | 4 | Server actions | ⬜ | |
 | 5 | Trang danh sách (`/admin/brands`) | ⬜ | |
@@ -91,9 +91,37 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
     NULL, `status` ENUM mặc định ACTIVE.
   - Collation của `name`/`slug`: `utf8mb4_unicode_ci`. Truy vấn thật trên DB:
     `'Sony' = 'sony'` → 1, **`'Café' = 'Cafe'` → 1** (không phân biệt dấu). Xem Q4.
-- Q4 đã chốt: phân biệt dấu (xem decisions.md). Còn làm: migration mới đổi collation cột
-  `name` sang `utf8mb4_0900_as_ci` (không reset DB), sau khi xác nhận server là MySQL 8+.
+- Q4: server là MariaDB 10.4.32, không có collation vừa phân biệt dấu vừa không phân biệt
+  hoa/thường (đã thử 4 collation trên DB). Chủ dự án chọn giữ `utf8mb4_unicode_ci` → không
+  sửa schema/migration. Chi tiết ở decisions.md.
+
+### Bước 2 — Schema, truy vấn, service (2026-09-29)
+- Đã làm:
+  - `lib/brands/schema.ts`: `createBrandSchema` / `updateBrandSchema` (tên trim 2–60, ảnh
+    `z.file()` ≤ 2 MB + JPG/PNG/WEBP, bắt buộc khi tạo, tùy chọn khi sửa; input file rỗng =
+    chưa chọn ảnh), `brandStatusSchema`, `brandIdSchema`, `brandInputFromForm` (công tắc
+    không tick = INACTIVE), `parseBrandListParams` (q/status/page/pageSize, sai → mặc định).
+    Không import Prisma (client dùng được).
+  - `lib/brands/queries.ts`: `listBrands` (count → kẹp page về trang cuối → findMany trong
+    cùng một interactive `$transaction`; trả `total` theo bộ lọc và `totalAll` để phân biệt
+    hai kiểu rỗng), `getBrandById`, `countProductsByBrand` (luôn 0, `// TODO(product task)`).
+  - `lib/brands/service.ts`: `createBrand`, `updateBrand`, `deleteBrand`, `setBrandStatus`
+    theo đúng thứ tự file ↔ DB của task.md; slug sinh khi tạo (base, -2, -3…, thử lại khi
+    P2002 trên slug), giữ nguyên khi sửa; P2002 trên name → "A brand with this name already
+    exists"; xóa bị chặn khi `countProductsByBrand > 0`.
+  - `lib/storage/images.ts` (làm sớm, xem decisions.md): magic bytes, `saveImage`,
+    `deleteImage`, tên `<uuid>.<ext>`, `// TODO(production): chuyển sang S3/R2`.
+- File tạo/sửa: `lib/brands/schema.ts`, `lib/brands/queries.ts`, `lib/brands/service.ts`,
+  `lib/storage/images.ts`.
+- Kết quả kiểm tra:
+  - `npx tsc --noEmit`: không lỗi. `npx eslint lib/brands lib/storage`: không lỗi.
+  - Chạy thử schema (script nháp, không ghi DB/đĩa): tham số URL sai → mặc định
+    (`page=abc`→1, `pageSize=13`→10, `status=nope`→bỏ); tạo không ảnh → "Brand image is
+    required"; ảnh 2 MB + 1 byte → "Image must be 2 MB or smaller"; SVG → "Use a JPG, PNG or
+    WEBP image"; sửa không ảnh → hợp lệ; magic bytes JPG/PNG/WEBP nhận đúng, PDF → null.
+  - Service chưa chạy với DB/đĩa thật: kiểm ở Bước 3 (lưu ảnh) và `verify-brands.ts` (Bước 9).
+- Việc tôi cần làm thủ công: không có.
 
 ## Bước tiếp theo
-Bước 1 (tiếp) — xác nhận phiên bản MySQL, thêm migration `brand_name_accent_sensitive`,
-kiểm tra lại `'Sony' = 'sony'` → 1 và `'Café' = 'Cafe'` → 0. Sau đó Bước 2.
+Bước 3 — route `app/media/brands/[file]/route.ts`, `bodySizeLimit`, `storage/` vào
+`.gitignore`, script thử lưu ảnh + GET qua route.
