@@ -595,7 +595,7 @@ Chủ dự án chọn sửa **tất cả** (1–4). Sửa lần lượt từng m
 |---|---|---|
 | 1 `server-only` cho loader | ✅ | tsc/lint/build đạt; thử ngược: client import loader → build lỗi |
 | 2 Drawer mobile đóng vẫn nhận focus | ✅ | Đóng: invisible, 0 phần tử nhận focus; mở: focus vào nút ✕; Esc: focus về nút mở |
-| 3 `UserMenu` điều hướng bàn phím | ⬜ | |
+| 3 `UserMenu` điều hướng bàn phím | ✅ | Mẫu menu button WAI-ARIA; 27/27 kiểm tra phím thật đạt |
 | 4 Ngày hiển thị theo UTC | ⬜ | chờ chọn múi giờ |
 
 ### Mục 1 — `import "server-only"` cho loader (2026-09-29)
@@ -625,5 +625,20 @@ Chủ dự án chọn sửa **tất cả** (1–4). Sửa lần lượt từng m
   - 1440px: sidebar `visible`. Không cuộn ngang ở 375px. 0 lỗi console.
   - Nút thu gọn trên desktop vẫn đúng (flex → none → flex), 0 lỗi.
 
+### Mục 3 — `UserMenu` điều hướng bằng bàn phím (2026-09-29)
+- **Đã làm** (`components/dashboard/UserMenu.tsx`, theo mẫu menu button của WAI-ARIA APG):
+  - Mở bằng bàn phím (Enter/Space, `event.detail === 0`, hoặc ↓): focus vào mục đầu. Phím ↑: focus vào mục cuối. Bấm chuột thì focus ở lại trên pill như trước.
+  - Trong menu: ↑/↓ đi vòng, Home/End nhảy đầu/cuối. Esc đóng và trả focus về pill. Tab đóng menu và đi tiếp.
+  - Các mục đều có `tabIndex={-1}` (mỗi lúc chỉ một mục được focus, di chuyển bằng phím mũi tên). Mục vô hiệu vẫn nhận focus, có `aria-disabled` và tooltip "Coming soon".
+  - Phần tên/email/cửa hàng tách ra ngoài `role="menu"`. Khung bọc Logout có `role="none"`.
+  - `SignOutItem`: thêm prop `tabIndex`. Khi dùng trong menu, form có `role="none"`. Sidebar khách hàng không đổi.
+- **Kiểm tra:**
+  - tsc/lint/build: không lỗi.
+  - Chrome headless không extension, phím thật (`Input.dispatchKeyEvent`), vendor + admin: **27/27 đạt**, 0 lỗi console, đã xóa 2 user test.
+    - Khi menu đóng, không mục nào hiện/nhận focus.
+    - Enter → mục đầu. ↓↓↓ đi vòng. End/Home. ↑ đi vòng. Esc → focus về pill. ↑ trên pill → mục cuối. Tab đóng menu.
+    - Click vẫn mở menu. Mục vô hiệu giữ tooltip "Coming soon".
+  - `scripts/verify-dashboards.ts` (chạy trên dev server): **88/88 đạt**, đã xóa 9 user test.
+
 ## Bước tiếp theo
-Giai đoạn B, mục 3 — `UserMenu` điều hướng bàn phím.
+Giai đoạn B, mục 4 — ngày hiển thị theo UTC (chờ chủ dự án chọn múi giờ).
