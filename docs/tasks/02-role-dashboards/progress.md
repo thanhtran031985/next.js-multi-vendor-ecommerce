@@ -5,7 +5,7 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | Bước | Tên | Trạng thái | Ghi chú |
 |------|-----|------------|---------|
 | 0 | Kiểm tra (không sửa code) | ✅ | Q1–Q4 đã chốt, xem decisions.md |
-| 1 | Thành phần dùng chung | ⬜ | |
+| 1 | Thành phần dùng chung | ✅ | tsc/lint/build đạt; kiểm tra HTTP chờ MySQL |
 | 2 | Dashboard khách hàng (`/dashboard`) | ⬜ | |
 | 3 | Dashboard người bán (`/vendor/dashboard`) | ⬜ | |
 | 4 | Dashboard admin (`/admin/dashboard`) | ⬜ | |
@@ -260,5 +260,60 @@ Rộng 64/236/300px và các khoảng cách dùng thang spacing của Tailwind (
 
 Chi tiết ở `decisions.md`.
 
+### Bước 1 — Thành phần dùng chung (2026-09-29)
+- Đã làm:
+  - Khung vendor/admin: `DashboardShell` (server) + `ShellFrame` (client).
+    - Icon rail, sidebar có nhóm "Overview", thẻ Setup Guide.
+    - Topbar gồm breadcrumb, ô search (admin), các nút icon, `UserMenu`.
+    - Nút trên topbar thu gọn sidebar (từ `md` trở lên); dưới `md` nút này mở drawer.
+  - Khung khách hàng: `AccountShell` (server) + `AccountFrame` (client).
+    - Gồm khung storefront, breadcrumb, sidebar tài khoản, thẻ nội dung trắng, HelpCards, footer.
+    - Dưới `md` có nút "Account menu" mở drawer.
+  - `SidebarNav` (client, dùng `usePathname`) có 3 biến thể rail/sidebar/account.
+    - Mục chưa có trang không phải link: mờ, `aria-disabled`, tooltip "Coming soon".
+  - `UserMenu` (client):
+    - Pill hồ sơ + dropdown: mở bằng click; đóng khi rời chuột, bấm Escape hoặc click ra ngoài.
+    - Header dropdown hiện tên, email; vendor thêm tên cửa hàng.
+    - Logout dùng `signOutAction` của task 01, qua `SignOutItem`.
+  - Widget dùng chung: `SectionCard` (+ `ViewAllLink`), `StatCard` (metric/status/status-compact; `null` hiện "—" + sr-only "No data yet"), `EmptyState` (page/inline, tone error), `ListRow`, `ChartFrame` (khung biểu đồ rỗng), `RangeTabs` (vô hiệu).
+  - `lib/dashboard/nav.ts`: menu 3 role (label, href, icon, enabled). `lib/dashboard/format.ts`: `maskEmail`, `splitName`, `formatDate`.
+  - Gắn shell vào 3 layout, giữ nguyên lời gọi guard.
+    - Layout vendor lấy `storeName` từ `requireApprovedVendor()`.
+    - Ở 3 page giữ chỗ, đổi `<main>` thành `<div>` để không lồng `<main>`.
+  - `StorefrontHeader` nhận prop `user` tùy chọn (Q2). Các trang storefront cũ không đổi.
+  - `scripts/verify-dashboards.ts`: script HTTP của Bước 5, viết sớm để kiểm tra shell.
+    - Tạo 5 user test (mật khẩu chỉ lưu dạng hash bcrypt).
+    - Đăng nhập qua `/api/auth/callback/credentials` bằng `fetch`.
+    - Kiểm tra trang 200, các chuyển hướng theo role, marker nội dung, và việc mục vô hiệu không phải link.
+    - Dọn dữ liệu test cả khi lỗi. Không cài thư viện mới.
+- File tạo/sửa:
+  - Tạo mới:
+    - `components/dashboard/{DashboardShell,ShellFrame,AccountShell,AccountFrame,SidebarNav,NavIcon,UserMenu,SignOutItem,SectionCard,StatCard,EmptyState,ListRow,ChartFrame,RangeTabs}.tsx` và `coming-soon.ts`.
+    - `components/icons/dashboard.tsx`.
+    - `lib/dashboard/nav.ts`, `lib/dashboard/format.ts`.
+    - `scripts/verify-dashboards.ts`.
+  - Sửa:
+    - 3 layout, 3 page (chỉ thẻ bọc).
+    - `components/storefront/StorefrontChrome.tsx` (Q2).
+    - `app/globals.css`.
+- Token thêm vào `:root` + `@theme` (`app/globals.css`):
+  - Màu:
+    - `muted-strong` #6E6A7C, `muted-faint` #C6C4CE.
+    - `line-dashed` #DAD8E0, `error-line` #F6D9DA.
+    - `track` #EDECF1, `track-highlight` #F7F6F9.
+  - Shadow: `shadow-card-hover`, `shadow-menu`, `shadow-iris`.
+  - Cỡ chữ: `text-11-5`, `text-17`, `text-20`, `text-21`, `text-22`.
+  - Tracking: `tracking-label` (.08em, nhãn nhóm sidebar).
+  - Container: `max-w-dash` (1280px), `max-w-profile` (840px).
+  - Utility `skeleton` (dải shimmer `track` → `track-highlight`, dùng cho `loading.tsx`).
+- Kết quả kiểm tra:
+  - `npx tsc --noEmit`: không lỗi.
+  - `npm run lint`: không lỗi.
+  - `npm run build`: thành công, đủ 14 route.
+  - Grep file mới: không có hex/`rgba(`, không có `passwordHash`.
+  - CSS build có đủ các class token mới (đã grep, ví dụ `w-59`, `shadow-menu`, `size-19.5`, `bg-ink/40`, `skeleton`).
+  - Kiểm tra HTTP (`verify-dashboards.ts`) **chưa chạy được**: MySQL `localhost:3306` không chạy ("Can't reach database server"). Script đã sẵn sàng, sẽ chạy ở Bước 2.
+- Việc tôi cần làm thủ công: bật MySQL (database `covetecom`) trước Bước 2.
+
 ## Bước tiếp theo
-Bước 1 — Thành phần dùng chung.
+Bước 2 — Dashboard khách hàng (`/dashboard`). Cần MySQL đang chạy để kiểm tra HTTP.

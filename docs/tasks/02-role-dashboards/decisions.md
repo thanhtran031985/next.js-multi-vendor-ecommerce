@@ -67,3 +67,14 @@
 - **Responsive:** không thiết kế nào có bản mobile.
   - Dưới `md`: sidebar (và rail) thành drawer, mở bằng nút menu.
   - Từ `md` trở lên: nút trên topbar thu gọn/mở sidebar như thiết kế.
+
+### 2026-09-29 — Bước 1: chi tiết khung và menu người dùng
+- **Dropdown admin có header tên + email.** Thiết kế admin không có header này (vendor thì có). Thêm vào để đạt yêu cầu "UserMenu (tên, email, đăng xuất)" của task.md. Pill admin vẫn giống thiết kế: tên + "Master Admin".
+- **Mục chưa có trang:**
+  - Mục menu: `opacity-50`.
+  - Nút topbar: `opacity-60`.
+  - Dùng `aria-disabled` + `title="Coming soon"`, không dùng thuộc tính `disabled`, để tooltip vẫn hiện khi hover.
+  - Mục menu chưa có trang là `<span role="link">`, không phải `<a>`.
+- **Chưa có số liệu:** `StatCard` với `value = null` hiện "—" (màu `muted-soft`) kèm "No data yet" cho trình đọc màn hình. Không hiện 0, vì 0 cũng là một con số khẳng định.
+- **Breadcrumb "Home"** trỏ về `/`, theo thiết kế vendor (`Home.dc.html`).
+- **Script HTTP của Bước 5** (`scripts/verify-dashboards.ts`) được viết từ Bước 1 để kiểm tra shell. Script nằm trong `scripts/` giống `verify-auth.ts`.

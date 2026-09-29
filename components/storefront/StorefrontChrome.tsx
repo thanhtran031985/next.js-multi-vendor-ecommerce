@@ -51,7 +51,11 @@ export function UtilityBar() {
   );
 }
 
-export function StorefrontHeader() {
+/**
+ * `user`: signed-in customer (dashboard pages) -> "Hello, <first name> / Dashboard" linking to
+ * /dashboard. Without it the header shows the guest "Sign in" link (task 02 decisions Q2).
+ */
+export function StorefrontHeader({ user }: { user?: { name: string } } = {}) {
   return (
     <header className="sticky top-0 z-40 border-b border-line-soft bg-surface">
       <div className={`${container} flex h-20 items-center gap-7`}>
@@ -88,15 +92,24 @@ export function StorefrontHeader() {
             <span className="text-11 leading-none font-medium text-muted">Wishlist</span>
           </span>
           <Link
-            href="/login"
+            href={user ? "/dashboard" : "/login"}
             className="flex items-center gap-2.5 rounded-md px-2 py-1.5 transition-colors hover:bg-field"
           >
             <span className="flex size-9.5 items-center justify-center rounded-full bg-linear-135 from-iris-100 to-iris-50 text-iris-500">
               <UserIcon size={20} />
             </span>
             <span className="hidden text-left sm:block">
-              <span className="mb-0.75 block text-11 leading-none text-muted">Hello, Guest</span>
-              <span className="block font-display text-13 leading-none font-semibold text-ink">Sign in</span>
+              <span className="mb-0.75 block text-11 leading-none text-muted">
+                {`Hello, ${user ? user.name.trim().split(/\s+/)[0] : "Guest"}`}
+              </span>
+              {user ? (
+                <span className="flex items-center gap-1 font-display text-13 leading-none font-semibold text-ink">
+                  Dashboard
+                  <ChevronDownIcon size={14} className="text-muted" />
+                </span>
+              ) : (
+                <span className="block font-display text-13 leading-none font-semibold text-ink">Sign in</span>
+              )}
             </span>
           </Link>
           <span className="ml-1.5 flex items-center gap-3 rounded-control border border-iris-100 bg-iris-50 py-2.25 pr-3.5 pl-3">
