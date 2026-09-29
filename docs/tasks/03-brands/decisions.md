@@ -74,5 +74,17 @@
   cho thống kê "đang bán / ngừng bán" ở trang chi tiết. Hiện luôn trả 0.
 - **Slug:** tên không còn chữ/số Latin (vd "索尼", "!!") → base `brand`; base cắt còn 72 ký tự
   để hậu tố `-N` vừa cột VarChar(80).
-- **Danh sách:** `listBrands` trả thêm `totalAll` (bỏ qua bộ lọc) để phân biệt "chưa có brand"
+- **Danh sách (Bước 2):** `listBrands` trả thêm `totalAll` (bỏ qua bộ lọc) để phân biệt "chưa có brand"
   với "lọc không ra kết quả"; pill đếm ở header dùng `totalAll`. Sắp xếp mới nhất trước.
+
+### 2026-09-29 — Bước 4: vị trí helper và chữ ký action
+- **`ActionResult` và `requireAdminAction()` nằm trong `lib/actions/`** (`result.ts`,
+  `require-admin.ts`), ngoài danh sách phạm vi của task.md. Lý do: file `"use server"` chỉ được
+  export hàm async (không export được type/helper dùng chung), và task cấm sửa `lib/auth/*`.
+  Hai file dùng chung được cho các task admin sau.
+- **Chữ ký:** `createBrandAction(formData)`, `updateBrandAction(id, formData)`,
+  `deleteBrandAction(id)`, `toggleBrandStatusAction(id, status)`. Form gọi action trực tiếp
+  (không qua `useActionState`), để khi lỗi React không tự reset form và mất file đã chọn
+  (Bước 6).
+- **Toggle nhận trạng thái đích**, không tự đảo: gọi lại (mạng chậm, bấm lặp) cho cùng kết quả,
+  hợp với `useOptimistic`.

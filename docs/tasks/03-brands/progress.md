@@ -8,7 +8,7 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | 1 | Prisma model | ✅ | Migration `20260929142159_add_brand`; Q4: giữ `unicode_ci` (khác dấu cũng trùng) |
 | 2 | Schema, truy vấn, service | ✅ | `lib/storage/images.ts` làm sớm ở bước này (service cần) |
 | 3 | Lưu trữ ảnh | ✅ | Route `/media/brands/[file]`, `bodySizeLimit: "3mb"`, `/storage/` ignored |
-| 4 | Server actions | ⬜ | |
+| 4 | Server actions | ✅ | 4 action; helper ở `lib/actions/` |
 | 5 | Trang danh sách (`/admin/brands`) | ⬜ | |
 | 6 | Modal thêm/sửa | ⬜ | |
 | 7 | Trang chi tiết (`/admin/brands/[id]`) | ⬜ | |
@@ -148,5 +148,30 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
   - Chưa kiểm được: giới hạn 3 MB của server action (cần action thật, kiểm ở Bước 6/9).
 - Việc tôi cần làm thủ công: không có.
 
+### Bước 4 — Server actions (2026-09-29)
+- Đã làm:
+  - `app/actions/brands.ts`: `createBrandAction(formData)`, `updateBrandAction(id, formData)`,
+    `deleteBrandAction(id)`, `toggleBrandStatusAction(id, status)`. Mỗi action:
+    `requireAdminAction()` → Zod (`brandIdSchema`, `createBrandSchema`/`updateBrandSchema`,
+    `brandStatusSchema`) → service → `revalidatePath("/admin/brands")` (+ trang chi tiết khi
+    sửa/xóa/đổi trạng thái) → `ActionResult`. Lỗi của service có `field` → `fieldErrors`;
+    lỗi không lường trước → `console.error` + "Something went wrong. Please try again.".
+  - `deleteBrandAction`: service chặn khi `countProductsByBrand > 0`, trả lỗi nêu số sản phẩm
+    và gợi ý chuyển sang Inactive.
+  - `lib/actions/result.ts`: kiểu `ActionResult<T>` đúng như task.md + `ok`/`fail`/
+    `invalidInput` (`z.flattenError`)/`unexpected`.
+  - `lib/actions/require-admin.ts`: `requireAdminAction()` dùng `getVerifiedSession()` (đọc
+    DB); không phải ADMIN hoặc session cũ → `{ success: false, error: "Unauthorized" }`,
+    không redirect.
+- File tạo/sửa: `app/actions/brands.ts`, `lib/actions/result.ts`, `lib/actions/require-admin.ts`.
+- Kết quả kiểm tra:
+  - `npx tsc --noEmit`: không lỗi. eslint 3 file mới: không lỗi.
+  - Grep: 4 action được export, 4 lời gọi `await requireAdminAction()`; câu lệnh đầu tiên
+    trong thân cả 4 action là `const admin = await requireAdminAction();`.
+  - Chưa chạy action qua HTTP (cần form ở Bước 6); các nhánh Unauthorized/validate/service
+    sẽ được kiểm ở Bước 6 và Bước 9.
+- Việc tôi cần làm thủ công: không có.
+
 ## Bước tiếp theo
-Bước 4 — `app/actions/brands.ts` (4 action + `requireAdminAction()`).
+Bước 5 — trang danh sách `/admin/brands` (toolbar, bảng, phân trang, 4 trạng thái, mục menu,
+breadcrumb trên shell).
