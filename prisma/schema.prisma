@@ -1,0 +1,64 @@
+// Covet — Prisma schema (MySQL)
+// Auth model: one User table with a role enum. A VENDOR user owns exactly one Vendor (store).
+// No NextAuth adapter models (Account/Session/VerificationToken): Credentials + JWT only.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  VENDOR
+  ADMIN
+}
+
+enum VendorStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String   @db.VarChar(80)
+  email        String   @unique @db.VarChar(191)
+  passwordHash String   @db.VarChar(100)
+  role         Role     @default(CUSTOMER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  vendor       Vendor?
+}
+
+model Vendor {
+  id        String       @id @default(cuid())
+  userId    String       @unique
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storeName String       @db.VarChar(80)
+  slug      String       @unique @db.VarChar(100)
+  status    VendorStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+enum BrandStatus {
+  ACTIVE
+  INACTIVE
+}
+
+// Product brand, managed by admins (task 03). `name` is unique under the column's
+// case-insensitive collation, so "Sony" and "sony" collide. `slug` is set once on create
+// and never changes, so storefront URLs stay stable. No relation to Product yet.
+model Brand {
+  id        String      @id @default(cuid())
+  name      String      @unique @db.VarChar(60)
+  slug      String      @unique @db.VarChar(80)
+  image     String?
+  status    BrandStatus @default(ACTIVE)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}

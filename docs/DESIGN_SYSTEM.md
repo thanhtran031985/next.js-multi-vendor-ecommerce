@@ -276,3 +276,76 @@ accent cards, stat-padding). Less is more; every element earns its place.
 @media (max-width:640px){ :root{ --cpad:16px } }
 @keyframes shimmer{0%{background-position:-450px 0}100%{background-position:450px 0}}
 ```
+
+---
+
+## 15. Tokens added for the auth pages (implemented in `app/globals.css`)
+
+Values that appear in the auth mockups (`login`, `register`, `VendorLogin`, `VendorRegister`)
+but had no token. `app/globals.css` is the implementation: `:root` holds the values and
+`@theme inline` exposes them to Tailwind. Tailwind's default palette and type, radius, shadow,
+leading and tracking scales are **removed** there, so only Covet tokens resolve.
+
+**Sizes are rem** (mockup px / 16). With `html { font-size: 17px }` they render at the mockups'
+`zoom: 1.0625`. §5 radii are implemented in rem for the same reason. Shadows stay in px.
+
+### Colors
+| Token | Hex | Use | Tailwind |
+|---|---|---|---|
+| `--iris-25` | `#FBFAFF` | lightest iris wash (registration hero gradient end, mega-menu column) | `iris-25` |
+| `--white` | `#FFFFFF` | text/icons on iris or ink; `--surface` points to it | `white` |
+| `--line-strong` | `#E6E4EC` | divider inside the header search field | `line-strong` |
+| `--field-muted` | `#F3F2F6` | FAQ toggle / small icon chip resting bg | `field-muted` |
+| `--control-border` | `#D6D4DD` | unchecked checkbox border | `control-border` |
+| `--placeholder-bg` | `#EAE8F0` | image placeholder fill | `placeholder-bg` |
+| `--placeholder-border` | `#C9C6D3` | image placeholder dashed border | `placeholder-border` |
+| `--on-dark-soft` | `#C9C7D1` | utility-bar text/links on `--ink` | `on-dark-soft` |
+| `--on-dark-muted` | `#B3B0BD` | footer base text, social icons | `on-dark-muted` |
+| `--on-dark-subtle` | `#8B8895` | footer links and body copy | `on-dark-subtle` |
+| `--on-dark-faint` | `#6C6976` | footer copyright | `on-dark-faint` |
+| `--success-solid` | `#2E9E6B` | §2 base hue as a token ("Sell on Covet" nav link) | `success-solid` |
+| `--warning-solid` | `#E0912F` | §2 base hue as a token | `warning-solid` |
+| `--error-solid` | `#E5484D` | §2 base hue as a token (required-field asterisk, toast icon) | `error-solid` |
+| `--info-solid` | `#4C7DF0` | §2 base hue as a token | `info-solid` |
+
+Translucent white on dark or iris surfaces uses the token with an opacity modifier, for
+example `bg-white/7`, `text-white/75` and `border-white/12`. There are no separate rgba tokens.
+The placeholder hatch is the `placeholder-hatch` utility (`--ink` at 2%).
+
+### Radius
+| Token | Value | Use |
+|---|---|---|
+| `--r-xs` | 6px | checkbox |
+| `--r-control` | 12px | auth inputs and buttons (all four auth mockups use 12) |
+| `--r-3xl` | 26px | device frame (vendor app mockup) |
+
+The other one-off mockup radii map to the nearest §5 token within its documented range:
+- 9px and 10px → `--r-md`
+- 13px and 15px → `--r-lg`
+- 16px → `--r-xl`
+- 20px → `--r-2xl`
+
+### Shadow
+| Token | Value | Use |
+|---|---|---|
+| `--shadow-form` | `0 12px 34px -18px rgba(20,18,31,.2)` | raised form card (vendor registration) |
+
+### Type scale (`text-<px>`)
+`text-8, 10, 11, 12, 12-5, 13, 13-5, 14, 14-5, 15, 16, 18, 19, 24, 26, 27, 28, 30, 56`
+(`-5` means .5px, so `text-12-5` is 12.5px). These are the exact mockup sizes, and each one
+falls inside a §3 role:
+- 56 is the vendor-login display headline.
+- 27 is the storefront header wordmark.
+
+### Line height and tracking
+- Line height `leading-<value×100>`: `leading-none` (1), `105`, `110`, `115`, `120`, `130`, `140`, `150`, `160`, `170`.
+- Tracking:
+  - `tracking-display` (-0.02em): wordmark and display.
+  - `tracking-heading` (-0.01em): H1/H2.
+  - `tracking-caps` (.06em): uppercase labels.
+
+### Containers
+- `max-w-page` = `--container-max` (1600px)
+- `max-w-marketing` = 1240px (vendor registration page)
+- `max-w-faq` = 900px
+- Horizontal padding: `px-(--cpad)`.
