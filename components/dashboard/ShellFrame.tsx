@@ -1,8 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { ChevronLeftIcon, MenuIcon, XIcon } from "@/components/icons/dashboard";
+import { drawerPanelClass, useDrawer } from "@/components/dashboard/use-drawer";
 
 const SIDEBAR_ID = "dashboard-sidebar";
 
@@ -24,24 +24,7 @@ type ShellFrameProps = {
  */
 export function ShellFrame({ rail, sidebar, topbar, contentWidth, children }: ShellFrameProps) {
   const [collapsed, setCollapsed] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  // Close the drawer after navigating (reset during render, no effect needed).
-  const pathname = usePathname();
-  const [lastPath, setLastPath] = useState(pathname);
-  if (lastPath !== pathname) {
-    setLastPath(pathname);
-    setDrawerOpen(false);
-  }
-
-  useEffect(() => {
-    if (!drawerOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setDrawerOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [drawerOpen]);
+  const { open: drawerOpen, setOpen: setDrawerOpen, openerRef, closeRef } = useDrawer();
 
   function toggle() {
     if (window.matchMedia("(min-width: 48rem)").matches) setCollapsed((v) => !v);
@@ -56,13 +39,14 @@ export function ShellFrame({ rail, sidebar, topbar, contentWidth, children }: Sh
 
       <div
         id={SIDEBAR_ID}
-        className={`fixed inset-y-0 left-0 z-50 flex transition-transform duration-200 md:sticky md:top-0 md:z-auto md:h-screen md:translate-x-0 md:transition-none ${
-          drawerOpen ? "translate-x-0" : "-translate-x-full"
-        } ${collapsed ? "md:hidden" : ""}`}
+        className={`fixed inset-y-0 left-0 z-50 flex md:sticky md:top-0 md:z-auto md:h-screen md:translate-x-0 md:transition-none ${drawerPanelClass(
+          drawerOpen,
+        )} ${collapsed ? "md:hidden" : ""}`}
       >
         <div className="flex h-full w-16 flex-none flex-col items-center gap-2 bg-ink py-4">{rail}</div>
         <aside className="relative h-full w-59 flex-none overflow-y-auto border-r border-line bg-surface px-4 py-5">
           <button
+            ref={closeRef}
             type="button"
             aria-label="Close menu"
             onClick={() => setDrawerOpen(false)}
@@ -77,6 +61,7 @@ export function ShellFrame({ rail, sidebar, topbar, contentWidth, children }: Sh
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-line bg-surface px-4 md:px-6.5">
           <button
+            ref={openerRef}
             type="button"
             aria-label="Toggle sidebar"
             aria-controls={SIDEBAR_ID}

@@ -594,7 +594,7 @@ Chủ dự án chọn sửa **tất cả** (1–4). Sửa lần lượt từng m
 | Mục | Trạng thái | Ghi chú |
 |---|---|---|
 | 1 `server-only` cho loader | ✅ | tsc/lint/build đạt; thử ngược: client import loader → build lỗi |
-| 2 Drawer mobile đóng vẫn nhận focus | ⬜ | |
+| 2 Drawer mobile đóng vẫn nhận focus | ✅ | Đóng: invisible, 0 phần tử nhận focus; mở: focus vào nút ✕; Esc: focus về nút mở |
 | 3 `UserMenu` điều hướng bàn phím | ⬜ | |
 | 4 Ngày hiển thị theo UTC | ⬜ | chờ chọn múi giờ |
 
@@ -605,5 +605,25 @@ Chủ dự án chọn sửa **tất cả** (1–4). Sửa lần lượt từng m
   - **Thử ngược:** tạo tạm `app/zz-server-only-probe/page.tsx` ("use client", import `getAdminDashboard`). Build bị chặn với lỗi *You're importing a module that depends on "server-only"*. File tạm đã xóa, sau đó build lại sạch.
   - `scripts/verify-dashboards.ts` không import loader, nên không bị ảnh hưởng.
 
+### Mục 2 — Drawer mobile: ẩn hẳn khi đóng, quản lý focus (2026-09-29)
+- **Đã làm:**
+  - Hook dùng chung `components/dashboard/use-drawer.ts`, thay cho logic lặp lại ở 2 khung:
+    - `useDrawer()`: đóng khi chuyển trang và khi bấm Esc. Mở thì focus vào nút ✕, đóng thì trả focus về nút đã mở.
+    - `drawerPanelClass()`: dưới `md`, drawer đóng có thêm `invisible`, nên không nhận Tab và trình đọc màn hình không đọc.
+    - Khi đóng, `visibility` được transition để vẫn thấy hiệu ứng trượt ra. Khi mở, `visibility` bật ngay để focus vào được.
+  - `ShellFrame` (vendor/admin) và `AccountFrame` (khách hàng) dùng hook này, thêm `ref` cho nút mở và nút ✕.
+- **Kiểm tra:**
+  - tsc/lint/build: không lỗi.
+  - Chrome headless không có extension, dev server, 3 user test đã xóa:
+
+    | Trang | 375px, đóng | 375px, mở | Esc |
+    |---|---|---|---|
+    | `/dashboard` | `hidden`, 0 phần tử nhận focus | `visible`, focus = "Close menu" | `hidden`, focus = "Account menu" |
+    | `/vendor/dashboard` | như trên | như trên | `hidden`, focus = "Toggle sidebar" |
+    | `/admin/dashboard` | như trên | như trên | `hidden`, focus = "Toggle sidebar" |
+
+  - 1440px: sidebar `visible`. Không cuộn ngang ở 375px. 0 lỗi console.
+  - Nút thu gọn trên desktop vẫn đúng (flex → none → flex), 0 lỗi.
+
 ## Bước tiếp theo
-Giai đoạn B, mục 2 — drawer mobile khi đóng không nhận focus.
+Giai đoạn B, mục 3 — `UserMenu` điều hướng bàn phím.

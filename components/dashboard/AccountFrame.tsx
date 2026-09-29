@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { ChevronRightIcon, MenuIcon, XIcon } from "@/components/icons/dashboard";
+import { drawerPanelClass, useDrawer } from "@/components/dashboard/use-drawer";
 
 const SIDEBAR_ID = "account-sidebar";
 
@@ -13,23 +13,7 @@ const SIDEBAR_ID = "account-sidebar";
  * the sidebar becomes an off-canvas drawer opened by the "Account menu" button.
  */
 export function AccountFrame({ sidebar, children }: { sidebar: ReactNode; children: ReactNode }) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const pathname = usePathname();
-  const [lastPath, setLastPath] = useState(pathname);
-  if (lastPath !== pathname) {
-    setLastPath(pathname);
-    setDrawerOpen(false);
-  }
-
-  useEffect(() => {
-    if (!drawerOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setDrawerOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [drawerOpen]);
+  const { open: drawerOpen, setOpen: setDrawerOpen, openerRef, closeRef } = useDrawer();
 
   return (
     <>
@@ -44,6 +28,7 @@ export function AccountFrame({ sidebar, children }: { sidebar: ReactNode; childr
           </span>
         </nav>
         <button
+          ref={openerRef}
           type="button"
           aria-controls={SIDEBAR_ID}
           aria-expanded={drawerOpen}
@@ -63,11 +48,12 @@ export function AccountFrame({ sidebar, children }: { sidebar: ReactNode; childr
         <aside
           id={SIDEBAR_ID}
           aria-label="Account"
-          className={`fixed inset-y-0 left-0 z-50 w-75 max-w-[85vw] overflow-y-auto border border-line-soft bg-surface p-3.5 shadow-xs transition-transform duration-200 md:sticky md:top-24 md:bottom-auto md:z-auto md:w-auto md:max-w-none md:translate-x-0 md:overflow-visible md:rounded-xl md:transition-none ${
-            drawerOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`fixed inset-y-0 left-0 z-50 w-75 max-w-[85vw] overflow-y-auto border border-line-soft bg-surface p-3.5 shadow-xs md:sticky md:top-24 md:bottom-auto md:z-auto md:w-auto md:max-w-none md:translate-x-0 md:overflow-visible md:rounded-xl md:transition-none ${drawerPanelClass(
+            drawerOpen,
+          )}`}
         >
           <button
+            ref={closeRef}
             type="button"
             aria-label="Close menu"
             onClick={() => setDrawerOpen(false)}
