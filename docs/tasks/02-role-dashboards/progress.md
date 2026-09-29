@@ -1,6 +1,6 @@
 # Tiến độ — 02-role-dashboards
 
-Trạng thái chung: ✅ · Cập nhật lần cuối: 2026-09-29
+Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 
 | Bước | Tên | Trạng thái | Ghi chú |
 |------|-----|------------|---------|
@@ -536,5 +536,74 @@ Chuẩn bị:
   - Đã tái hiện bằng Chrome headless không có extension, trên dev server: sidebar thu gọn/mở lại đúng, 0 lỗi, 0 cảnh báo.
   - Không sửa code.
 
+## Rà soát /finish-task — Giai đoạn A (2026-09-29)
+Đối chiếu `task.md` (bản hiện tại, không có `_archive/`) với code trên `feat/02-role-dashboards` (HEAD `480ad1d`).
+
+**Lệnh kiểm tra:**
+- `npx tsc --noEmit`: OK.
+- `npm run lint`: exit 0.
+- `npm run build`: exit 0, 14/14 route.
+
+**Kiểm tra trình duyệt tự động** (Chrome headless không có extension, dev server, 3 user test đã xóa):
+- 375px: `/dashboard`, `/vendor/dashboard`, `/admin/dashboard` đều **không cuộn ngang** (`scrollWidth` = 375) và 0 lỗi console.
+- 1440px: 0 lỗi console.
+- Khi drawer mobile **đóng**, bên trong vẫn còn 3–4 phần tử nhận focus bằng bàn phím. Xem mục sửa số 2.
+
+### Quyết định kiến trúc
+| Mục | Đánh giá | Bằng chứng |
+|---|---|---|
+| Không dữ liệu giả; phân loại A/B/C | ✅ | (A) qua loader. (B) `null`/`[]` → "—"/empty state (`StatCard.tsx:23`, `WalletTile.tsx`, `ProductWidgets.tsx`, `StoreWidgets.tsx`). Script HTTP xác nhận không có số demo. |
+| Loader riêng mỗi role, kiểu rõ ràng, page không query Prisma, (B) có `TODO(<task>)` | ✅ | `lib/dashboard/customer.ts:20-32`, `vendor.ts:33-52`, `admin.ts:58-102`. Grep `prisma` trong page/component: không có. |
+| Chỉ select trường cần hiển thị, không `passwordHash` | ✅ | `customer.ts:22`, `vendor.ts:35-40`, `admin.ts:59-67`. Grep `passwordHash` trong `lib/dashboard`, `components/dashboard`: không có. |
+| Server component mặc định; client chỉ cho phần tương tác | ⚠️ | Client: `ShellFrame`, `AccountFrame` (drawer/thu gọn), `UserMenu` (dropdown), `SignOutItem` (trạng thái pending), `DashboardError` + 3 `error.tsx` (bắt buộc là client). **`SidebarNav` là client chỉ để đọc `usePathname`** (tô mục đang mở), vì layout không biết path hiện tại. Đã ghi vào decisions.md. |
+| Guard ở cả layout và page, đúng guard | ✅ | `(account)/dashboard/layout.tsx:8` + `page.tsx:19` dùng `requireRole("CUSTOMER")`. `vendor/dashboard/layout.tsx:11` + `page.tsx:34` dùng `requireApprovedVendor()`. `admin/(protected)/layout.tsx:11` + `dashboard/page.tsx:40` dùng `requireRole("ADMIN")`. `lib/auth/*`, `proxy.ts`, `auth*.ts`: không đổi (`git diff cbfcbd2..HEAD`). |
+| Menu trong `lib/dashboard/nav.ts` (label, href, icon, enabled); mục chưa có trang mờ, không phải link, `aria-disabled`, tooltip "Coming soon"; không tạo route mới | ✅ | `nav.ts:30-35` + dữ liệu menu. `SidebarNav.tsx:52-66` render `<span role="link">` mờ + `comingSoonProps`. Không có route mới (build: 14 route như cũ). |
+| Biểu đồ: không cài thư viện, giữ khung, empty state, ghi decisions | ✅ | `ChartFrame.tsx` (h-75 / h-57.5). `package.json` không đổi. decisions.md có mục "Thư viện biểu đồ". |
+| Icon SVG inline → component trong `components/icons/`, không cài thư viện | ✅ | `components/icons/dashboard.tsx`. Grep `<svg` ngoài thư mục icon: không có. |
+| Responsive: drawer dưới `md`, ghi decisions | ✅ (có lỗi a11y) | `ShellFrame.tsx:55-61`, `AccountFrame.tsx:62-68`. 375px không cuộn ngang. Drawer đóng vẫn nhận focus: mục sửa số 2. |
+
+### Các bước
+| Bước | Đánh giá | Ghi chú |
+|---|---|---|
+| 0 Kiểm tra | ✅ | Báo cáo trong progress.md. Q1–Q4 đã chốt. |
+| 1 Thành phần dùng chung | ⚠️ | Có đủ `DashboardShell`, `SidebarNav`, `UserMenu`, `StatCard`, `SectionCard`, `EmptyState`, `ListRow`. **Khác task.md:** layout khách hàng gắn `AccountShell` thay cho `DashboardShell`, và khách hàng không có dropdown `UserMenu` (theo thiết kế). Đã ghi vào decisions.md. |
+| 2 Khách hàng | ✅ | Loader lấy name/email/createdAt. Thiết kế không có widget đơn hàng/wishlist/địa chỉ trên trang này; các mục đó là menu, đang vô hiệu. HTTP đạt. |
+| 3 Người bán | ✅ | Loader có store (tên, slug, trạng thái, ngày) và chủ cửa hàng (tên, email). `/vendor/pending` không đổi. HTTP: APPROVED → 200, PENDING/SUSPENDED → `/vendor/pending`, khách hàng → `/dashboard`. |
+| 4 Admin | ✅ | `Promise.all` với `count` + `findMany select`. 5 vendor mới nhất, chỉ xem. Số liệu = SQL (script). |
+| 5 Kiểm tra tổng | ✅ | tsc/lint/build, verify-auth 31/31, grep, script HTTP 88/88, checklist. |
+
+### Quy tắc code trong CLAUDE.md
+- **Zod cho thao tác ghi DB:** không áp dụng, task không ghi DB. Script test hash mật khẩu bằng bcrypt.
+- **Không secret/Prisma trong client component:** ✅ (xem import của 9 file client). Loader chưa có `import 'server-only'`: mục sửa số 1.
+- **Không hex/px cố định:** ✅. Hex/rgba chỉ có trong 9 dòng định nghĩa token ở `globals.css`. `px` chỉ xuất hiện trong comment.
+- **Xử lý lỗi:** ✅ `error.tsx` cho cả 3 dashboard (prop `retry` của Next 16), `loading.tsx` cho cả 3.
+- **Phạm vi:** ngoài danh sách được phép có 3 file, đều đã được chấp nhận:
+  - `app/globals.css`: token.
+  - `components/storefront/StorefrontChrome.tsx`: Q2.
+  - `scripts/verify-dashboards.ts`: script HTTP của Bước 5.
+
+### Danh sách cần sửa (chờ chủ dự án chọn)
+1. **[Bảo mật, thấp]** Ba loader `lib/dashboard/{customer,vendor,admin}.ts` import Prisma nhưng không có `import 'server-only'`. Next 16 hỗ trợ sẵn, không cần cài.
+2. **[Chức năng/a11y]** Drawer mobile khi đóng chỉ bị dời ra ngoài màn hình. Các link/nút bên trong (3–4 phần tử) vẫn nhận Tab và vẫn bị trình đọc màn hình đọc. Mở drawer không chuyển focus vào trong.
+3. **[Nhỏ/a11y]** `UserMenu`: mục vô hiệu là `<span>` không nhận focus, không điều hướng được bằng phím mũi tên, và mở menu không chuyển focus vào menu.
+4. **[Nhỏ]** Ngày hiển thị ("Member since", "Since", danh sách vendor) được định dạng theo **UTC**. Với người dùng ở UTC+7, tài khoản tạo lúc 00:00–07:00 giờ VN sẽ hiện lùi 1 ngày.
+
+## Rà soát /finish-task — Giai đoạn B
+Chủ dự án chọn sửa **tất cả** (1–4). Sửa lần lượt từng mục.
+
+| Mục | Trạng thái | Ghi chú |
+|---|---|---|
+| 1 `server-only` cho loader | ✅ | tsc/lint/build đạt; thử ngược: client import loader → build lỗi |
+| 2 Drawer mobile đóng vẫn nhận focus | ⬜ | |
+| 3 `UserMenu` điều hướng bàn phím | ⬜ | |
+| 4 Ngày hiển thị theo UTC | ⬜ | chờ chọn múi giờ |
+
+### Mục 1 — `import "server-only"` cho loader (2026-09-29)
+- **Đã làm:** thêm `import "server-only";` vào đầu `lib/dashboard/customer.ts`, `vendor.ts`, `admin.ts`. Next 16 hỗ trợ sẵn, không cài gói mới.
+- **Kiểm tra:**
+  - `npx tsc --noEmit`, `npm run lint`, `npm run build`: không lỗi.
+  - **Thử ngược:** tạo tạm `app/zz-server-only-probe/page.tsx` ("use client", import `getAdminDashboard`). Build bị chặn với lỗi *You're importing a module that depends on "server-only"*. File tạm đã xóa, sau đó build lại sạch.
+  - `scripts/verify-dashboards.ts` không import loader, nên không bị ảnh hưởng.
+
 ## Bước tiếp theo
-Task hoàn thành. Chờ chủ dự án kiểm tra nốt các mục còn lại của checklist thủ công.
+Giai đoạn B, mục 2 — drawer mobile khi đóng không nhận focus.

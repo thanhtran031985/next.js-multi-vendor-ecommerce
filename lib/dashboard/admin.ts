@@ -2,6 +2,8 @@
 // queries Prisma itself. Only counts and the selected fields that are shown — never the
 // password hash. Widgets backed by models that don't exist yet return empty values (TODOs).
 
+import "server-only";
+
 import type { VendorStatus } from "@/lib/auth/roles";
 import { prisma } from "@/lib/prisma";
 import type {

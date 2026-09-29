@@ -2,6 +2,8 @@
 // never queries Prisma itself. Selects exactly the fields shown — never the password hash.
 // Widgets backed by models that don't exist yet return empty values (see TODOs).
 
+import "server-only";
+
 import type { VendorStatus } from "@/lib/auth/roles";
 import { prisma } from "@/lib/prisma";
 import type { ChartPoint, DeliveryPerson, OrderStatusCounts, RatedProduct, TopProduct } from "@/lib/dashboard/types";

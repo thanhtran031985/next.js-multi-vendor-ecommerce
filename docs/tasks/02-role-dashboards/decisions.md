@@ -131,3 +131,15 @@ Loader đã có trường và kiểu dữ liệu (`lib/dashboard/types.ts`), hi�
 ### 2026-09-29 — Bước 5: sửa sau khi rà lại
 - `AccountFrame`: thêm `md:bottom-auto` cho sidebar tài khoản. Lớp `inset-y-0` của drawer mobile làm `sticky` trên desktop có thêm `bottom:0`.
 - `SidebarNav`: tooltip icon rail bị vô hiệu thành "<Tên> — Coming soon".
+
+### 2026-09-29 — Rà soát (/finish-task): khác biệt với task.md chưa được ghi rõ
+- **Bước 1, "gắn `DashboardShell` vào 3 layout":**
+  - Layout vendor và admin dùng `DashboardShell`.
+  - Layout khách hàng dùng `AccountShell`: khung storefront + sidebar tài khoản, theo DESIGN_SYSTEM §9 và thiết kế `userdashboard`, vốn không có rail/topbar.
+- **"`UserMenu` (tên, email, đăng xuất)":**
+  - Vendor/admin dùng dropdown `UserMenu`.
+  - Khách hàng không có dropdown (thiết kế không có). Tên và email nằm ở thẻ đầu sidebar, "Sign out" ở cuối sidebar, pill "Hello, <tên> / Dashboard" trên header dẫn tới `/dashboard`.
+  - Cả hai cách dùng chung `SignOutItem`, tức `signOutAction` của task 01.
+- **`SidebarNav` là client component:**
+  - Lý do duy nhất là dùng `usePathname` để tô mục đang mở. Layout không nhận được path hiện tại, còn truyền path từ từng page thì phải sửa mọi page con về sau.
+  - Phần tương tác thật (drawer, thu gọn, dropdown) vẫn nằm trong `ShellFrame`, `AccountFrame`, `UserMenu`.
