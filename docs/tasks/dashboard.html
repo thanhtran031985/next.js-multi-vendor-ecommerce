@@ -91,14 +91,14 @@
           <button class="toolbar-toggle" onclick="this.parentElement.classList.toggle('expanded')" title="Export options" aria-label="Export options">⋯</button>
         </div>
       </div>
-      <p class="subtitle">Sinh lúc 2026-09-29 05:41 (UTC+07:00) từ docs/tasks/README.md và docs/tasks/*/progress.md</p>
+      <p class="subtitle">Sinh lúc 2026-09-29 11:39 (UTC+07:00) từ docs/tasks/README.md và docs/tasks/*/progress.md</p>
     </div>
 
     <div class="stats">
-      <div class="stat"><div class="stat-value">1</div><div class="stat-label">tổng số task</div></div>
+      <div class="stat"><div class="stat-value">2</div><div class="stat-label">tổng số task</div></div>
       <div class="stat"><div class="stat-value" style="color:#34d399">1</div><div class="stat-label">✅ xong</div></div>
-      <div class="stat"><div class="stat-value"><span style="color:#22d3ee">0</span> / <span style="color:#94a3b8">0</span></div><div class="stat-label">🔄 đang làm / ⬜ chưa làm</div></div>
-      <div class="stat"><div class="stat-value">100%</div><div class="stat-label">bước đã xong (9/9)</div></div>
+      <div class="stat"><div class="stat-value"><span style="color:#22d3ee">0</span> / <span style="color:#94a3b8">1</span></div><div class="stat-label">🔄 đang làm / ⬜ chưa làm</div></div>
+      <div class="stat"><div class="stat-value">60%</div><div class="stat-label">bước đã xong (9/15)</div></div>
     </div>
 
     
@@ -115,7 +115,7 @@
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid)" />
-        
+        <path d="M 260 76 C 304 76, 304 76, 348 76" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"><title>01 → 02</title></path>
         
         <g>
           <title>01 — auth: Xác thực đa vai trò (xong)</title>
@@ -129,6 +129,19 @@
           <text x="248" y="92" fill="#94a3b8" font-size="9" text-anchor="end">100%</text>
           <rect x="42" y="102" width="206" height="5" rx="2.5" fill="#1e293b"/>
           <rect x="42" y="102" width="206" height="5" rx="2.5" fill="#34d399"/>
+        </g>
+        <g>
+          <title>02 — role-dashboards: Dashboard sau đăng nhập cho 3 role (chưa làm)</title>
+          <rect x="350" y="30" width="230" height="92" rx="6" fill="#0f172a"/>
+          <rect x="350" y="30" width="230" height="92" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+          <text x="362" y="50" fill="#94a3b8" font-size="10" font-weight="700">02</text>
+          <text x="568" y="51" font-size="12" text-anchor="end">⬜</text>
+          <text x="386" y="50" fill="white" font-size="12" font-weight="600">role-dashboards</text>
+          <text x="362" y="70" fill="#94a3b8" font-size="9">Dashboard sau đăng nhập cho 3 role</text>
+          <text x="362" y="92" fill="#cbd5e1" font-size="9">0/6 bước</text>
+          <text x="568" y="92" fill="#94a3b8" font-size="9" text-anchor="end">0%</text>
+          <rect x="362" y="102" width="206" height="5" rx="2.5" fill="#1e293b"/>
+          <rect x="362" y="102" width="0" height="5" rx="2.5" fill="#34d399"/>
         </g>
         <text x="30" y="158" fill="white" font-size="10" font-weight="600">Chú thích</text>
         <line x1="110" y1="154" x2="140" y2="154" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
@@ -157,6 +170,18 @@
         <ul class="steps"><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name">Bước 0 · Kiểm tra dự án (không sửa code)</div><div class="note">Phiên bản và bảng ánh xạ thiết kế: xem Giai đoạn A bên dưới</div></div></li><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name">Bước 1 · Prisma schema</div><div class="note"><code>prisma/schema.prisma</code> dòng 14–46; <code>migrate status</code> sạch</div></div></li><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name">Bước 2 · Seed admin</div><div class="note"><code>prisma/seed.ts</code>; <code>package.json</code> dòng 12; chạy 2 lần vẫn đúng 1 ADMIN</div></div></li><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name">Bước 3 · Cấu hình NextAuth v5</div><div class="note">Khác biệt đã được chấp nhận: thông báo tiếng Anh, augment <code>@auth/core/jwt</code> (decisions)</div></div></li><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name">Bước 4 · Đăng ký (server actions)</div><div class="note">Có thêm ràng buộc nhỏ (decisions)</div></div></li><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name">Bước 5 · Các trang (chuyển từ thiết kế)</div><div class="note">Lệch thiết kế có chủ đích đã được chấp nhận (decisions)</div></div></li><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name">Bước 6 · Bảo vệ route (middleware/proxy + layout)</div><div class="note">Route group; guard đọc lại user từ DB (Giai đoạn B, mục 1)</div></div></li><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name">Bước 7 · Chuyển hướng sau đăng nhập + đăng xuất</div></div></li><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name">Bước 8 · Kiểm tra tổng</div><div class="note">Tự động OK; chủ dự án đã test thủ công (&quot;test ok&quot;, 2026-09-28)</div></div></li><li><span class="sym" style="color:#34d399" title="xong">✅</span><div><div class="step-name"><span class="aux">mục phụ</span> · <code>.env.example</code> (mục Môi trường)</div><div class="note">Tạo ở Giai đoạn B, mục 2</div></div></li></ul>
         <p class="links"><a href="01-auth/task.md">task.md</a> · <a href="01-auth/progress.md">progress.md</a></p>
       </div>
+      <div class="card task-card">
+        <div class="card-header">
+          <div class="card-dot" style="background:#94a3b8"></div>
+          <h3>02 — role-dashboards</h3>
+          <span class="badge" style="color:#94a3b8;border-color:#94a3b8">⬜ chưa làm</span>
+        </div>
+        <p class="task-title">Dashboard sau đăng nhập cho 3 role</p>
+        <p class="meta">Nhánh: <code>feat/02-role-dashboards</code> · Cập nhật: 2026-09-29 · Phụ thuộc: 01</p>
+        <div class="bar"><div class="bar-fill" style="width:0%"></div></div><div class="bar-label">0/6 bước · 0%</div>
+        <ul class="steps"><li><span class="sym" style="color:#94a3b8" title="chưa làm">⬜</span><div><div class="step-name">Bước 0 · Kiểm tra (không sửa code)</div></div></li><li><span class="sym" style="color:#94a3b8" title="chưa làm">⬜</span><div><div class="step-name">Bước 1 · Thành phần dùng chung</div></div></li><li><span class="sym" style="color:#94a3b8" title="chưa làm">⬜</span><div><div class="step-name">Bước 2 · Dashboard khách hàng (<code>/dashboard</code>)</div></div></li><li><span class="sym" style="color:#94a3b8" title="chưa làm">⬜</span><div><div class="step-name">Bước 3 · Dashboard người bán (<code>/vendor/dashboard</code>)</div></div></li><li><span class="sym" style="color:#94a3b8" title="chưa làm">⬜</span><div><div class="step-name">Bước 4 · Dashboard admin (<code>/admin/dashboard</code>)</div></div></li><li><span class="sym" style="color:#94a3b8" title="chưa làm">⬜</span><div><div class="step-name">Bước 5 · Kiểm tra tổng</div></div></li></ul>
+        <p class="links"><a href="02-role-dashboards/task.md">task.md</a> · <a href="02-role-dashboards/progress.md">progress.md</a></p>
+      </div>
     </div>
 
     <h2 class="section-title">Chú thích</h2>
@@ -166,7 +191,7 @@
   </div>
 
   <script type="application/json" id="tasks-data">{
-  "generatedAt": "2026-09-29 05:41 (UTC+07:00)",
+  "generatedAt": "2026-09-29 11:39 (UTC+07:00)",
   "warnings": [],
   "tasks": [
     {
@@ -259,6 +284,71 @@
       "stepsTotal": 9,
       "stepsDone": 9,
       "level": 0
+    },
+    {
+      "nn": "02",
+      "slug": "02-role-dashboards",
+      "name": "role-dashboards",
+      "title": "Dashboard sau đăng nhập cho 3 role",
+      "status": "todo",
+      "deps": [
+        "01"
+      ],
+      "branch": "feat/02-role-dashboards",
+      "inReadme": true,
+      "hasFolder": true,
+      "progress": {
+        "overall": "todo",
+        "updated": "2026-09-29",
+        "steps": [
+          {
+            "step": "0",
+            "numbered": true,
+            "name": "Kiểm tra (không sửa code)",
+            "status": "todo",
+            "note": ""
+          },
+          {
+            "step": "1",
+            "numbered": true,
+            "name": "Thành phần dùng chung",
+            "status": "todo",
+            "note": ""
+          },
+          {
+            "step": "2",
+            "numbered": true,
+            "name": "Dashboard khách hàng (`/dashboard`)",
+            "status": "todo",
+            "note": ""
+          },
+          {
+            "step": "3",
+            "numbered": true,
+            "name": "Dashboard người bán (`/vendor/dashboard`)",
+            "status": "todo",
+            "note": ""
+          },
+          {
+            "step": "4",
+            "numbered": true,
+            "name": "Dashboard admin (`/admin/dashboard`)",
+            "status": "todo",
+            "note": ""
+          },
+          {
+            "step": "5",
+            "numbered": true,
+            "name": "Kiểm tra tổng",
+            "status": "todo",
+            "note": ""
+          }
+        ],
+        "hasTable": true
+      },
+      "stepsTotal": 6,
+      "stepsDone": 0,
+      "level": 1
     }
   ]
 }</script>
