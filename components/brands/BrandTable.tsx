@@ -1,12 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { EyeIcon } from "@/components/icons";
-import { TrashIcon } from "@/components/icons/dashboard";
+import { DeleteBrandButton } from "@/components/brands/DeleteBrandButton";
 import { EditBrandButton } from "@/components/brands/BrandFormTriggers";
 import { BrandStatusToggle } from "@/components/brands/BrandStatusToggle";
 import { rowActionClass } from "@/components/brands/styles";
-import { comingSoonProps } from "@/components/dashboard/coming-soon";
 import { brandDetailHref } from "@/lib/brands/list-url";
 import type { BrandListItem } from "@/lib/brands/queries";
 
@@ -76,10 +74,9 @@ export function BrandTable({ items, startIndex }: { items: BrandListItem[]; star
                   <EditBrandButton
                     brand={{ id: brand.id, name: brand.name, image: brand.image, status: brand.status }}
                   />
-                  {/* Wired up in step 8 (delete flow). */}
-                  <PendingAction label={`Delete ${brand.name}`} tone="delete">
-                    <TrashIcon size={15} />
-                  </PendingAction>
+                  <DeleteBrandButton
+                    brand={{ id: brand.id, name: brand.name, status: brand.status, productCount: brand.productCount }}
+                  />
                 </div>
               </td>
             </tr>
@@ -101,18 +98,5 @@ export function BrandThumb({ image, size = "row" }: { image: string | null; size
         <div className="placeholder-hatch absolute inset-0" />
       )}
     </div>
-  );
-}
-
-function PendingAction({ label, tone, children }: { label: string; tone: "delete"; children: ReactNode }) {
-  return (
-    <span
-      role="button"
-      aria-label={label}
-      className={`${rowActionClass.base} ${rowActionClass[tone]} cursor-not-allowed opacity-60`}
-      {...comingSoonProps}
-    >
-      {children}
-    </span>
   );
 }
