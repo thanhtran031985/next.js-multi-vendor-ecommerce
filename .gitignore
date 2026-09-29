@@ -20,6 +20,9 @@
 # production
 /build
 
+# uploaded files (served by app/media/*, not committed)
+/storage/
+
 # misc
 .DS_Store
 *.pem

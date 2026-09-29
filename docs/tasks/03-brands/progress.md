@@ -7,7 +7,7 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | 0 | Kiểm tra (không sửa code) | ✅ | Q1–Q3 đã chốt (decisions.md) |
 | 1 | Prisma model | ✅ | Migration `20260929142159_add_brand`; Q4: giữ `unicode_ci` (khác dấu cũng trùng) |
 | 2 | Schema, truy vấn, service | ✅ | `lib/storage/images.ts` làm sớm ở bước này (service cần) |
-| 3 | Lưu trữ ảnh | ⬜ | |
+| 3 | Lưu trữ ảnh | ✅ | Route `/media/brands/[file]`, `bodySizeLimit: "3mb"`, `/storage/` ignored |
 | 4 | Server actions | ⬜ | |
 | 5 | Trang danh sách (`/admin/brands`) | ⬜ | |
 | 6 | Modal thêm/sửa | ⬜ | |
@@ -122,6 +122,31 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
   - Service chưa chạy với DB/đĩa thật: kiểm ở Bước 3 (lưu ảnh) và `verify-brands.ts` (Bước 9).
 - Việc tôi cần làm thủ công: không có.
 
+### Bước 3 — Lưu trữ ảnh (2026-09-29)
+- Đã làm:
+  - `app/media/brands/[file]/route.ts`: chỉ nhận tên khớp `^[0-9a-f-]{36}\.(jpg|png|webp)$`
+    (qua `storedImagePath`), sai tên hoặc không có file → 404; Content-Type theo đuôi,
+    `Cache-Control: public, max-age=31536000, immutable`, thêm `X-Content-Type-Options: nosniff`.
+  - `next.config.ts`: `experimental.serverActions.bodySizeLimit: "3mb"` (khóa đúng cho Next
+    16.3.6, theo `node_modules/next/dist/docs/.../serverActions.md`).
+  - `.gitignore`: thêm `/storage/`.
+  - (`lib/storage/images.ts` đã làm ở Bước 2.)
+- File tạo/sửa: `app/media/brands/[file]/route.ts`, `next.config.ts`, `.gitignore`.
+- Kết quả kiểm tra (`npm run dev`, script nháp gọi `saveImage`/`deleteImage`):
+  - `npx tsc --noEmit`, eslint các file mới: không lỗi.
+  - Lưu PNG 1×1 gửi kèm tên `photo.jpg` + MIME `image/jpeg` → lưu thành
+    `<uuid>.png` (đuôi theo magic bytes, không theo client).
+  - GET qua route → **200**, `content-type: image/png`, `cache-control: public,
+    max-age=31536000, immutable`, `content-length: 68`, nội dung trùng khớp byte với file gốc.
+  - `/media/brands/..%2F..%2Fpackage.json` → **404**; `/media/brands/../../package.json`
+    (`--path-as-is`) → **404**; `package.json`, uuid không tồn tại, tên viết HOA → **404**;
+    `..%2F..%2F..%2Fpackage.json` → **400** (Next từ chối trước khi vào route; vẫn không lộ file).
+  - `deleteImage` → file mất, GET lại → 404; thư mục `storage/uploads/brands/` trống.
+    `git check-ignore` xác nhận `storage/` bị bỏ qua.
+  - Tình cờ kiểm được: Git Bash đổi tham số thành `C:/Program Files/Git/media/...`,
+    `deleteImage` bỏ qua đường dẫn lạ đó và không xóa gì (đúng thiết kế).
+  - Chưa kiểm được: giới hạn 3 MB của server action (cần action thật, kiểm ở Bước 6/9).
+- Việc tôi cần làm thủ công: không có.
+
 ## Bước tiếp theo
-Bước 3 — route `app/media/brands/[file]/route.ts`, `bodySizeLimit`, `storage/` vào
-`.gitignore`, script thử lưu ảnh + GET qua route.
+Bước 4 — `app/actions/brands.ts` (4 action + `requireAdminAction()`).
