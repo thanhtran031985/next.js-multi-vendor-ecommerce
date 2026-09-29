@@ -9,7 +9,7 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | 2 | Schema, truy vấn, service | ✅ | `lib/storage/images.ts` làm sớm ở bước này (service cần) |
 | 3 | Lưu trữ ảnh | ✅ | Route `/media/brands/[file]`, `bodySizeLimit: "3mb"`, `/storage/` ignored |
 | 4 | Server actions | ✅ | 4 action; helper ở `lib/actions/` |
-| 5 | Trang danh sách (`/admin/brands`) | ⬜ | |
+| 5 | Trang danh sách (`/admin/brands`) | 🔄 | Code xong, build OK; 21/22 kiểm tra HTTP đạt, chờ chạy lại 1 kiểm tra đã sửa regex |
 | 6 | Modal thêm/sửa | ⬜ | |
 | 7 | Trang chi tiết (`/admin/brands/[id]`) | ⬜ | |
 | 8 | Luồng xóa | ⬜ | |
@@ -172,6 +172,41 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
     sẽ được kiểm ở Bước 6 và Bước 9.
 - Việc tôi cần làm thủ công: không có.
 
+### Bước 5 — Trang danh sách (2026-09-29)
+- Đã làm:
+  - Trang `app/(admin)/admin/(protected)/brands/page.tsx` (+ `loading.tsx` skeleton,
+    `error.tsx` "Couldn't load brands" / Try again): header (icon, "Brands", pill tổng số),
+    thanh công cụ, bảng, phân trang; 2 kiểu rỗng ("No brands yet" + Add Brand; "No brands
+    match your filters" + Clear filters). `requireRole("ADMIN")` trong page.
+  - `components/brands/`: `BrandToolbar` (client: tìm kiếm debounce 300 ms + nút Search,
+    lọc trạng thái, số dòng/trang 10/20/50, đổi gì cũng về trang 1, URL là nguồn trạng thái
+    duy nhất), `BrandTable` (bảng + `BrandThumb`), `BrandStatusToggle` (`useOptimistic`, lỗi →
+    hoàn tác + toast), `BrandStatusBadge`.
+  - `components/ui/`: `Switch`, `Select`, `Pagination`. `lib/brands/list-url.ts`.
+  - Breadcrumb qua slot `@breadcrumb` ("Dashboard / Brands"); nhóm "Organization" →
+    "Brand Setup" trong `adminNav`. Chi tiết và các file task 02 bị sửa: decisions.md.
+  - Token: `--toggle-off`, `--success-soft`, `--tracking-table`.
+  - `scripts/verify-brands.ts` (phần HTTP).
+- File tạo/sửa: `app/(admin)/admin/(protected)/layout.tsx`, `…/@breadcrumb/{default.tsx,
+  [...catchAll]/page.tsx, brands/page.tsx}`, `…/brands/{page,loading,error}.tsx`,
+  `components/brands/*`, `components/ui/*`, `components/dashboard/{Breadcrumb,DashboardShell}.tsx`,
+  `components/icons/dashboard.tsx`, `lib/brands/list-url.ts`, `lib/dashboard/nav.ts`,
+  `app/globals.css`, `scripts/verify-brands.ts`.
+- Kết quả kiểm tra:
+  - `npx tsc --noEmit`, `npm run lint`: không lỗi. `npm run build`: thành công (có route
+    `/admin/brands`, `/admin/[...catchAll]`).
+  - `npx tsx --env-file=.env scripts/verify-brands.ts` (dev server): 21/22 PASS —
+    khách → `/admin/login`, khách hàng → `/dashboard`, vendor → `/vendor/dashboard`;
+    "No brands yet" khi DB rỗng; admin 200, header + pill tổng, breadcrumb Dashboard / Brands,
+    10 dòng mặc định, `?pageSize=20` → 20, `?page=999` → 200 và hiện trang cuối (3),
+    `?pageSize=abc&page=-3&status=nope` → 200, trang 1, 10 dòng; lọc INACTIVE → 8; tìm kiếm
+    không phân biệt hoa/thường → 1; không khớp → thông báo + Clear filters; `/admin/dashboard`
+    vẫn 200 với "Home / Dashboard"; `/admin/no-such-page` → 404; `/admin/login` vẫn 200.
+    Dọn sạch 23 brand + 3 user thử.
+  - 1 FAIL do regex của script (Next `<Link>` đặt `href` sau `aria-current`), không phải lỗi
+    giao diện; đã sửa regex, **chưa chạy lại được** (lỗi tạm thời của công cụ).
+- Việc tôi cần làm thủ công: không có.
+
 ## Bước tiếp theo
-Bước 5 — trang danh sách `/admin/brands` (toolbar, bảng, phân trang, 4 trạng thái, mục menu,
-breadcrumb trên shell).
+Chạy lại `verify-brands.ts` (kiểm tra "Brand Setup" là link hiện tại), rồi Bước 6 — modal
+thêm/sửa.

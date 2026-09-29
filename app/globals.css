@@ -46,6 +46,8 @@
   --error-line: #f6d9da; /* error-state card border */
   --track: #edecf1; /* segmented-tab track, skeleton base */
   --track-highlight: #f7f6f9; /* skeleton shimmer highlight */
+  /* lists (task 03) */
+  --toggle-off: #e4e2e9; /* switch track when off (DESIGN_SYSTEM Toggle/Switch) */
 
   /* text on dark surfaces (--ink utility bar, footer) */
   --on-dark-soft: #c9c7d1;
@@ -56,6 +58,7 @@
   /* status: fg + soft bg, and solid base hues */
   --success: #2e7d53;
   --success-bg: #e6f5ee;
+  --success-soft: #f1fbf6; /* "View" row-action button bg (task 03) */
   --warning: #b4741c;
   --warning-bg: #fbefdd;
   --error: #c0403f;
@@ -154,6 +157,7 @@
   --color-error-line: var(--error-line);
   --color-track: var(--track);
   --color-track-highlight: var(--track-highlight);
+  --color-toggle-off: var(--toggle-off);
   --color-on-dark-soft: var(--on-dark-soft);
   --color-on-dark-muted: var(--on-dark-muted);
   --color-on-dark-subtle: var(--on-dark-subtle);
@@ -161,6 +165,7 @@
 
   --color-success: var(--success);
   --color-success-bg: var(--success-bg);
+  --color-success-soft: var(--success-soft);
   --color-warning: var(--warning);
   --color-warning-bg: var(--warning-bg);
   --color-error: var(--error);
@@ -241,6 +246,7 @@
   --tracking-heading: -0.01em;
   --tracking-caps: 0.06em;
   --tracking-label: 0.08em; /* dashboard sidebar group labels */
+  --tracking-table: 0.04em; /* list table column headers (task 03) */
 
   --container-page: var(--container-max);
   --container-marketing: 77.5rem; /* 1240px */

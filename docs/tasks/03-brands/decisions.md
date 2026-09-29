@@ -88,3 +88,37 @@
   (Bước 6).
 - **Toggle nhận trạng thái đích**, không tự đảo: gọi lại (mạng chậm, bấm lặp) cho cùng kết quả,
   hợp với `useOptimistic`.
+
+### 2026-09-29 — Bước 5: trang danh sách
+- **Breadcrumb (Q2) làm bằng parallel route `@breadcrumb`**, không dùng context client như mô tả
+  lúc chọn Q2. Kết quả giống nhau (page tự đặt breadcrumb trên thanh trên, mặc định vẫn
+  "Home / Dashboard"), nhưng breadcrumb được render ở server nên không nháy "Home / Dashboard"
+  trước khi đổi, và trang chi tiết lấy được tên brand ngay ở server.
+  - `DashboardShell` nhận prop `breadcrumb?: ReactNode`; component mới
+    `components/dashboard/Breadcrumb.tsx` (`DASHBOARD_CRUMBS` = Home / Dashboard).
+  - Layout `app/(admin)/admin/(protected)/layout.tsx` nhận slot `breadcrumb`.
+  - Slot: `@breadcrumb/default.tsx`, `@breadcrumb/[...catchAll]/page.tsx` (route admin nào
+    không có trang breadcrumb riêng → mặc định; cần vì khi điều hướng phía client, slot không
+    khớp sẽ giữ breadcrumb của trang trước), `@breadcrumb/brands/page.tsx`.
+  - Build liệt kê thêm `/admin/[...catchAll]`; đã kiểm: `/admin/no-such-page` vẫn 404,
+    `/admin/login` vẫn là trang đăng nhập.
+  - **Trang admin mới về sau:** thêm `@breadcrumb/<route>/page.tsx` nếu muốn breadcrumb riêng.
+- **Sửa ngoài danh sách phạm vi (task 02):** `DashboardShell.tsx` (prop breadcrumb, khoảng cách
+  `mt-5` giữa các nhóm menu — trước đây chỉ có 1 nhóm), `components/icons/dashboard.tsx` (thêm
+  `EditIcon`, `TrashIcon` lấy từ thiết kế).
+- **Token mới:** `--toggle-off`, `--success-soft` (đã báo ở Bước 0), thêm `--tracking-table`
+  (0.04em, chữ tiêu đề cột bảng trong thiết kế). `--backdrop` để Bước 6.
+- **Bảng:** thẻ `<table>` thật (`table-fixed` + `<colgroup>` theo rem) thay cho lưới CSS của
+  mockup, để giữ ngữ nghĩa bảng cho trình đọc màn hình. Cột: # / Image / Brand Name / Slug /
+  Products / Status (công tắc + badge) / Action. Tên brand cũng là link tới trang chi tiết.
+- **Phân trang:** theo mockup (ô 34px, căn phải), thêm dấu "…" khi > 7 trang; không có nút
+  Trước/Sau (mockup không có). Ẩn khi chỉ có 1 trang.
+- **Pill đếm ở header = tổng số brand** (`totalAll`, không theo bộ lọc).
+- **`error.tsx` dùng `retry`** (Next 16.3: tải lại dữ liệu server) thay vì `reset` như task.md
+  ghi (`reset` chỉ render lại, không chạy lại truy vấn) — giống task 02.
+- **Nút Add Brand, Edit, Delete** đã có vị trí và kiểu dáng nhưng tạm "Coming soon"
+  (`comingSoonProps`); nối chức năng ở Bước 6 (thêm/sửa) và Bước 8 (xóa). Nút View là link.
+- **Mục "Brand Setup"** chỉ sáng trên `/admin/brands` (sidebar so khớp chính xác đường dẫn,
+  quy ước task 02); trang chi tiết không làm sáng mục nào. Rail không có mục nào sáng (mục
+  Products của rail vẫn "Coming soon").
+- **`scripts/verify-brands.ts`** bắt đầu từ Bước 5 (phần HTTP), Bước 9 bổ sung phần service.

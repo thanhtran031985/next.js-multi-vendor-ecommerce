@@ -1,10 +1,8 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { CartIcon, SearchIcon, UserIcon } from "@/components/icons";
 import {
   BellIcon,
   CheckSquareIcon,
-  ChevronRightIcon,
   GlobeIcon,
   HomeIcon,
   LockIcon,
@@ -12,6 +10,7 @@ import {
   MessageSquareIcon,
   SettingsIcon,
 } from "@/components/icons/dashboard";
+import { Breadcrumb, DASHBOARD_CRUMBS } from "@/components/dashboard/Breadcrumb";
 import { comingSoonProps } from "@/components/dashboard/coming-soon";
 import { ShellFrame } from "@/components/dashboard/ShellFrame";
 import { SidebarNav } from "@/components/dashboard/SidebarNav";
@@ -25,6 +24,8 @@ type DashboardShellProps = {
   user: { name: string; email: string };
   /** Seller only: shown in the user-menu header (decisions.md Q4). */
   storeName?: string;
+  /** Topbar breadcrumb; defaults to Home / Dashboard. Admin pages set it via the @breadcrumb slot (task 03). */
+  breadcrumb?: ReactNode;
   children: ReactNode;
 };
 
@@ -34,7 +35,7 @@ type DashboardShellProps = {
  * user menu, content on --bg-dash. Server component; interactivity lives in ShellFrame,
  * SidebarNav and UserMenu.
  */
-export function DashboardShell({ variant, nav, user, storeName, children }: DashboardShellProps) {
+export function DashboardShell({ variant, nav, user, storeName, breadcrumb, children }: DashboardShellProps) {
   const seller = variant === "seller";
 
   const rail = (
@@ -54,8 +55,9 @@ export function DashboardShell({ variant, nav, user, storeName, children }: Dash
         </span>
         <span className="font-display text-16 leading-none font-bold text-ink">Home</span>
       </div>
-      {nav.groups.map((group) => (
-        <div key={group.label}>
+      {nav.groups.map((group, i) => (
+        // AdminProductList mockup: 14px above each later group label + 6px below the items.
+        <div key={group.label} className={i > 0 ? "mt-5" : undefined}>
           <div className="mb-2.5 px-2 text-11 leading-none font-semibold tracking-label text-muted-soft uppercase">
             {group.label}
           </div>
@@ -78,15 +80,7 @@ export function DashboardShell({ variant, nav, user, storeName, children }: Dash
 
   const topbar = (
     <>
-      <nav aria-label="Breadcrumb" className="hidden items-center gap-2 text-13 leading-none font-medium sm:flex">
-        <Link href="/" className="text-iris-500">
-          Home
-        </Link>
-        <ChevronRightIcon size={14} className="text-muted-faint" />
-        <span className="text-muted" aria-current="page">
-          Dashboard
-        </span>
-      </nav>
+      {breadcrumb ?? <Breadcrumb items={DASHBOARD_CRUMBS} />}
 
       {!seller && (
         <div

@@ -459,6 +459,26 @@ export function PercentIcon(p: IconProps) {
   );
 }
 
+/* ---------- list row actions (VendorProductList mockup, task 03) ---------- */
+
+export function EditIcon(p: IconProps) {
+  return (
+    <Icon {...p}>
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+      <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z" />
+    </Icon>
+  );
+}
+
+export function TrashIcon(p: IconProps) {
+  return (
+    <Icon {...p}>
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    </Icon>
+  );
+}
+
 /** Banknote. `dots` adds the two side marks (vendor withdrawable-balance variant). */
 export function CashIcon({ dots = false, ...p }: IconProps & { dots?: boolean }) {
   return (

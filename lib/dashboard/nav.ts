@@ -86,7 +86,14 @@ export const vendorNav: ShellNav = {
 
 export const adminNav: ShellNav = {
   rail: railFor("/admin/dashboard"),
-  groups: [overviewFor("/admin/dashboard")],
+  groups: [
+    overviewFor("/admin/dashboard"),
+    // AdminProductList mockup: Catalog sidebar -> "Organization" -> "Brand Setup" (task 03).
+    {
+      label: "Organization",
+      items: [{ label: "Brand Setup", href: "/admin/brands", icon: "box", enabled: true }],
+    },
+  ],
 };
 
 /**
