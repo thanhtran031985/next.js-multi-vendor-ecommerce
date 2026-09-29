@@ -39,6 +39,13 @@
   --control-border: #d6d4dd;
   --placeholder-bg: #eae8f0;
   --placeholder-border: #c9c6d3;
+  /* dashboards (task 02) */
+  --muted-strong: #6e6a7c; /* account-nav icon at rest */
+  --muted-faint: #c6c4ce; /* breadcrumb chevron */
+  --line-dashed: #dad8e0; /* empty-state dashed border */
+  --error-line: #f6d9da; /* error-state card border */
+  --track: #edecf1; /* segmented-tab track, skeleton base */
+  --track-highlight: #f7f6f9; /* skeleton shimmer highlight */
 
   /* text on dark surfaces (--ink utility bar, footer) */
   --on-dark-soft: #c9c7d1;
@@ -85,6 +92,9 @@
   --shadow-lg: 0 26px 64px -16px rgba(20, 18, 31, 0.28);
   --shadow-xl: 0 40px 90px -20px rgba(20, 18, 31, 0.5);
   --shadow-form: 0 12px 34px -18px rgba(20, 18, 31, 0.2);
+  --shadow-card-hover: 0 10px 24px -14px rgba(20, 18, 31, 0.2); /* dashboard tile hover */
+  --shadow-menu: 0 20px 48px -14px rgba(20, 18, 31, 0.28); /* profile dropdown */
+  --shadow-iris: 0 6px 16px -6px rgba(101, 68, 224, 0.4); /* wallet icon chip */
 }
 
 @media (max-width: 1024px) {
@@ -138,6 +148,12 @@
   --color-control-border: var(--control-border);
   --color-placeholder-bg: var(--placeholder-bg);
   --color-placeholder-border: var(--placeholder-border);
+  --color-muted-strong: var(--muted-strong);
+  --color-muted-faint: var(--muted-faint);
+  --color-line-dashed: var(--line-dashed);
+  --color-error-line: var(--error-line);
+  --color-track: var(--track);
+  --color-track-highlight: var(--track-highlight);
   --color-on-dark-soft: var(--on-dark-soft);
   --color-on-dark-muted: var(--on-dark-muted);
   --color-on-dark-subtle: var(--on-dark-subtle);
@@ -175,6 +191,9 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-form: var(--shadow-form);
+  --shadow-card-hover: var(--shadow-card-hover);
+  --shadow-menu: var(--shadow-menu);
+  --shadow-iris: var(--shadow-iris);
 
   --font-display: var(--font-sora), system-ui, sans-serif;
   --font-sans: var(--font-instrument-sans), system-ui, sans-serif;
@@ -184,6 +203,7 @@
   --text-8: 0.5rem;
   --text-10: 0.625rem;
   --text-11: 0.6875rem;
+  --text-11-5: 0.71875rem;
   --text-12: 0.75rem;
   --text-12-5: 0.78125rem;
   --text-13: 0.8125rem;
@@ -192,8 +212,12 @@
   --text-14-5: 0.90625rem;
   --text-15: 0.9375rem;
   --text-16: 1rem;
+  --text-17: 1.0625rem;
   --text-18: 1.125rem;
   --text-19: 1.1875rem;
+  --text-20: 1.25rem;
+  --text-21: 1.3125rem;
+  --text-22: 1.375rem;
   --text-24: 1.5rem;
   --text-26: 1.625rem;
   --text-27: 1.6875rem;
@@ -216,10 +240,13 @@
   --tracking-display: -0.02em;
   --tracking-heading: -0.01em;
   --tracking-caps: 0.06em;
+  --tracking-label: 0.08em; /* dashboard sidebar group labels */
 
   --container-page: var(--container-max);
   --container-marketing: 77.5rem; /* 1240px */
   --container-faq: 56.25rem; /* 900px */
+  --container-dash: 80rem; /* 1280px admin dashboard body */
+  --container-profile: 52.5rem; /* 840px customer profile form */
 
   --animate-shimmer: shimmer 1.4s infinite linear;
 }
@@ -231,6 +258,13 @@
   100% {
     background-position: 450px 0;
   }
+}
+
+/* Loading skeleton block: shimmering --track (dashboards). */
+@utility skeleton {
+  background: linear-gradient(90deg, var(--track) 25%, var(--track-highlight) 50%, var(--track) 75%);
+  background-size: 400px 100%;
+  animation: var(--animate-shimmer);
 }
 
 /* Diagonal hatch used by image placeholders. */
