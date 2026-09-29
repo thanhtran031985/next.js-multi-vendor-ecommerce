@@ -7,7 +7,7 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | 0 | Kiểm tra (không sửa code) | ✅ | Q1–Q4 đã chốt, xem decisions.md |
 | 1 | Thành phần dùng chung | ✅ | tsc/lint/build đạt; HTTP đạt (chạy cùng Bước 2) |
 | 2 | Dashboard khách hàng (`/dashboard`) | ✅ | HTTP: 42/42 kiểm tra đạt |
-| 3 | Dashboard người bán (`/vendor/dashboard`) | ⬜ | |
+| 3 | Dashboard người bán (`/vendor/dashboard`) | ✅ | HTTP: 63/63 kiểm tra đạt |
 | 4 | Dashboard admin (`/admin/dashboard`) | ⬜ | |
 | 5 | Kiểm tra tổng | ⬜ | |
 
@@ -355,5 +355,52 @@ Chi tiết ở `decisions.md`.
       - Chưa đăng nhập → trang login đúng khu vực.
 - Việc tôi cần làm thủ công: không có. (Checklist trình duyệt để ở Bước 5.)
 
+### Bước 3 — Dashboard người bán (2026-09-29)
+- Đã làm:
+  - Loader `lib/dashboard/vendor.ts` (`getVendorDashboard`):
+    - (A) Chỉ select `storeName`, `slug`, `status`, `createdAt` và `user.name`, `user.email`.
+    - (B) Các trường sau trả giá trị rỗng, mỗi trường có `// TODO(<task>)`:
+      - `orderStatusCounts: null`
+      - `wallet: null`
+      - `earnings: []`
+      - `mostRatedProducts: []`
+      - `topSellingProducts: []`
+      - `topDeliveryMen: []`
+  - Kiểu dùng chung cho widget (B) nằm trong `lib/dashboard/types.ts`: `ORDER_STATUSES`, `OrderStatusCounts`, `ChartPoint`, `RatedProduct`, `TopProduct`, `DeliveryPerson`.
+  - Page `/vendor/dashboard` theo thiết kế:
+    - Tiêu đề và thanh công cụ:
+      - "Welcome <tên>".
+      - Phụ đề (Q4): "<Store> · /<slug> · <StatusBadge> · Since <ngày>".
+      - Nút Products vô hiệu.
+    - Business Analytics: 8 thẻ trạng thái đơn hàng, hiện "—" vì chưa có model đơn hàng. Bộ chọn "Overall Statistics" vô hiệu.
+    - Vendor Wallet: số dư + Withdraw (vô hiệu) + 4 ô tiền, tất cả hiện "—".
+    - Earning Statistics: tab khoảng thời gian (vô hiệu), chú thích, khung biểu đồ 300px với empty state.
+    - Các khối Most Rated / Top Selling / Top Delivery Man hiện empty state.
+    - Page vẫn gọi `requireApprovedVendor()`.
+  - Các widget tự hiện dữ liệu khi loader có dữ liệu, rỗng thì hiện empty state. Task sau chỉ cần sửa loader.
+  - Component mới:
+    - `OrderStatusGrid`, `WalletTile` (+ `Dash`).
+    - `ProductWidgets`: `RatedProductList`, `TopProductGrid`, `DeliveryPeopleGrid`. Cả 3 dùng chung cho vendor và admin, có biến thể theo từng thiết kế.
+  - Icon mới `TimerIcon`. Tone chip mới: `amber`, `danger`. `formatMoney`.
+  - `loading.tsx` (skeleton) và `error.tsx` (thẻ lỗi + Try again).
+  - Không đổi `/vendor/pending`.
+- File tạo/sửa:
+  - `lib/dashboard/{vendor,types}.ts`, `lib/dashboard/format.ts`.
+  - `app/(seller)/vendor/dashboard/{page,loading,error}.tsx`.
+  - `components/dashboard/{OrderStatusGrid,WalletTile,ProductWidgets}.tsx`, `components/dashboard/{SectionCard,StatCard}.tsx`.
+  - `components/icons/dashboard.tsx`.
+  - `scripts/verify-dashboards.ts`.
+- Kết quả kiểm tra:
+  - `npx tsc --noEmit`, `npm run lint`, `npm run build`: không lỗi.
+  - HTTP (`verify-dashboards.ts`, `next start`): **ALL CHECKS PASSED**, 63/63, đã xóa 5 user test.
+    - Vendor APPROVED:
+      - `/vendor/dashboard` trả 200.
+      - Có tên, cửa hàng, slug, "Approved", "Since", các khối và empty state.
+      - Không có số demo của thiết kế ("10,081.50", "James Dawson"). Không có link `/vendor/dashboard/products`.
+    - Vendor PENDING/SUSPENDED → `/vendor/pending`. `/vendor/pending` của PENDING vẫn 200.
+    - Khách hàng → `/dashboard`.
+  - Grep: không có hex/`rgba(`, không có `passwordHash` trong `lib/dashboard/**` và `components/dashboard/**`. Hai comment từng nhắc "passwordHash" đã được sửa lời.
+- Việc tôi cần làm thủ công: không có.
+
 ## Bước tiếp theo
-Bước 3 — Dashboard người bán (`/vendor/dashboard`).
+Bước 4 — Dashboard admin (`/admin/dashboard`).

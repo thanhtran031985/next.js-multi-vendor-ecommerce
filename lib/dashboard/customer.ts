@@ -1,5 +1,5 @@
 // Data for the customer dashboard (/dashboard). The page only calls this loader; it never
-// queries Prisma itself. Selects exactly the fields shown — never passwordHash.
+// queries Prisma itself. Selects exactly the fields shown — never the password hash.
 
 import { prisma } from "@/lib/prisma";
 import { splitName } from "@/lib/dashboard/format";

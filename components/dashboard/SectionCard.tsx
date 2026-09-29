@@ -1,14 +1,17 @@
 import type { ReactNode } from "react";
 import { comingSoonProps } from "@/components/dashboard/coming-soon";
 
-export type ChipTone = "iris" | "info" | "success" | "warning" | "error";
+export type ChipTone = "iris" | "info" | "success" | "warning" | "amber" | "error" | "danger";
 
+/** Icon-chip colours from the mockups: soft status bg + fg (amber/danger use the solid hue). */
 export const chipToneClass: Record<ChipTone, string> = {
   iris: "bg-iris-50 text-iris-500",
   info: "bg-info-bg text-info",
   success: "bg-success-bg text-success",
   warning: "bg-warning-bg text-warning",
-  error: "bg-error-bg text-error-solid",
+  amber: "bg-warning-bg text-warning-solid",
+  error: "bg-error-bg text-error",
+  danger: "bg-error-bg text-error-solid",
 };
 
 type SectionCardProps = {

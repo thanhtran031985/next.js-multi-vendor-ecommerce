@@ -428,6 +428,16 @@ export function StoreIcon(p: IconProps) {
   );
 }
 
+/** Wallet "pending" clock (r=9, slightly smaller than ClockIcon in components/icons.tsx). */
+export function TimerIcon(p: IconProps) {
+  return (
+    <Icon {...p}>
+      <circle cx="12" cy="12" r="9" />
+      <polyline points="12 7 12 12 15 14" />
+    </Icon>
+  );
+}
+
 export function CoinsIcon(p: IconProps) {
   return (
     <Icon {...p}>

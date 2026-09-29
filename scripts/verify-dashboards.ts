@@ -155,10 +155,33 @@ async function main() {
   await expectRedirect("customer", jars.customer, "/admin/dashboard", "/dashboard");
 
   console.log("\n# Vendor");
-  await expectPage("vendor APPROVED", jars.vendor, "/vendor/dashboard", ["Setup Guide", "Vina Verify Store", "v****@", "Logout", "Coming soon"], [
+  await expectPage("vendor APPROVED", jars.vendor, "/vendor/dashboard", [
+    "Setup Guide",
+    "v****@",
+    "Logout",
+    "Coming soon",
+    "Welcome Vina Seller",
+    "Vina Verify Store",
+    "/dash-verify-vina",
+    "Approved",
+    "Since ",
+    "Business Analytics",
+    "Failed To Deliver",
+    "Vendor Wallet",
+    "Withdrawable Balance",
+    "Earning Statistics",
+    "No earnings yet",
+    "No rated products yet",
+    "No sales yet",
+    "No deliveries yet",
+    "No data yet",
+  ], [
     'href="/vendor/dashboard/products"',
     "passwordHash",
+    "10,081.50", // mockup demo figures must not leak into the page
+    "James Dawson",
   ]);
+  await expectPage("vendor PENDING", jars.pending, "/vendor/pending", ["Pete Verify Store"]);
   await expectRedirect("vendor PENDING", jars.pending, "/vendor/dashboard", "/vendor/pending");
   await expectRedirect("vendor SUSPENDED", jars.suspended, "/vendor/dashboard", "/vendor/pending");
   await expectRedirect("vendor APPROVED", jars.vendor, "/dashboard", "/vendor/dashboard");

@@ -20,6 +20,13 @@ export function splitName(name: string): { first: string; last: string } {
 
 const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 
+const moneyFormat = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+
+/** 10081.5 -> "$10,081.50". */
+export function formatMoney(amount: number): string {
+  return moneyFormat.format(amount);
+}
+
 /** "Sep 29, 2026". UTC so server and client render the same string. */
 export function formatDate(date: Date): string {
   return dateFormat.format(date);

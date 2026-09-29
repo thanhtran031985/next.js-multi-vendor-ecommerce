@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { chipToneClass, type ChipTone } from "@/components/dashboard/SectionCard";
+import { Dash } from "@/components/dashboard/WalletTile";
 
 type StatCardProps = {
   label: string;
@@ -20,17 +21,7 @@ type StatCardProps = {
 const valueToneClass = { ink: "text-ink", success: "text-success-solid", error: "text-error-solid" } as const;
 
 export function StatCard({ label, value, icon, tone, variant, valueTone = "ink" }: StatCardProps) {
-  const shown =
-    value === null ? (
-      <>
-        <span aria-hidden="true">—</span>
-        <span className="sr-only">No data yet</span>
-      </>
-    ) : typeof value === "number" ? (
-      value.toLocaleString("en-US")
-    ) : (
-      value
-    );
+  const shown = value === null ? <Dash /> : typeof value === "number" ? value.toLocaleString("en-US") : value;
   const valueColor = value === null ? "text-muted-soft" : valueToneClass[valueTone];
 
   if (variant === "metric") {

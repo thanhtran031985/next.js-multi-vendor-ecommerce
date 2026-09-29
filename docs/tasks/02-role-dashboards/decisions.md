@@ -83,3 +83,9 @@
 - **Bối cảnh:** thiết kế có ô chọn mã vùng "+1" trước số điện thoại. Đây là dữ liệu demo, và `User` chưa có trường phone.
 - **Quyết định:** ô Phone chỉ là input trống với placeholder "Not added yet", không có ô mã vùng.
 - **Ảnh hưởng:** task hồ sơ khách hàng sẽ thêm lại ô mã vùng khi có trường `phone`.
+
+### 2026-09-29 — Bước 3: dashboard người bán
+- **Phụ đề:** thông tin cửa hàng (Q4) **thay** câu "Monitor your business analytics and statistics." của thiết kế, không thêm dòng mới. Như vậy bố cục phần tiêu đề không đổi.
+- **Widget danh sách/lưới:** đã có phần render dữ liệu thật, theo đúng kiểu của thiết kế. Loader trả mảng rỗng thì hiện empty state. Task sau chỉ cần sửa loader, không phải sửa page.
+- **Biểu đồ:** `ChartFrame` giữ nguyên khung 300px và chú thích, luôn hiện empty state. Task nào mang dữ liệu doanh thu về sẽ chọn thư viện biểu đồ (thiết kế dùng Chart.js 4 qua CDN; ở đây chưa cài).
+- **Nút và bộ chọn chưa có chức năng:** "Overall Statistics", "Products", "Withdraw" bị vô hiệu, có tooltip "Coming soon".
