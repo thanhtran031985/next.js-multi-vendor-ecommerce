@@ -9,7 +9,7 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | 2 | Schema, truy vấn, service | ✅ | `lib/storage/images.ts` làm sớm ở bước này (service cần) |
 | 3 | Lưu trữ ảnh | ✅ | Route `/media/brands/[file]`, `bodySizeLimit: "3mb"`, `/storage/` ignored |
 | 4 | Server actions | ✅ | 4 action; helper ở `lib/actions/` |
-| 5 | Trang danh sách (`/admin/brands`) | 🔄 | Code xong, build OK; 21/22 kiểm tra HTTP đạt, chờ chạy lại 1 kiểm tra đã sửa regex |
+| 5 | Trang danh sách (`/admin/brands`) | ✅ | Build OK; `verify-brands.ts` 22/22 |
 | 6 | Modal thêm/sửa | ⬜ | |
 | 7 | Trang chi tiết (`/admin/brands/[id]`) | ⬜ | |
 | 8 | Luồng xóa | ⬜ | |
@@ -203,10 +203,10 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
     không phân biệt hoa/thường → 1; không khớp → thông báo + Clear filters; `/admin/dashboard`
     vẫn 200 với "Home / Dashboard"; `/admin/no-such-page` → 404; `/admin/login` vẫn 200.
     Dọn sạch 23 brand + 3 user thử.
-  - 1 FAIL do regex của script (Next `<Link>` đặt `href` sau `aria-current`), không phải lỗi
-    giao diện; đã sửa regex, **chưa chạy lại được** (lỗi tạm thời của công cụ).
+  - Lần đầu 1 FAIL do regex của script (Next `<Link>` đặt `href` sau `aria-current`), không
+    phải lỗi giao diện. Sửa regex, chạy lại: **22/22 PASS** ("Brand Setup" là link hiện tại
+    trên `/admin/brands`), dọn sạch 23 brand + 3 user thử.
 - Việc tôi cần làm thủ công: không có.
 
 ## Bước tiếp theo
-Chạy lại `verify-brands.ts` (kiểm tra "Brand Setup" là link hiện tại), rồi Bước 6 — modal
-thêm/sửa.
+Bước 6 — modal thêm/sửa (`BrandFormDialog`).
