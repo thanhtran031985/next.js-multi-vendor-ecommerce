@@ -98,3 +98,36 @@
 - **Q3:** tên hai thẻ vendor mới là "Vendors by Status" và "Recent Vendor Registrations". Thẻ "Recent Vendor Registrations" có "View All" vô hiệu (trang danh sách vendor là task sau).
 - **Pill admin** giữ nhãn "Master Admin" của thiết kế: đây là nhãn vai trò, không phải số liệu.
 - **Thuộc tính `data-stat` / `data-store`:** thêm trên số liệu và danh sách của dashboard admin để `scripts/verify-dashboards.ts` so với SQL. Không ảnh hưởng giao diện.
+
+### 2026-09-29 — Danh sách widget loại (B) và task sẽ lấp dữ liệu
+Loader đã có trường và kiểu dữ liệu (`lib/dashboard/types.ts`), hiện trả giá trị rỗng kèm `// TODO(<task>)`. Page đã có phần hiển thị dữ liệu, nên task sau chỉ cần sửa loader. Tên task dưới đây là đề xuất.
+
+| Dashboard | Widget | Trường trong loader | Task tương lai |
+|---|---|---|---|
+| Khách hàng | Số điện thoại (form hồ sơ) | `profile.phone` | `customer-profile` (thêm `User.phone`, bật form, lưu hồ sơ, đổi mật khẩu, ảnh) |
+| Khách hàng | Badge menu My Orders / Wish List / Inbox | (chưa có trường; ẩn) | `orders`, `wishlist`, `messages` |
+| Vendor | Business Analytics: 8 trạng thái đơn hàng | `orderStatusCounts` | `orders` |
+| Vendor | Vendor Wallet (số dư, rút tiền, thuế, hoa hồng, phí giao, tiền mặt) | `wallet` | `payouts` |
+| Vendor | Earning Statistics (biểu đồ) | `earnings` | `orders` + chọn thư viện biểu đồ |
+| Vendor | Most Rated Products | `mostRatedProducts` | `products` + `reviews` |
+| Vendor | Top Selling Products | `topSellingProducts` | `products` + `orders` |
+| Vendor | Top Delivery Man | `topDeliveryMen` | `delivery` |
+| Vendor/Admin | Setup Guide (% hoàn thành) | (chưa có trường) | `onboarding` |
+| Vendor/Admin | Badge Notifications / Messages | (chưa có trường) | `notifications`, `messages` |
+| Admin | Total Order, Total Products | `totals.orders`, `totals.products` | `orders`, `products` |
+| Admin | 8 trạng thái đơn hàng | `orderStatusCounts` | `orders` |
+| Admin | Admin Wallet | `wallet` | `payouts` |
+| Admin | Order Statistics (biểu đồ) | `orderStatistics` | `orders` + thư viện biểu đồ |
+| Admin | User Overview: donut + "Total Delivery Man" | `userOverview.deliveryMen` (donut: thư viện biểu đồ) | `delivery` + thư viện biểu đồ |
+| Admin | Earning Statistics (biểu đồ) | `earnings` | `orders` + `payouts` + thư viện biểu đồ |
+| Admin | Top Customers | `topCustomers` | `orders` |
+| Admin | Top Delivery Man | `topDeliveryMen` | `delivery` |
+| Admin | Most Popular Stores | `popularStores` | `store-follows` |
+| Admin | Top Selling Stores | `topSellingStores` | `orders` |
+| Admin | Inhouse / Vendor Products: Most Rated, Top Selling | `inhouseMostRated`, `inhouseTopSelling`, `vendorMostRated`, `vendorTopSelling` | `products` + `reviews` + `orders` |
+
+**Thư viện biểu đồ:** chưa cài. Thiết kế dùng Chart.js 4 (CDN). Task đầu tiên mang dữ liệu biểu đồ về sẽ chọn thư viện (hỏi chủ dự án trước khi cài). Khi đó chỉ cần thay phần empty state trong `components/dashboard/ChartFrame.tsx`.
+
+### 2026-09-29 — Bước 5: sửa sau khi rà lại
+- `AccountFrame`: thêm `md:bottom-auto` cho sidebar tài khoản. Lớp `inset-y-0` của drawer mobile làm `sticky` trên desktop có thêm `bottom:0`.
+- `SidebarNav`: tooltip icon rail bị vô hiệu thành "<Tên> — Coming soon".

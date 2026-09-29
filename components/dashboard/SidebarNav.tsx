@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { comingSoonProps } from "@/components/dashboard/coming-soon";
+import { COMING_SOON, comingSoonProps } from "@/components/dashboard/coming-soon";
 import { NavIcon } from "@/components/dashboard/NavIcon";
 import { isActiveHref, type NavItem } from "@/lib/dashboard/nav";
 
@@ -54,7 +54,13 @@ function NavEntry({ item, variant, active }: { item: NavItem; variant: Variant; 
 
   if (!item.enabled) {
     return (
-      <span role="link" className={className} aria-label={variant === "rail" ? item.label : undefined} {...comingSoonProps}>
+      <span
+        role="link"
+        className={className}
+        aria-label={variant === "rail" ? item.label : undefined}
+        {...comingSoonProps}
+        title={variant === "rail" ? `${item.label} — ${COMING_SOON}` : COMING_SOON}
+      >
         {content}
       </span>
     );

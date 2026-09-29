@@ -63,7 +63,7 @@ export function AccountFrame({ sidebar, children }: { sidebar: ReactNode; childr
         <aside
           id={SIDEBAR_ID}
           aria-label="Account"
-          className={`fixed inset-y-0 left-0 z-50 w-75 max-w-[85vw] overflow-y-auto border border-line-soft bg-surface p-3.5 shadow-xs transition-transform duration-200 md:sticky md:top-24 md:z-auto md:w-auto md:max-w-none md:translate-x-0 md:overflow-visible md:rounded-xl md:transition-none ${
+          className={`fixed inset-y-0 left-0 z-50 w-75 max-w-[85vw] overflow-y-auto border border-line-soft bg-surface p-3.5 shadow-xs transition-transform duration-200 md:sticky md:top-24 md:bottom-auto md:z-auto md:w-auto md:max-w-none md:translate-x-0 md:overflow-visible md:rounded-xl md:transition-none ${
             drawerOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >

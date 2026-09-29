@@ -1,6 +1,6 @@
 # Tiến độ — 02-role-dashboards
 
-Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
+Trạng thái chung: ✅ · Cập nhật lần cuối: 2026-09-29
 
 | Bước | Tên | Trạng thái | Ghi chú |
 |------|-----|------------|---------|
@@ -9,7 +9,7 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | 2 | Dashboard khách hàng (`/dashboard`) | ✅ | HTTP: 42/42 kiểm tra đạt |
 | 3 | Dashboard người bán (`/vendor/dashboard`) | ✅ | HTTP: 63/63 kiểm tra đạt |
 | 4 | Dashboard admin (`/admin/dashboard`) | ✅ | HTTP 89/89; số liệu khớp SQL |
-| 5 | Kiểm tra tổng | ⬜ | |
+| 5 | Kiểm tra tổng | ✅ | Tự động đạt hết; checklist thủ công bên dưới |
 
 ## Nhật ký
 
@@ -445,5 +445,88 @@ Chi tiết ở `decisions.md`.
   - Ghi chú: ngoài user test, DB hiện **không có khách hàng hay vendor nào**. Trên dashboard thật, admin sẽ thấy 0 cho đến khi có đăng ký.
 - Việc tôi cần làm thủ công: không có.
 
+### Bước 5 — Kiểm tra tổng (2026-09-29)
+- Đã làm:
+  - Chạy toàn bộ kiểm tra tự động.
+  - Rà lại code của cả task và sửa 2 lỗi nhỏ:
+    - `AccountFrame`: thêm `md:bottom-auto`. Sidebar tài khoản trên desktop giữ `bottom:0` của drawer mobile cùng với `sticky`, nên có thể bị đẩy lệch khi cuộn.
+    - `SidebarNav`: tooltip icon rail bị vô hiệu đổi thành "<Tên mục> — Coming soon". Trước đây chỉ là "Coming soon", nên không biết icon là mục gì.
+- Kết quả kiểm tra tự động (trên commit cuối, sau 2 chỗ sửa):
+  - `npx tsc --noEmit`: OK, 0 lỗi.
+  - `npm run lint`: OK, exit 0, không cảnh báo.
+  - `npm run build`: exit 0, "Compiled successfully", 14/14 route.
+  - `npx tsx --env-file=.env scripts/verify-auth.ts`: **ALL CHECKS PASSED**, 31/31, đã dọn 3 user test. Auth không bị ảnh hưởng.
+  - Grep trên 43 file code mà task tạo hoặc sửa (`git diff cbfcbd2..HEAD`):
+    - Mã hex/`rgba(`: chỉ xuất hiện trong 9 dòng **định nghĩa token** mới ở `app/globals.css` (`:root`). Không có trong component/page. Phần sửa ở `StorefrontChrome.tsx` không có mã màu.
+    - `passwordHash` trong `lib/dashboard/**` và `components/dashboard/**`: không có.
+  - `git diff cbfcbd2..HEAD -- lib/auth proxy.ts auth.ts auth.config.ts prisma`: không có thay đổi. Logic auth và schema giữ nguyên.
+  - Script HTTP `scripts/verify-dashboards.ts` (`next start`): **ALL CHECKS PASSED**, 88/88, đã xóa 9 user test. Kiểm tra lại DB: còn 0 user `*.covet.test`.
+    - Mỗi role vào đúng dashboard (200).
+    - Sai role bị chuyển một lần về dashboard của mình.
+    - PENDING/SUSPENDED → `/vendor/pending`.
+    - Chưa đăng nhập → trang login của khu vực đó.
+    - Mục menu chưa có trang không phải link.
+    - Không có số demo của thiết kế.
+    - Số liệu admin = SQL trực tiếp.
+- Việc tôi cần làm thủ công: checklist bên dưới.
+
+## Checklist thủ công (cho chủ dự án)
+Chuẩn bị:
+1. Bật MySQL, chạy `npm run dev`.
+2. Tạo tài khoản test:
+   - Khách hàng: qua `/register`.
+   - Vendor: qua `/vendor/register`. Trang duyệt vendor chưa có (task sau), nên duyệt bằng SQL: ``UPDATE `Vendor` SET status = 'APPROVED' WHERE slug = '<slug>';``
+   - Admin: `npx prisma db seed` (tạo tài khoản `ADMIN_EMAIL` trong `.env`).
+
+- [ ] **So với thiết kế:** mở từng dashboard cạnh file thiết kế trong trình duyệt. Kiểm tra bố cục, khoảng cách và màu khớp.
+  | Dashboard | File thiết kế |
+  |---|---|
+  | `/dashboard` | `designs/userdashboard.dc.html` |
+  | `/vendor/dashboard` | `designs/vendordashboard.dc.html` |
+  | `/admin/dashboard` | `designs/AdminDashboard.dc.html` |
+
+  Các điểm lệch có chủ đích nằm trong `decisions.md`:
+  - Q1–Q4.
+  - Bỏ tab "Preview state".
+  - Setup Guide ghi "Coming soon".
+  - Ô Phone không có "+1".
+  - Dropdown admin có header.
+- [ ] **Mục menu chưa có trang:**
+  - Mục bị mờ, bấm không có tác dụng, hover hiện tooltip "Coming soon". Với icon rail, tooltip là "<Tên> — Coming soon".
+  - Mục đang mở ("Profile Info" / "Dashboard" / icon Home) được tô màu iris.
+- [ ] **Không có số liệu bịa:**
+  - Thẻ số liệu hiện "—".
+  - Danh sách và biểu đồ hiện empty state ("No sales yet", "No earnings yet"…).
+  - Không có số demo của thiết kế ($10,081.50, 248 orders…).
+- [ ] **Admin, số liệu khớp SQL.** Chạy trong phpMyAdmin, database `covetecom`:
+  ```sql
+  SELECT
+    (SELECT COUNT(*) FROM `User`   WHERE role = 'CUSTOMER')    AS total_customers,    -- thẻ Total Customers + "Total Customer (N)"
+    (SELECT COUNT(*) FROM `Vendor`)                             AS total_stores,       -- thẻ Total Stores
+    (SELECT COUNT(*) FROM `Vendor` WHERE status = 'PENDING')   AS vendors_pending,    -- Vendors by Status: Pending
+    (SELECT COUNT(*) FROM `Vendor` WHERE status = 'APPROVED')  AS vendors_approved,   -- Approved
+    (SELECT COUNT(*) FROM `Vendor` WHERE status = 'SUSPENDED') AS vendors_suspended,  -- Suspended
+    (SELECT COUNT(*) FROM `User`   WHERE role = 'VENDOR')      AS vendor_users;       -- "Total Vendor (N)"
+
+  -- "Recent Vendor Registrations" (đúng thứ tự, ngày hiển thị theo UTC):
+  SELECT v.storeName, u.email, v.status, v.createdAt
+  FROM `Vendor` v JOIN `User` u ON u.id = v.userId
+  ORDER BY v.createdAt DESC, v.id DESC
+  LIMIT 5;
+  ```
+- [ ] **Sign out:** menu người dùng → Sign out/Logout ở cả 3 role đưa về đúng trang đăng nhập.
+  - Khách hàng: nút "Sign out" trong sidebar → `/login`.
+  - Vendor: pill hồ sơ → Logout → `/vendor/login`.
+  - Admin: pill hồ sơ → Logout → `/admin/login`.
+- [ ] **Màn hình 375px** (DevTools, iPhone SE):
+  - Vendor/admin: rail + sidebar ẩn; nút ☰ trên topbar mở drawer. Đóng drawer bằng nút ✕, bấm ra ngoài, Esc, hoặc khi chuyển trang.
+  - Khách hàng: nút "Account menu" mở drawer sidebar tài khoản.
+  - Cả 3 trang không bị cuộn ngang.
+- [ ] **Desktop:** nút ‹ trên topbar thu gọn/mở rail + sidebar (vendor/admin).
+- [ ] **Giữ session và chặn sai role:**
+  - F5 vẫn giữ session.
+  - Khách hàng mở `/admin/dashboard` bị chuyển về `/dashboard`.
+  - Vendor PENDING mở `/vendor/dashboard` bị chuyển về `/vendor/pending`.
+
 ## Bước tiếp theo
-Bước 5 — Kiểm tra tổng.
+Task hoàn thành. Chờ chủ dự án kiểm tra checklist thủ công.
