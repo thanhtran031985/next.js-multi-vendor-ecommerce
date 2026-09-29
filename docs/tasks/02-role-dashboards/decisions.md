@@ -8,6 +8,42 @@
 - Ảnh hưởng:
 -->
 
+### 2026-09-29 — Tổng kết: khác biệt so với `task.md` gốc
+Task hoàn thành. Chủ dự án đã test thủ công ("test ok"). Chi tiết ở các mục bên dưới.
+
+**Theo thiết kế, được chủ dự án chốt (Q1–Q4):**
+- `/dashboard` là form hồ sơ **chỉ đọc**. Thiết kế không có widget tổng quan; lưu hồ sơ là task sau.
+- `StorefrontHeader` nhận prop `user`: sửa nhỏ ngoài phạm vi, để hiện "Hello, <tên> / Dashboard".
+- Widget vendor của admin (theo trạng thái + 5 đăng ký mới nhất) nằm ở hàng đầu nhóm "Stores".
+- Thông tin cửa hàng của vendor nằm ở phụ đề + dropdown hồ sơ.
+
+**Khác cách mô tả trong `task.md`, đã chấp nhận:**
+- **Layout khách hàng dùng `AccountShell`, không phải `DashboardShell`.** Khách hàng không có dropdown `UserMenu`: tên/email và Sign out nằm ở sidebar, theo DESIGN_SYSTEM §9.
+- **`SidebarNav` là client component**, chỉ để đọc `usePathname`.
+- **Icon mới nằm trong `components/icons/dashboard.tsx`.** `components/icons.tsx` có sẵn được giữ nguyên và dùng lại.
+- **Thêm file ngoài danh sách phạm vi:**
+  - `loading.tsx` + `error.tsx` cho 3 dashboard (DESIGN_SYSTEM §10).
+  - `scripts/verify-dashboards.ts` (script HTTP của Bước 5).
+  - `data-stat`/`data-store` để so số liệu với SQL.
+- **Lệch nhỏ so với thiết kế:**
+  - Bỏ tab "Preview state".
+  - Setup Guide ghi "Coming soon" thay cho %.
+  - Ô Phone không có "+1".
+  - Dropdown admin có header tên/email.
+  - Tooltip icon rail là "<Tên> — Coming soon".
+
+**Sửa sau rà soát (/finish-task):**
+1. Loader có `import "server-only"`.
+2. Drawer mobile khi đóng ẩn hẳn khỏi bàn phím và trình đọc màn hình; khi mở/đóng, focus được chuyển đúng chỗ.
+3. `UserMenu` điều hướng được bằng bàn phím (mẫu menu button WAI-ARIA).
+
+**Không sửa:** ngày hiển thị theo UTC (mục 4). Lý do ở mục riêng bên dưới.
+
+**Để lại cho task sau:**
+- Toàn bộ widget loại (B): bảng "Danh sách widget loại (B)".
+- Chọn thư viện biểu đồ.
+- Múi giờ chung của sàn.
+
 ### 2026-09-29 — Tên file thiết kế thật
 - **Bối cảnh:** task.md ghi `UserDashboard.dc.html`, `VendorDashboard.dc.html`.
 - **Quyết định:** dùng `designs/userdashboard.dc.html` và `designs/vendordashboard.dc.html` (chữ thường). `AdminDashboard.dc.html` khớp tên.
@@ -143,3 +179,16 @@ Loader đã có trường và kiểu dữ liệu (`lib/dashboard/types.ts`), hi�
 - **`SidebarNav` là client component:**
   - Lý do duy nhất là dùng `usePathname` để tô mục đang mở. Layout không nhận được path hiện tại, còn truyền path từ từng page thì phải sửa mọi page con về sau.
   - Phần tương tác thật (drawer, thu gọn, dropdown) vẫn nằm trong `ShellFrame`, `AccountFrame`, `UserMenu`.
+
+### 2026-09-29 — Rà soát, mục 4: ngày hiển thị theo UTC — KHÔNG SỬA
+- **Bối cảnh:**
+  - `formatDate` (`lib/dashboard/format.ts`) định dạng theo `timeZone: "UTC"`. Hàm này dùng cho "Member since", "Since" (vendor) và ngày trong "Recent Vendor Registrations".
+  - Người dùng ở UTC+7 có tài khoản tạo lúc 00:00–07:00 giờ Việt Nam sẽ thấy ngày lùi 1.
+- **Quyết định:** giữ UTC. Chủ dự án chọn phương án (d) ngày 2026-09-29.
+- **Lý do:**
+  - Ở đây chỉ hiển thị ngày (không có giờ), sai số tối đa 1 ngày, và chỉ để xem.
+  - UTC cho kết quả giống nhau ở server và trình duyệt, không gây lệch hydration.
+  - Chưa có quyết định chung về múi giờ của sàn. Khi có đơn hàng thì cần giờ chính xác, và task đó sẽ quyết định múi giờ cho toàn app.
+- **Ảnh hưởng:**
+  - Ngày trên dashboard là ngày theo UTC.
+  - Checklist thủ công: khi so ngày với SQL, dùng giá trị `createdAt` trong DB (Prisma lưu UTC).

@@ -1,15 +1,15 @@
 # Tiến độ — 02-role-dashboards
 
-Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
+Trạng thái chung: ✅ · Cập nhật lần cuối: 2026-09-29
 
 | Bước | Tên | Trạng thái | Ghi chú |
 |------|-----|------------|---------|
 | 0 | Kiểm tra (không sửa code) | ✅ | Q1–Q4 đã chốt, xem decisions.md |
-| 1 | Thành phần dùng chung | ✅ | tsc/lint/build đạt; HTTP đạt (chạy cùng Bước 2) |
+| 1 | Thành phần dùng chung | ✅ | Khác task.md, đã chấp nhận: khách hàng dùng `AccountShell`, không có dropdown `UserMenu` (decisions.md). Rà soát: sửa drawer + bàn phím `UserMenu` |
 | 2 | Dashboard khách hàng (`/dashboard`) | ✅ | HTTP: 42/42 kiểm tra đạt |
 | 3 | Dashboard người bán (`/vendor/dashboard`) | ✅ | HTTP: 63/63 kiểm tra đạt |
-| 4 | Dashboard admin (`/admin/dashboard`) | ✅ | HTTP 89/89; số liệu khớp SQL |
-| 5 | Kiểm tra tổng | ✅ | Tự động đạt hết; checklist thủ công bên dưới |
+| 4 | Dashboard admin (`/admin/dashboard`) | ✅ | HTTP 88/88; số liệu khớp SQL |
+| 5 | Kiểm tra tổng | ✅ | Sau rà soát: tsc/lint/build, verify-auth 31/31, verify-dashboards 88/88; checklist ở Giai đoạn C |
 
 ## Nhật ký
 
@@ -435,7 +435,7 @@ Chi tiết ở `decisions.md`.
   - `scripts/verify-dashboards.ts`.
 - Kết quả kiểm tra:
   - `npx tsc --noEmit`, `npm run lint`, `npm run build`: không lỗi.
-  - HTTP: **ALL CHECKS PASSED**, 89/89, đã xóa 9 user test.
+  - HTTP: **ALL CHECKS PASSED**, 88/88 (con số 89 báo lúc đó đếm nhầm cả dòng tổng), đã xóa 9 user test.
     - Admin:
       - `/admin/dashboard` trả 200, có đủ các khối.
       - Không có số demo ("27,514.52", "Robert Downey"). Không có link `/admin/dashboard/products`.
@@ -478,7 +478,7 @@ Chuẩn bị:
    - Vendor: qua `/vendor/register`. Trang duyệt vendor chưa có (task sau), nên duyệt bằng SQL: ``UPDATE `Vendor` SET status = 'APPROVED' WHERE slug = '<slug>';``
    - Admin: `npx prisma db seed` (tạo tài khoản `ADMIN_EMAIL` trong `.env`).
 
-- [ ] **So với thiết kế:** mở từng dashboard cạnh file thiết kế trong trình duyệt. Kiểm tra bố cục, khoảng cách và màu khớp.
+- [x] **So với thiết kế:** mở từng dashboard cạnh file thiết kế trong trình duyệt. Kiểm tra bố cục, khoảng cách và màu khớp.
   | Dashboard | File thiết kế |
   |---|---|
   | `/dashboard` | `designs/userdashboard.dc.html` |
@@ -491,14 +491,14 @@ Chuẩn bị:
   - Setup Guide ghi "Coming soon".
   - Ô Phone không có "+1".
   - Dropdown admin có header.
-- [ ] **Mục menu chưa có trang:**
+- [x] **Mục menu chưa có trang:**
   - Mục bị mờ, bấm không có tác dụng, hover hiện tooltip "Coming soon". Với icon rail, tooltip là "<Tên> — Coming soon".
   - Mục đang mở ("Profile Info" / "Dashboard" / icon Home) được tô màu iris.
-- [ ] **Không có số liệu bịa:**
+- [x] **Không có số liệu bịa:**
   - Thẻ số liệu hiện "—".
   - Danh sách và biểu đồ hiện empty state ("No sales yet", "No earnings yet"…).
   - Không có số demo của thiết kế ($10,081.50, 248 orders…).
-- [ ] **Admin, số liệu khớp SQL.** Chạy trong phpMyAdmin, database `covetecom`:
+- [x] **Admin, số liệu khớp SQL.** Chạy trong phpMyAdmin, database `covetecom`:
   ```sql
   SELECT
     (SELECT COUNT(*) FROM `User`   WHERE role = 'CUSTOMER')    AS total_customers,    -- thẻ Total Customers + "Total Customer (N)"
@@ -514,16 +514,16 @@ Chuẩn bị:
   ORDER BY v.createdAt DESC, v.id DESC
   LIMIT 5;
   ```
-- [ ] **Sign out:** menu người dùng → Sign out/Logout ở cả 3 role đưa về đúng trang đăng nhập.
+- [x] **Sign out:** menu người dùng → Sign out/Logout ở cả 3 role đưa về đúng trang đăng nhập.
   - Khách hàng: nút "Sign out" trong sidebar → `/login`.
   - Vendor: pill hồ sơ → Logout → `/vendor/login`.
   - Admin: pill hồ sơ → Logout → `/admin/login`.
-- [ ] **Màn hình 375px** (DevTools, iPhone SE):
+- [x] **Màn hình 375px** (DevTools, iPhone SE):
   - Vendor/admin: rail + sidebar ẩn; nút ☰ trên topbar mở drawer. Đóng drawer bằng nút ✕, bấm ra ngoài, Esc, hoặc khi chuyển trang.
   - Khách hàng: nút "Account menu" mở drawer sidebar tài khoản.
   - Cả 3 trang không bị cuộn ngang.
-- [ ] **Desktop:** nút ‹ trên topbar thu gọn/mở rail + sidebar (vendor/admin).
-- [ ] **Giữ session và chặn sai role:**
+- [x] **Desktop:** nút ‹ trên topbar thu gọn/mở rail + sidebar (vendor/admin).
+- [x] **Giữ session và chặn sai role:**
   - F5 vẫn giữ session.
   - Khách hàng mở `/admin/dashboard` bị chuyển về `/dashboard`.
   - Vendor PENDING mở `/vendor/dashboard` bị chuyển về `/vendor/pending`.
@@ -596,7 +596,7 @@ Chủ dự án chọn sửa **tất cả** (1–4). Sửa lần lượt từng m
 | 1 `server-only` cho loader | ✅ | tsc/lint/build đạt; thử ngược: client import loader → build lỗi |
 | 2 Drawer mobile đóng vẫn nhận focus | ✅ | Đóng: invisible, 0 phần tử nhận focus; mở: focus vào nút ✕; Esc: focus về nút mở |
 | 3 `UserMenu` điều hướng bàn phím | ✅ | Mẫu menu button WAI-ARIA; 27/27 kiểm tra phím thật đạt |
-| 4 Ngày hiển thị theo UTC | ⬜ | chờ chọn múi giờ |
+| 4 Ngày hiển thị theo UTC | ✅ không sửa | Chủ dự án chọn giữ UTC; lý do ở decisions.md |
 
 ### Mục 1 — `import "server-only"` cho loader (2026-09-29)
 - **Đã làm:** thêm `import "server-only";` vào đầu `lib/dashboard/customer.ts`, `vendor.ts`, `admin.ts`. Next 16 hỗ trợ sẵn, không cài gói mới.
@@ -640,5 +640,87 @@ Chủ dự án chọn sửa **tất cả** (1–4). Sửa lần lượt từng m
     - Click vẫn mở menu. Mục vô hiệu giữ tooltip "Coming soon".
   - `scripts/verify-dashboards.ts` (chạy trên dev server): **88/88 đạt**, đã xóa 9 user test.
 
+### Mục 4 — Ngày hiển thị theo UTC: KHÔNG SỬA (2026-09-29)
+- Chủ dự án chọn phương án (d): giữ `formatDate` theo UTC. Lý do ghi ở decisions.md.
+- Không đổi code.
+
+## Rà soát /finish-task — Giai đoạn C (2026-09-29)
+Kiểm tra tự động trên HEAD sau các mục sửa (`9fbbe11` + tài liệu mục 4):
+- `npx tsc --noEmit`: OK.
+- `npm run lint`: exit 0.
+- `npm run build`: exit 0, 14/14 route.
+- `npx tsx --env-file=.env scripts/verify-auth.ts`: **ALL CHECKS PASSED**, 31/31, đã dọn 3 user test.
+- `npx tsx --env-file=.env scripts/verify-dashboards.ts` (dev server :3000): **ALL CHECKS PASSED**, 88/88, đã xóa 9 user test.
+- Grep file của task: không có hex/`rgba(`, không có `passwordHash`.
+- `lib/auth`, `proxy.ts`, `auth*.ts`, `prisma`, `/vendor/pending`: không đổi.
+- DB không còn user `*.covet.test`.
+- Kiểm tra trình duyệt tự động của mục 2 và 3 (Chrome headless, phím thật): đã ghi ở từng mục.
+
+### Checklist test thủ công (sau rà soát — dùng bản này, thay cho checklist ở Bước 5)
+**Chuẩn bị:**
+1. Bật MySQL (XAMPP), chạy `npm run dev`.
+2. DB đang có 1 khách hàng, 1 vendor APPROVED, 1 admin. Muốn có vendor PENDING để test chuyển hướng:
+   - Đăng ký thêm ở `/vendor/register`. Tài khoản mới tự là PENDING.
+   - Đổi trạng thái vendor bằng SQL trong phpMyAdmin:
+     ```sql
+     UPDATE `Vendor` SET status = 'APPROVED' WHERE slug = '<slug>';   -- hoặc 'PENDING' / 'SUSPENDED'
+     ```
+3. Test mỗi role trong một trình duyệt/profile riêng, hoặc Logout trước khi đổi role.
+4. Tắt extension React Developer Tools, hoặc tắt "Allow in Incognito" của nó. Nếu không, console sẽ có lỗi của extension.
+
+**Các mục:**
+- [x] Mỗi role vào đúng dashboard: `/dashboard`, `/vendor/dashboard`, `/admin/dashboard`. Chủ dự án đã xác nhận ngày 2026-09-29.
+- [x] **So với thiết kế:** mở từng dashboard cạnh file thiết kế, kiểm tra bố cục, khoảng cách, màu.
+  | Dashboard | File thiết kế |
+  |---|---|
+  | `/dashboard` | `designs/userdashboard.dc.html` |
+  | `/vendor/dashboard` | `designs/vendordashboard.dc.html` |
+  | `/admin/dashboard` | `designs/AdminDashboard.dc.html` |
+
+  Các điểm lệch có chủ đích nằm trong decisions.md.
+- [x] **Mục menu chưa có trang:** mờ, bấm không có tác dụng, hover hiện tooltip "Coming soon" (icon rail: "<Tên> — Coming soon"). Mục đang mở được tô màu iris.
+- [x] **Không có số liệu bịa:** thẻ số hiện "—"; danh sách/biểu đồ hiện empty state; không có số demo của thiết kế.
+- [x] **Admin, số liệu khớp SQL** (phpMyAdmin, database `covetecom`):
+  ```sql
+  SELECT
+    (SELECT COUNT(*) FROM `User`   WHERE role = 'CUSTOMER')    AS total_customers,    -- Total Customers + "Total Customer (N)"
+    (SELECT COUNT(*) FROM `Vendor`)                             AS total_stores,       -- Total Stores
+    (SELECT COUNT(*) FROM `Vendor` WHERE status = 'PENDING')   AS vendors_pending,
+    (SELECT COUNT(*) FROM `Vendor` WHERE status = 'APPROVED')  AS vendors_approved,
+    (SELECT COUNT(*) FROM `Vendor` WHERE status = 'SUSPENDED') AS vendors_suspended,
+    (SELECT COUNT(*) FROM `User`   WHERE role = 'VENDOR')      AS vendor_users;       -- "Total Vendor (N)"
+
+  -- "Recent Vendor Registrations" (đúng thứ tự; ngày hiển thị theo UTC, xem decisions.md mục 4):
+  SELECT v.storeName, u.email, v.status, v.createdAt
+  FROM `Vendor` v JOIN `User` u ON u.id = v.userId
+  ORDER BY v.createdAt DESC, v.id DESC
+  LIMIT 5;
+  ```
+- [x] **Sign out / Logout về đúng trang login:**
+  - Khách hàng: "Sign out" ở sidebar → `/login`.
+  - Vendor: pill → Logout → `/vendor/login`.
+  - Admin: pill → Logout → `/admin/login`.
+- [x] **Menu người dùng bằng bàn phím (mục sửa 3):** Tab tới pill, rồi:
+  - Enter → focus vào "Profile Setting"/"Profile".
+  - ↓/↑ đi vòng; Home/End nhảy đầu/cuối.
+  - Esc → menu đóng, focus về pill.
+  - Chọn Logout bằng Enter → đăng xuất.
+- [x] **Màn hình 375px** (DevTools, iPhone SE):
+  - Vendor/admin: nút ☰ mở drawer. Khách hàng: nút "Account menu" mở drawer.
+  - Drawer đóng bằng ✕, bấm ra ngoài, Esc, hoặc chuyển trang.
+  - Không trang nào cuộn ngang.
+- [x] **Drawer và bàn phím (mục sửa 2), ở 375px:**
+  - Khi drawer đóng, bấm Tab không nhảy vào menu bị ẩn.
+  - Mở drawer → focus ở nút ✕. Esc → focus về nút ☰ / "Account menu".
+- [x] **Desktop:** nút ‹ trên topbar thu gọn/mở rail + sidebar (vendor/admin).
+- [x] **F5 và sai role:**
+  - F5 vẫn giữ đăng nhập.
+  - Khách hàng mở `/admin/dashboard` → `/dashboard`.
+  - Vendor PENDING mở `/vendor/dashboard` → `/vendor/pending`.
+
+## Rà soát /finish-task — Giai đoạn D (2026-09-29)
+- Chủ dự án test thủ công theo checklist sau rà soát: **test ok**. Đã tích hết checklist.
+- Task đóng ✅. README ✅, nhánh `feat/02-role-dashboards`.
+
 ## Bước tiếp theo
-Giai đoạn B, mục 4 — ngày hiển thị theo UTC (chờ chủ dự án chọn múi giờ).
+Hoàn thành.
