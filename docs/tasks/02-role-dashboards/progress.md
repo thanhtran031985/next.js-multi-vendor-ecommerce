@@ -8,7 +8,7 @@ Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-29
 | 1 | Thành phần dùng chung | ✅ | tsc/lint/build đạt; HTTP đạt (chạy cùng Bước 2) |
 | 2 | Dashboard khách hàng (`/dashboard`) | ✅ | HTTP: 42/42 kiểm tra đạt |
 | 3 | Dashboard người bán (`/vendor/dashboard`) | ✅ | HTTP: 63/63 kiểm tra đạt |
-| 4 | Dashboard admin (`/admin/dashboard`) | ⬜ | |
+| 4 | Dashboard admin (`/admin/dashboard`) | ✅ | HTTP 89/89; số liệu khớp SQL |
 | 5 | Kiểm tra tổng | ⬜ | |
 
 ## Nhật ký
@@ -402,5 +402,48 @@ Chi tiết ở `decisions.md`.
   - Grep: không có hex/`rgba(`, không có `passwordHash` trong `lib/dashboard/**` và `components/dashboard/**`. Hai comment từng nhắc "passwordHash" đã được sửa lời.
 - Việc tôi cần làm thủ công: không có.
 
+### Bước 4 — Dashboard admin (2026-09-29)
+- Đã làm:
+  - Loader `lib/dashboard/admin.ts` (`getAdminDashboard`) chạy 6 query song song bằng `Promise.all`:
+    - `user.count` với CUSTOMER và với VENDOR.
+    - `vendor.count` với từng trạng thái PENDING / APPROVED / SUSPENDED.
+    - `vendor.findMany` lấy 5 vendor mới nhất (`orderBy createdAt desc, id desc`). Chỉ select `id`, `storeName`, `status`, `createdAt`, `user.email`.
+  - Total Stores = tổng vendor mọi trạng thái.
+  - Các widget (B) trả giá trị rỗng, mỗi widget có `// TODO(<task>)`: tổng đơn hàng/sản phẩm, trạng thái đơn, ví, 2 biểu đồ, số người giao hàng, top customers, người giao hàng, cửa hàng, sản phẩm inhouse/vendor.
+  - Page `/admin/dashboard` theo thiết kế:
+    - Welcome.
+    - Business Analytics: 4 thẻ số liệu. Total Stores và Total Customers là số thật, Total Order và Total Products hiện "—". Tiếp theo là 8 thẻ trạng thái đơn hàng.
+    - Admin Wallet.
+    - Order Statistics + User Overview:
+      - Khung donut hiện empty state.
+      - Chú thích dùng số thật cho Customer/Vendor; Delivery Man hiện "—".
+    - Earning Statistics.
+    - Nhóm Users / Stores / Inhouse Products / Vendor Products.
+  - Q3: hàng đầu của nhóm "Stores" gồm 2 thẻ.
+    - "Vendors by Status": 3 thẻ số liệu.
+    - "Recent Vendor Registrations": tên cửa hàng, email chủ, StatusBadge, ngày. Chỉ xem, không có nút duyệt.
+    - Most Popular Stores và Top Selling Stores ở hàng dưới.
+  - Page vẫn gọi `requireRole("ADMIN")`.
+  - Component mới `StoreWidgets` (TopCustomerList, RecentVendorList, PopularStoreGrid, TopStoreGrid). `StatCard` có thêm prop `stat` (xuất ra `data-stat`) để script so số liệu với SQL.
+  - Thêm `loading.tsx` và `error.tsx`.
+  - Script: so số trên trang với **truy vấn SQL trực tiếp** (`prisma.$queryRaw`, không qua loader).
+    - Tạo thêm 4 cửa hàng test (tổng 7) để danh sách 5 cửa hàng mới nhất thật sự bị cắt ở 5.
+- File tạo/sửa:
+  - `lib/dashboard/admin.ts`, `lib/dashboard/types.ts`.
+  - `app/(admin)/admin/(protected)/dashboard/{page,loading,error}.tsx`.
+  - `components/dashboard/StoreWidgets.tsx`, `components/dashboard/StatCard.tsx`.
+  - `scripts/verify-dashboards.ts`.
+- Kết quả kiểm tra:
+  - `npx tsc --noEmit`, `npm run lint`, `npm run build`: không lỗi.
+  - HTTP: **ALL CHECKS PASSED**, 89/89, đã xóa 9 user test.
+    - Admin:
+      - `/admin/dashboard` trả 200, có đủ các khối.
+      - Không có số demo ("27,514.52", "Robert Downey"). Không có link `/admin/dashboard/products`.
+    - Khách hàng và vendor vào `/admin/dashboard` bị chuyển về dashboard của họ.
+    - Số liệu = SQL: customers 1, stores 7, pending 5, approved 1, suspended 1, overview vendors 7. Danh sách 5 cửa hàng mới nhất khớp thứ tự SQL.
+  - Grep: không có hex/`rgba(`, không có `passwordHash`.
+  - Ghi chú: ngoài user test, DB hiện **không có khách hàng hay vendor nào**. Trên dashboard thật, admin sẽ thấy 0 cho đến khi có đăng ký.
+- Việc tôi cần làm thủ công: không có.
+
 ## Bước tiếp theo
-Bước 4 — Dashboard admin (`/admin/dashboard`).
+Bước 5 — Kiểm tra tổng.

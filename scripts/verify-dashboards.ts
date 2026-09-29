@@ -110,6 +110,54 @@ async function expectRedirect(label: string, jar: Jar, path: string, to: string)
   check(`${label}: ${path} -> ${to}`, r.status >= 300 && r.status < 400 && r.location === to, r);
 }
 
+/** Number shown in the element marked data-stat="<key>" (StatCard / User Overview legend). */
+function statValue(html: string, key: string): number | null {
+  const m = html.match(new RegExp(`data-stat="${key}"[^>]*>([\\d,]+)<`));
+  return m ? Number(m[1].replace(/,/g, "")) : null;
+}
+
+function unescapeHtml(s: string) {
+  return s.replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+}
+
+/** Admin figures must equal a direct SQL query (not the loader) run right after the request. */
+async function checkAdminFiguresAgainstSql(jar: Jar) {
+  const { body } = await get("/admin/dashboard", jar);
+  const [row] = await prisma.$queryRaw<
+    { customers: bigint; vendorUsers: bigint; pending: bigint; approved: bigint; suspended: bigint; stores: bigint }[]
+  >`
+    SELECT
+      (SELECT COUNT(*) FROM \`User\` WHERE role = 'CUSTOMER') AS customers,
+      (SELECT COUNT(*) FROM \`User\` WHERE role = 'VENDOR') AS vendorUsers,
+      (SELECT COUNT(*) FROM \`Vendor\` WHERE status = 'PENDING') AS pending,
+      (SELECT COUNT(*) FROM \`Vendor\` WHERE status = 'APPROVED') AS approved,
+      (SELECT COUNT(*) FROM \`Vendor\` WHERE status = 'SUSPENDED') AS suspended,
+      (SELECT COUNT(*) FROM \`Vendor\`) AS stores`;
+  const expected: Record<string, number> = {
+    customers: Number(row.customers),
+    stores: Number(row.stores),
+    "vendors-pending": Number(row.pending),
+    "vendors-approved": Number(row.approved),
+    "vendors-suspended": Number(row.suspended),
+    "overview-customers": Number(row.customers),
+    "overview-vendors": Number(row.vendorUsers),
+  };
+  for (const [key, value] of Object.entries(expected)) {
+    const shown = statValue(body, key);
+    check(`admin: ${key} = SQL (${value})`, shown === value, { shown, sql: value });
+  }
+
+  const recent = await prisma.$queryRaw<{ storeName: string }[]>`
+    SELECT storeName FROM \`Vendor\` ORDER BY createdAt DESC, id DESC LIMIT 5`;
+  const shownStores = [...body.matchAll(/data-store="([^"]*)"/g)].map((m) => unescapeHtml(m[1]));
+  check(
+    "admin: recent vendors = SQL (5 newest, newest first)",
+    JSON.stringify(shownStores) === JSON.stringify(recent.map((r) => r.storeName)),
+    { shown: shownStores, sql: recent.map((r) => r.storeName) },
+  );
+  check("admin: recent vendors list has no approve button", !/>\s*Approve\s*</.test(body));
+}
+
 async function main() {
   const probe = await fetch(`${BASE}/api/auth/csrf`).catch(() => null);
   if (!probe?.ok) {
@@ -127,6 +175,11 @@ async function main() {
     admin: { email: `ada${DOMAIN}`, name: "Ada Admin", role: "ADMIN" },
   } satisfies Record<string, TestUser>;
   for (const u of Object.values(users)) await createUser(u);
+  // Extra stores (never signed in) so there are more than 5 vendors and the admin
+  // "5 newest registrations" list is really cut at 5.
+  for (let i = 1; i <= 4; i++) {
+    await createUser({ email: `extra${i}${DOMAIN}`, name: `Extra Seller ${i}`, role: "VENDOR", storeName: `Extra Verify Store ${i}` });
+  }
 
   const jars = {} as Record<keyof typeof users, Jar>;
   console.log("\n# Sign in");
@@ -188,10 +241,34 @@ async function main() {
   await expectRedirect("vendor APPROVED", jars.vendor, "/admin/dashboard", "/vendor/dashboard");
 
   console.log("\n# Admin");
-  await expectPage("admin", jars.admin, "/admin/dashboard", ["Search Menu...", "Master Admin", "Ada Admin", "Logout"], [
-    'href="/admin/dashboard/products"',
-    "passwordHash",
-  ]);
+  await expectPage(
+    "admin",
+    jars.admin,
+    "/admin/dashboard",
+    [
+      "Search Menu...",
+      "Master Admin",
+      "Ada Admin",
+      "Logout",
+      "Welcome Ada Admin",
+      "Business Analytics",
+      "Total Stores",
+      "Total Customers",
+      "Failed To Delivery",
+      "Admin Wallet",
+      "Order Statistics",
+      "User Overview",
+      "Earning Statistics",
+      "Vendors by Status",
+      "Recent Vendor Registrations",
+      "Most Popular Stores",
+      "Inhouse Products",
+      "Vendor Products",
+      "No data yet",
+    ],
+    ['href="/admin/dashboard/products"', "passwordHash", "27,514.52", "Robert Downey"],
+  );
+  await checkAdminFiguresAgainstSql(jars.admin);
   await expectRedirect("admin", jars.admin, "/dashboard", "/admin/dashboard");
   await expectRedirect("admin", jars.admin, "/vendor/dashboard", "/admin/dashboard");
 

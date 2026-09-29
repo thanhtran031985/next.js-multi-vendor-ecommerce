@@ -25,3 +25,9 @@ export type RatedProduct = { id: string; title: string; storeName: string; ratin
 export type TopProduct = { id: string; title: string; storeName: string; soldCount: number; soldTotal: number };
 
 export type DeliveryPerson = { id: string; name: string; rating: number; deliveredCount: number };
+
+export type TopCustomer = { id: string; name: string; email: string; orderCount: number };
+
+export type StoreLikes = { id: string; storeName: string; likes: number };
+
+export type StoreSales = { id: string; storeName: string; salesTotal: number };

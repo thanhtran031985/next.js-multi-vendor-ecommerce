@@ -89,3 +89,12 @@
 - **Widget danh sách/lưới:** đã có phần render dữ liệu thật, theo đúng kiểu của thiết kế. Loader trả mảng rỗng thì hiện empty state. Task sau chỉ cần sửa loader, không phải sửa page.
 - **Biểu đồ:** `ChartFrame` giữ nguyên khung 300px và chú thích, luôn hiện empty state. Task nào mang dữ liệu doanh thu về sẽ chọn thư viện biểu đồ (thiết kế dùng Chart.js 4 qua CDN; ở đây chưa cài).
 - **Nút và bộ chọn chưa có chức năng:** "Overall Statistics", "Products", "Withdraw" bị vô hiệu, có tooltip "Coming soon".
+
+### 2026-09-29 — Bước 4: dashboard admin
+- **Cách tính số:**
+  - "Total Stores" = số dòng `Vendor` ở mọi trạng thái. Phần chia theo trạng thái nằm ở "Vendors by Status".
+  - "Total Vendor" trong User Overview = số user role VENDOR.
+- **User Overview:** chưa có thư viện biểu đồ, nên khung donut (230px) hiện "Chart coming soon". Số thật nằm trong chú thích bên dưới.
+- **Q3:** tên hai thẻ vendor mới là "Vendors by Status" và "Recent Vendor Registrations". Thẻ "Recent Vendor Registrations" có "View All" vô hiệu (trang danh sách vendor là task sau).
+- **Pill admin** giữ nhãn "Master Admin" của thiết kế: đây là nhãn vai trò, không phải số liệu.
+- **Thuộc tính `data-stat` / `data-store`:** thêm trên số liệu và danh sách của dashboard admin để `scripts/verify-dashboards.ts` so với SQL. Không ảnh hưởng giao diện.
