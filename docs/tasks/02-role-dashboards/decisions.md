@@ -192,3 +192,13 @@ Loader đã có trường và kiểu dữ liệu (`lib/dashboard/types.ts`), hi�
 - **Ảnh hưởng:**
   - Ngày trên dashboard là ngày theo UTC.
   - Checklist thủ công: khi so ngày với SQL, dùng giá trị `createdAt` trong DB (Prisma lưu UTC).
+
+### 2026-09-30 — Lệch thiết kế có chủ đích: bỏ thanh icon ở khung admin
+- **Bối cảnh:** thiết kế `AdminDashboard` (và `vendordashboard`) có cột icon dọc màu tối ở mép trái, gồm logo và 8 icon. Ở khung
+  admin chỉ icon Home là link thật (trùng "Dashboard" ở cột trắng), 7 icon còn lại là "Coming soon", không icon nào chuyển nhóm menu.
+- **Quyết định:** bỏ thanh icon CHỈ ở khung admin (`/admin/*`). Logo chuyển lên đầu cột menu trắng, phía trên "Home", bấm về
+  `/admin/dashboard`. Vendor (`/vendor/*`) và khách hàng giữ nguyên. `DashboardShell` nhận prop `showIconRail` (mặc định `true`);
+  admin layout truyền `false`; `ShellNav.rail` tùy chọn và `adminNav` không còn `rail`.
+- **Lý do:** chủ dự án chọn bỏ; thanh icon ở admin không có chức năng riêng nên bỏ không làm mất đường vào trang nào.
+- **Ảnh hưởng:** giao diện admin khác thiết kế gốc (có chủ đích, không phải lỗi). Khi cần lại thanh icon cho admin: thêm `rail`
+  vào `adminNav` và bỏ `showIconRail={false}`. Chi tiết: `docs/tasks/04-remove-icon-rail/`.

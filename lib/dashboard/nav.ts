@@ -36,8 +36,8 @@ export type NavItem = {
 
 export type NavGroup = { label: string; items: NavItem[] };
 
-/** Seller/admin shell: dark icon rail + white sidebar with grouped links. */
-export type ShellNav = { rail: NavItem[]; groups: NavGroup[] };
+/** Seller/admin shell: white sidebar with grouped links, plus an optional dark icon rail (vendor only). */
+export type ShellNav = { rail?: NavItem[]; groups: NavGroup[] };
 
 /** Customer account sidebar (userdashboard mockup). Only Profile Info has a page. */
 export const customerNav: NavItem[] = [
@@ -84,8 +84,8 @@ export const vendorNav: ShellNav = {
   groups: [overviewFor("/vendor/dashboard")],
 };
 
+// No rail: the admin frame has no icon rail (task 04).
 export const adminNav: ShellNav = {
-  rail: railFor("/admin/dashboard"),
   groups: [
     overviewFor("/admin/dashboard"),
     // AdminProductList mockup: Catalog sidebar -> "Organization" -> "Brand Setup" (task 03).
