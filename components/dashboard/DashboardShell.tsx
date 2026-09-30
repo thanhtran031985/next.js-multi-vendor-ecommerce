@@ -54,6 +54,9 @@ export function DashboardShell({
   const seller = variant === "seller";
   const logoClass = "flex size-9.5 items-center justify-center rounded-md bg-iris-500 text-white";
 
+  // Asking for the rail without giving it items would silently show no rail: fail loudly instead.
+  if (showIconRail && !nav.rail) throw new Error("DashboardShell: showIconRail needs nav.rail (or pass showIconRail={false}).");
+
   const rail =
     showIconRail && nav.rail ? (
       <>

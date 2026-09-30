@@ -24,3 +24,14 @@
   cỡ `text-27` như header storefront), bọc `Link` tới `/admin/dashboard`. Logo của vendor (trong thanh icon) không đổi.
 - **Ảnh hưởng:** khác task.md ở điểm "giữ kích thước và token màu hiện tại" (chủ dự án yêu cầu). Ghi chú ở
   `DashboardShell.tsx` cập nhật theo.
+
+### 2026-09-30 — Rà soát /finish-task
+- Không có mục ❌. Hai khác biệt (⚠️) đã có quyết định: logo là chữ "Covet." theo yêu cầu chủ dự án; `verify-dashboards.ts` sửa ngoài
+  danh sách phạm vi để khóa hành vi rail.
+
+### 2026-09-30 — Sửa sau rà soát và tổng kết: khác với task.md gốc
+- **Sửa:** `DashboardShell` ném lỗi khi `showIconRail` bật mà thiếu `nav.rail`.
+- **Khác task.md:** (1) logo admin là chữ "Covet." (`Wordmark`) theo yêu cầu chủ dự án, không giữ icon giỏ hàng; (2) chọn P1-b/P2/P3 theo
+  đề xuất Bước 0 khi chủ dự án trả lời "continue"; (3) sửa `scripts/verify-dashboards.ts` (ngoài danh sách phạm vi); (4) task 02 có thêm mục
+  "Lệch thiết kế có chủ đích".
+- **Chưa xác nhận:** checklist thủ công về giao diện, đóng task theo yêu cầu chủ dự án.

@@ -1,6 +1,6 @@
 # Tiến độ — 04-remove-icon-rail
 
-Trạng thái chung: 🔄 · Cập nhật lần cuối: 2026-09-30
+Trạng thái chung: ✅ · Cập nhật lần cuối: 2026-09-30
 
 | Bước | Tên | Trạng thái | Ghi chú |
 |------|-----|------------|---------|
@@ -113,5 +113,30 @@ tùy chọn), `app/(admin)/admin/(protected)/layout.tsx` (truyền `showIconRail
   - [ ] `/vendor/dashboard` và `/dashboard`: giao diện Y NHƯ TRƯỚC (thanh icon của vendor còn nguyên; so với commit trước task).
   - [ ] Màn hình 375px (admin): drawer mở/đóng được, có logo, nút X không chồng logo, không cuộn ngang toàn trang.
 
+### Rà soát theo /finish-task (2026-09-30)
+| Mục | Đánh giá | Bằng chứng |
+|-----|----------|------------|
+| Phạm vi CHỈ ADMIN: vendor và khách hàng không đổi | ✅ | `git diff main`: không sửa `app/(seller)/**`, `AccountShell`; vendor dùng mặc định `showIconRail = true` (`DashboardShell.tsx:50`); `verify-dashboards.ts` kiểm vendor còn `aria-label="Sections"` |
+| Khung dùng chung → không xóa component, thêm tùy chọn rõ ràng, không CSS ẩn theo đường dẫn | ✅ | prop `showIconRail` (`DashboardShell.tsx:33,50,58`); admin layout `showIconRail={false}` (`app/(admin)/admin/(protected)/layout.tsx:24`); `ShellFrame.tsx:47` chỉ render cột khi có `rail` |
+| Logo (admin) lên đầu cột trắng, phía trên "Home", bấm → `/admin/dashboard` | ⚠️ | có (`DashboardShell.tsx:70-78`) nhưng là chữ "Covet." (`Wordmark`) thay vì icon giỏ hàng, theo yêu cầu của chủ dự án (decisions 2026-09-30) |
+| Điều hướng: không mất đường vào mục admin nào | ✅ | không mục nào phụ thuộc thanh icon (Bước 0); Dashboard và Brand Setup vẫn ở cột trắng |
+| Cột trắng sát mép trái, nội dung giãn ra | ✅ (code) | `ShellFrame.tsx`: bỏ cột `w-16`, `main` trong cột `flex-1`; hình ảnh chờ checklist thủ công |
+| Mobile: drawer mở/đóng, có logo | ✅ (code) | drawer chỉ còn cột trắng, logo căn trái, nút X căn phải; 375px chờ checklist thủ công |
+| Chỉ dùng design token | ✅ | grep dòng thêm mới: không hex/`rgba(`/px |
+| Không sửa `designs/`, auth, guard; không cài thư viện | ✅ | `git diff main --stat` |
+| Ghi lệch thiết kế vào decisions task 02 | ✅ | `docs/tasks/02-role-dashboards/decisions.md` (mục 2026-09-30) |
+| Sửa ngoài danh sách phạm vi | ⚠️ | `scripts/verify-dashboards.ts` (3 ca kiểm tra rail), đã ghi decisions |
+
+- `npx tsc --noEmit`, `npm run lint`, `npm run build`: không lỗi (chạy lại 2026-09-30).
+
+### Sửa sau rà soát (2026-09-30)
+- Đã làm: `DashboardShell` ném lỗi rõ ràng khi `showIconRail` bật mà `nav.rail` không có (trước đó im lặng không hiện thanh icon).
+- File sửa: `components/dashboard/DashboardShell.tsx`.
+- Kết quả kiểm tra: `tsc`, `lint`, `build` không lỗi; `verify-dashboards.ts` và `verify-auth.ts` ALL CHECKS PASSED.
+
+### Đóng task (2026-09-30)
+- Đóng theo yêu cầu của chủ dự án. Checklist thủ công ở Bước 2 (giao diện, mobile 375px, logo chữ) **chưa được xác nhận từng mục**
+  nên để nguyên ô chưa tích; cần xem bằng `npm run dev` khi có dịp.
+
 ## Bước tiếp theo
-Chờ chủ dự án chạy checklist thủ công ở Bước 2, rồi đóng task (`/finish-task 04-remove-icon-rail`).
+Hoàn thành
