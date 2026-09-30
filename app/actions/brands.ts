@@ -65,20 +65,29 @@ export async function updateBrandAction(id: string, formData: FormData): Promise
   }
 }
 
-/** Refused while the brand has products (the message suggests setting it to Inactive). */
-export async function deleteBrandAction(id: string): Promise<ActionResult<{ id: string; name: string }>> {
+const deleteFromSchema = z.enum(["list", "detail"]);
+
+/**
+ * Refused while the brand has products (the message suggests setting it to Inactive).
+ * `from` = the page the delete button is on. From the detail page nothing is revalidated:
+ * that page is about to be replaced by the list (a fresh dynamic render), and revalidating it
+ * would re-render the deleted brand's page as a 404 before the redirect happens.
+ */
+export async function deleteBrandAction(
+  id: string,
+  from: "list" | "detail" = "list",
+): Promise<ActionResult<{ id: string; name: string }>> {
   const admin = await requireAdminAction();
   if (!admin.ok) return admin.result;
 
   const brandId = brandIdSchema.safeParse(id);
   if (!brandId.success) return invalidInput(brandId.error);
+  const page = deleteFromSchema.safeParse(from);
+  if (!page.success) return invalidInput(page.error);
 
   try {
     const result = await deleteBrand(brandId.data);
-    if (result.ok) {
-      revalidatePath(LIST_PATH);
-      revalidatePath(detailPath(brandId.data));
-    }
+    if (result.ok && page.data === "list") revalidatePath(LIST_PATH);
     return fromService(result);
   } catch (err) {
     return unexpected("deleteBrandAction", err);

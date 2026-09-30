@@ -56,7 +56,7 @@ export function DeleteBrandButton({
 
   function remove() {
     run(async () => {
-      const result = await deleteBrandAction(brand.id);
+      const result = await deleteBrandAction(brand.id, redirectToList ? "detail" : "list");
       if (!result.success) return setError(result.error);
       toast.success(`Deleted “${brand.name}”`);
       close();

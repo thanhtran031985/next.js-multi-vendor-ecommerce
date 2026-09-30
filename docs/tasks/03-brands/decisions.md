@@ -162,3 +162,28 @@
 4. Cột Products ở danh sách (`BrandTable`) — gọi từ `listBrands`, đổi sang `_count` trong một truy vấn.
 5. Kiểm tra lại: chặn xóa khi còn sản phẩm (service + `DeleteBrandButton` nhánh blocked) và nút
    "Deactivate instead"; thêm ca kiểm tra vào `scripts/verify-brands.ts`.
+
+### 2026-09-30 — Rà soát /finish-task: khác biệt so với task.md
+- Không có mục nào ❌. Ba khác biệt (⚠️) đều đã có quyết định trước đó: `page`/`loading` của danh sách
+  nằm trong `brands/(list)/`; `error.tsx` dùng `retry`; sửa nhỏ ngoài phạm vi (shell task 02,
+  `lib/actions/`, slot breadcrumb).
+
+### 2026-09-30 — Sửa sau rà soát
+- **`deleteBrandAction(id, from)`:** thêm tham số `from` ("list" mặc định | "detail"). Từ trang chi tiết
+  không revalidate gì: trang sắp được thay bằng danh sách (trang động, luôn render mới); revalidate sẽ
+  render lại trang của brand vừa xóa thành 404 trước khi chuyển hướng.
+- **`error.tsx` riêng cho `[id]`**, thông báo theo ngữ cảnh.
+- **`getBrandByIdCached`** ở file riêng (`lib/brands/cached.ts`) thay vì bọc `cache` trong `queries.ts`,
+  để `verify-brands.ts` (Node thuần) vẫn import `queries.ts` như cũ.
+
+### 2026-09-30 — Tổng kết: khác với task.md gốc
+- **Cấu trúc route:** `page.tsx`/`loading.tsx` của danh sách ở `brands/(list)/` để id sai trả 404 thật;
+  `error.tsx` ở `brands/` (danh sách) và `brands/[id]/` (chi tiết), đều dùng `retry` thay `reset`.
+- **Menu và breadcrumb:** thêm nhóm "Organization" → "Brand Setup" vào `adminNav` (mục chưa tồn tại);
+  breadcrumb theo parallel route `@breadcrumb`, sửa nhỏ `DashboardShell` của task 02.
+- **Ngoài danh sách phạm vi:** `lib/actions/{result,require-admin}.ts`, `lib/brands/{list-url,cached}.ts`.
+- **Giao diện:** primitive tự làm (Dialog, Switch, Select, Pagination), token mới `--toggle-off`,
+  `--success-soft`, `--backdrop`, `--tracking-table`; bỏ Export/mã vạch; Cancel thay Reset; tên trùng
+  tính cả khác dấu (Q4, MariaDB).
+- **Action:** `deleteBrandAction(id, from)`; toggle nhận trạng thái đích.
+- **Chờ task Product:** xem danh sách nối lại ở mục "Việc task Product phải nối lại" phía trên.

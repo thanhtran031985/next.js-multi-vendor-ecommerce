@@ -7,12 +7,13 @@ import { DeleteBrandButton } from "@/components/brands/DeleteBrandButton";
 import { EmptyState } from "@/components/dashboard/EmptyState";
 import { BoxIcon } from "@/components/icons/dashboard";
 import { requireRole } from "@/lib/auth/guards";
-import { countProductsByBrand, getBrandById } from "@/lib/brands/queries";
+import { getBrandByIdCached } from "@/lib/brands/cached";
+import { countProductsByBrand } from "@/lib/brands/queries";
 
 type BrandDetailProps = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: BrandDetailProps): Promise<Metadata> {
-  const brand = await getBrandById((await params).id);
+  const brand = await getBrandByIdCached((await params).id);
   return { title: brand?.name ?? "Brand" };
 }
 
@@ -25,7 +26,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" });
 export default async function BrandDetailPage({ params }: BrandDetailProps) {
   await requireRole("ADMIN");
   const { id } = await params;
-  const brand = await getBrandById(id);
+  const brand = await getBrandByIdCached(id);
   if (!brand) notFound();
 
   const [total, active, inactive] = await Promise.all([

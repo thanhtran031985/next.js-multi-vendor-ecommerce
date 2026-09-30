@@ -1,9 +1,9 @@
 import { Breadcrumb } from "@/components/dashboard/Breadcrumb";
-import { getBrandById } from "@/lib/brands/queries";
+import { getBrandByIdCached } from "@/lib/brands/cached";
 
 export default async function BrandDetailBreadcrumb({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const brand = await getBrandById(id);
+  const brand = await getBrandByIdCached(id);
   return (
     <Breadcrumb
       items={[

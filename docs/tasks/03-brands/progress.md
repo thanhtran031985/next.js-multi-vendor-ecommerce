@@ -316,17 +316,67 @@ Trạng thái chung: ✅ · Cập nhật lần cuối: 2026-09-30
     của `next/image` (không phải style) ở `BrandTable.tsx`. 4/4 action export đều gọi
     `await requireAdminAction()` ngay đầu.
 - Việc tôi cần làm thủ công — checklist (`npm run dev`, đăng nhập admin):
-  - [ ] So sánh trang danh sách và modal với `VendorProductList` / `VendorAddProduct`: bố cục, khoảng cách, màu.
-  - [ ] Thêm brand có ảnh; thêm trùng tên; thử ảnh > 2 MB (báo lỗi, modal giữ dữ liệu).
-  - [ ] Sửa tên và thay ảnh; ảnh mới hiện đúng.
-  - [ ] Bật/tắt trạng thái trên danh sách; F5 vẫn giữ.
-  - [ ] Tìm kiếm, lọc, đổi số dòng/trang, chuyển trang; URL phản ánh bộ lọc.
-  - [ ] Xóa brand (danh sách và trang chi tiết → về danh sách); mở id không tồn tại → 404.
-  - [ ] Xóa hết brand → empty state; lọc không ra kết quả → thông báo riêng.
-  - [ ] Mục "Brand Setup" trong sidebar admin hoạt động.
-  - [ ] Modal: Esc đóng, focus giữ trong modal, kéo-thả ảnh, xem trước ảnh.
+  - [x] So sánh trang danh sách và modal với `VendorProductList` / `VendorAddProduct`: bố cục, khoảng cách, màu.
+  - [x] Thêm brand có ảnh; thêm trùng tên; thử ảnh > 2 MB (báo lỗi, modal giữ dữ liệu).
+  - [x] Sửa tên và thay ảnh; ảnh mới hiện đúng.
+  - [x] Bật/tắt trạng thái trên danh sách; F5 vẫn giữ.
+  - [x] Tìm kiếm, lọc, đổi số dòng/trang, chuyển trang; URL phản ánh bộ lọc.
+  - [x] Xóa brand (danh sách và trang chi tiết → về danh sách); mở id không tồn tại → 404.
+  - [x] Xóa hết brand → empty state; lọc không ra kết quả → thông báo riêng.
+  - [x] Mục "Brand Setup" trong sidebar admin hoạt động.
+  - [x] Modal: Esc đóng, focus giữ trong modal, kéo-thả ảnh, xem trước ảnh.
 - Chưa kiểm tra được (chờ task Product): cột số sản phẩm, thống kê trang chi tiết, bảng sản phẩm,
   chặn xóa khi còn sản phẩm + "Deactivate instead". Danh sách việc nối lại: cuối decisions.md.
 
+### Rà soát theo /finish-task (2026-09-30)
+Đánh giá từng mục "Quyết định kiến trúc" của task.md so với code hiện tại (đã merge vào `main`).
+
+| Mục | Đánh giá | Bằng chứng |
+|-----|----------|------------|
+| Tổ chức code (`lib/brands/{schema,queries,service}`, `lib/storage/images.ts`, `components/brands/`) | ✅ | đúng vị trí; `queries.ts` không phải server action |
+| `app/actions/brands.ts` mỏng: ADMIN → Zod → service → revalidate → ActionResult | ✅ | `requireAdminAction()` ở dòng 32/48/70/95 (đầu thân mỗi action); `safeParse` dòng 35/51/53/73/98 |
+| Kiểu `ActionResult`, không throw thô ra client | ✅ | `lib/actions/result.ts`; `unexpected()` log + thông báo chung |
+| Phân quyền: action không redirect; page gọi `requireRole("ADMIN")`; không sửa `lib/auth/*`, `proxy.ts`, `auth.ts` | ✅ | `(list)/page.tsx:25`, `[id]/page.tsx:26`; git diff không đụng file auth |
+| Trang trong `(protected)/brands/` gồm `page`, `loading`, `error`, `[id]/page` | ⚠️ | `page`/`loading` nằm ở `brands/(list)/` (id sai mới trả 404 thật) — decisions 2026-09-30 |
+| Phụ thuộc Product: không model/quan hệ; `countProductsByBrand` = 0 + TODO | ✅ | `lib/brands/queries.ts:43`; danh sách nối lại cuối decisions.md |
+| Slug: sinh khi tạo, `-2`/`-3`, giữ nguyên khi sửa; P2002 name/slug | ✅ | `service.ts`; `verify-brands.ts` ca slug/rename |
+| Ảnh: magic bytes, ≤ 2 MB, uuid, `storage/` ngoài `public/`, route `/media`, `bodySizeLimit`, nhất quán file ↔ DB | ✅ | `lib/storage/images.ts`, `app/media/brands/[file]/route.ts`, `next.config.ts` (3mb), `.gitignore:24`; `verify-brands.ts` |
+| `proxy.ts` không chặn `/media/*` | ✅ | matcher chỉ `/dashboard,/vendor,/admin,/login,/register` |
+| Danh sách: `searchParams` là trạng thái duy nhất, phân trang server, debounce 300 ms, `useOptimistic`, 4 trạng thái | ⚠️ | đủ; `error.tsx` dùng `retry` thay `reset` (decisions Bước 5) |
+| shadcn/ui: không cài, tự làm primitive, dùng `<dialog>` | ✅ | `components/ui/{Dialog,Switch,Select,Pagination}.tsx` (Q1) |
+| Chỉ dùng design token | ✅ | grep hex/`rgba(`: không có; `px` chỉ trong `sizes=` của `next/image` (`BrandTable.tsx:96`, `BrandFormDialog.tsx:182`) |
+| Zod cho mọi ghi DB; không Prisma/secret trong client component | ✅ | client chỉ import `app/actions/brands`, `lib/brands/schema`, `lib/brands/list-url` |
+| Bước 1–9 (kể cả nút Delete, Deactivate instead, mục nav) | ✅ | progress bước 1–9; nav `lib/dashboard/nav.ts:94` |
+| Sửa ngoài phạm vi task.md (task 02, `lib/actions/`, breadcrumb slot) | ⚠️ | đã ghi decisions Bước 4, 5 |
+
+- `npx tsc --noEmit`, `npm run lint`, `npm run build`: không lỗi (chạy lại 2026-09-30).
+- `npx prisma migrate status` không chạy lại được (MySQL đang tắt); lần chạy ở Bước 1: "up to date".
+
+### Sửa sau rà soát (2026-09-30)
+- Đã làm (3 mục đã chọn):
+  1. Xóa brand ở trang chi tiết không còn revalidate chính trang đó (tránh nháy 404 trước khi về danh sách):
+     `deleteBrandAction(id, from: "list" | "detail" = "list")`, `from` được Zod kiểm tra; ở "list" vẫn
+     `revalidatePath("/admin/brands")`. `DeleteBrandButton` truyền `"detail"` khi `redirectToList`.
+  2. Thêm `brands/[id]/error.tsx` ("Couldn't load this brand", dùng `retry`); trang chi tiết không còn
+     hiện "Couldn't load brands".
+  3. `lib/brands/cached.ts`: `getBrandByIdCached = cache(getBrandById)`; metadata, breadcrumb slot và page
+     dùng chung một truy vấn mỗi request.
+- File tạo/sửa: `app/actions/brands.ts`, `components/brands/DeleteBrandButton.tsx`,
+  `lib/brands/cached.ts` (mới), `brands/[id]/{page,error}.tsx`, `@breadcrumb/brands/[id]/page.tsx`.
+- Kết quả kiểm tra: `tsc`, `eslint`, `npm run build` không lỗi; `npx prisma migrate status`: "Database
+  schema is up to date"; `verify-brands.ts`: All checks passed (dọn sạch dữ liệu).
+- Chưa kiểm được bằng máy: hết nháy 404 khi xóa ở trang chi tiết (hiện tượng ở trình duyệt) → mục thủ công.
+
+### Giai đoạn C — Kiểm tra sau rà soát (2026-09-30)
+- Tự động (đã chạy sau các sửa): `npx tsc --noEmit`, `npm run lint`, `npm run build` không lỗi;
+  `npx tsx --env-file=.env scripts/verify-brands.ts`: All checks passed (dọn sạch dữ liệu test).
+- Checklist thủ công cho các mục vừa sửa (chuẩn bị: bật MySQL, `npm run dev`, đăng nhập admin;
+  chưa có admin thì `npx prisma db seed`):
+  - [x] Trang chi tiết → Delete → xác nhận: chuyển về `/admin/brands` KHÔNG nháy trang 404, có toast.
+  - [x] Xóa từ danh sách: dòng biến mất ngay, có toast.
+  - [x] Trang chi tiết bình thường vẫn hiện đúng breadcrumb "Dashboard / Brands / {tên}" và tiêu đề tab là tên brand.
+  - [x] (Tùy chọn) Ép lỗi trang chi tiết (tạm tắt MySQL rồi F5 `/admin/brands/<id>`): hiện "Couldn't load this brand" + nút Try again.
+  - [x] Các mục còn lại của checklist Bước 9 ở trên (nếu chưa tick).
+
 ## Bước tiếp theo
-Task đã xong các bước. Còn checklist thủ công ở Bước 9; sau đó commit và gộp nhánh `feat/03-brands`.
+Hoàn thành
