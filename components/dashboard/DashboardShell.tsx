@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { CartIcon, SearchIcon, UserIcon } from "@/components/icons";
 import {
@@ -24,31 +25,56 @@ type DashboardShellProps = {
   user: { name: string; email: string };
   /** Seller only: shown in the user-menu header (decisions.md Q4). */
   storeName?: string;
+  /**
+   * Dark icon rail on the far left. Default true (vendor keeps it). Admin passes false (task 04):
+   * the logo then moves to the top of the white sidebar and links to the dashboard.
+   */
+  showIconRail?: boolean;
   /** Topbar breadcrumb; defaults to Home / Dashboard. Admin pages set it via the @breadcrumb slot (task 03). */
   breadcrumb?: ReactNode;
   children: ReactNode;
 };
 
 /**
- * Seller/admin dashboard shell (vendordashboard + AdminDashboard mockups): dark icon rail,
- * white sidebar with grouped nav and Setup Guide card, topbar with breadcrumb, actions and
+ * Seller/admin dashboard shell (vendordashboard + AdminDashboard mockups): dark icon rail
+ * (optional, see showIconRail), white sidebar with grouped nav and Setup Guide card, topbar with breadcrumb, actions and
  * user menu, content on --bg-dash. Server component; interactivity lives in ShellFrame,
  * SidebarNav and UserMenu.
  */
-export function DashboardShell({ variant, nav, user, storeName, breadcrumb, children }: DashboardShellProps) {
+export function DashboardShell({
+  variant,
+  nav,
+  user,
+  storeName,
+  showIconRail = true,
+  breadcrumb,
+  children,
+}: DashboardShellProps) {
   const seller = variant === "seller";
+  const logoClass = "flex size-9.5 items-center justify-center rounded-md bg-iris-500 text-white";
 
-  const rail = (
-    <>
-      <span className="mb-3.5 flex size-9.5 items-center justify-center rounded-md bg-iris-500 text-white" aria-hidden="true">
-        <CartIcon size={20} />
-      </span>
-      <SidebarNav items={nav.rail} variant="rail" label="Sections" />
-    </>
-  );
+  const rail =
+    showIconRail && nav.rail ? (
+      <>
+        <span className={`mb-3.5 ${logoClass}`} aria-hidden="true">
+          <CartIcon size={20} />
+        </span>
+        <SidebarNav items={nav.rail} variant="rail" label="Sections" />
+      </>
+    ) : undefined;
 
   const sidebar = (
     <>
+      {/* No rail: its logo moves here, above "Home", and links to the dashboard. */}
+      {!rail && (
+        <Link
+          href={seller ? "/vendor/dashboard" : "/admin/dashboard"}
+          aria-label="Covet dashboard"
+          className={`mb-4 ${logoClass} transition-colors hover:bg-iris-600 hover:text-white focus-visible:ring-3 focus-visible:ring-iris-200 focus-visible:outline-none`}
+        >
+          <CartIcon size={20} />
+        </Link>
+      )}
       <div className={`flex items-center gap-2.5 border-b border-line-soft px-2 ${seller ? "mb-4 pb-5" : "mb-3.5 pb-4.5"}`}>
         <span className="flex size-8.5 items-center justify-center rounded-md bg-iris-50 text-iris-500">
           <HomeIcon size={18} />

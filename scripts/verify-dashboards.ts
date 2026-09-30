@@ -209,6 +209,7 @@ async function main() {
 
   console.log("\n# Vendor");
   await expectPage("vendor APPROVED", jars.vendor, "/vendor/dashboard", [
+    'aria-label="Sections"', // icon rail stays on the vendor frame (task 04)
     "Setup Guide",
     "v****@",
     "Logout",
@@ -246,6 +247,7 @@ async function main() {
     jars.admin,
     "/admin/dashboard",
     [
+      'aria-label="Covet dashboard"', // logo moved to the top of the sidebar (task 04)
       "Search Menu...",
       "Master Admin",
       "Ada Admin",
@@ -266,7 +268,7 @@ async function main() {
       "Vendor Products",
       "No data yet",
     ],
-    ['href="/admin/dashboard/products"', "passwordHash", "27,514.52", "Robert Downey"],
+    ['aria-label="Sections"', 'href="/admin/dashboard/products"', "passwordHash", "27,514.52", "Robert Downey"],
   );
   await checkAdminFiguresAgainstSql(jars.admin);
   await expectRedirect("admin", jars.admin, "/dashboard", "/admin/dashboard");

@@ -7,7 +7,8 @@ import { drawerPanelClass, useDrawer } from "@/components/dashboard/use-drawer";
 const SIDEBAR_ID = "dashboard-sidebar";
 
 type ShellFrameProps = {
-  rail: ReactNode;
+  /** Dark icon rail; omit for a frame that starts with the white sidebar. */
+  rail?: ReactNode;
   sidebar: ReactNode;
   /** Topbar content after the toggle button (breadcrumb, search, actions, user menu). */
   topbar: ReactNode;
@@ -17,7 +18,7 @@ type ShellFrameProps = {
 };
 
 /**
- * Interactive frame of the seller/admin dashboards: icon rail + sidebar + sticky topbar.
+ * Interactive frame of the seller/admin dashboards: (optional) icon rail + sidebar + sticky topbar.
  * - md and up: the topbar button collapses/expands rail + sidebar (as in the mockups).
  * - below md: rail + sidebar become an off-canvas drawer opened by the same button.
  * The mockups have no mobile layout; the drawer is decisions.md "Responsive".
@@ -43,7 +44,7 @@ export function ShellFrame({ rail, sidebar, topbar, contentWidth, children }: Sh
           drawerOpen,
         )} ${collapsed ? "md:hidden" : ""}`}
       >
-        <div className="flex h-full w-16 flex-none flex-col items-center gap-2 bg-ink py-4">{rail}</div>
+        {rail && <div className="flex h-full w-16 flex-none flex-col items-center gap-2 bg-ink py-4">{rail}</div>}
         <aside className="relative h-full w-59 flex-none overflow-y-auto border-r border-line bg-surface px-4 py-5">
           <button
             ref={closeRef}

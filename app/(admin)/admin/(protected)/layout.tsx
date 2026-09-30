@@ -21,6 +21,7 @@ export default async function AdminProtectedLayout({
     <DashboardShell
       variant="admin"
       nav={adminNav}
+      showIconRail={false}
       user={{ name: user.name ?? "", email: user.email ?? "" }}
       breadcrumb={breadcrumb}
     >
