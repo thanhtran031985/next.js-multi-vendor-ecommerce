@@ -107,7 +107,7 @@ tùy chọn), `app/(admin)/admin/(protected)/layout.tsx` (truyền `showIconRail
     vendor vẫn có rail (`aria-label="Sections"`), admin có logo link (`aria-label="Covet dashboard"`) và không có rail.
   - `verify-brands.ts`: All checks passed (trang admin khác vẫn trong khung mới).
 - Việc tôi cần làm thủ công — checklist (`npm run dev`):
-  - [ ] `/admin/dashboard`, `/admin/brands`: không còn thanh icon; logo ở đầu cột trắng; bấm logo về `/admin/dashboard`.
+  - [ ] `/admin/dashboard`, `/admin/brands`: không còn thanh icon; logo chữ "Covet." ở đầu cột trắng; bấm logo về `/admin/dashboard`.
   - [ ] Mọi mục menu admin (Dashboard, POS, Brand Setup) bấm được/đúng trạng thái và đánh dấu đúng mục đang mở.
   - [ ] Không còn khoảng trống thừa bên trái; nội dung giãn đúng; nút thu gọn/mở cột trắng trên topbar vẫn chạy (từ `md` trở lên).
   - [ ] `/vendor/dashboard` và `/dashboard`: giao diện Y NHƯ TRƯỚC (thanh icon của vendor còn nguyên; so với commit trước task).

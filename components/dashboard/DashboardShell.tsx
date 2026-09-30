@@ -16,6 +16,7 @@ import { comingSoonProps } from "@/components/dashboard/coming-soon";
 import { ShellFrame } from "@/components/dashboard/ShellFrame";
 import { SidebarNav } from "@/components/dashboard/SidebarNav";
 import { UserMenu, type UserMenuItem } from "@/components/dashboard/UserMenu";
+import { Wordmark } from "@/components/Wordmark";
 import { maskEmail } from "@/lib/dashboard/format";
 import type { ShellNav } from "@/lib/dashboard/nav";
 
@@ -65,14 +66,14 @@ export function DashboardShell({
 
   const sidebar = (
     <>
-      {/* No rail: its logo moves here, above "Home", and links to the dashboard. */}
+      {/* No rail: the logo moves here, above "Home", as the "Covet." wordmark, and links to the dashboard. */}
       {!rail && (
         <Link
           href={seller ? "/vendor/dashboard" : "/admin/dashboard"}
           aria-label="Covet dashboard"
-          className={`mb-4 ${logoClass} transition-colors hover:bg-iris-600 hover:text-white focus-visible:ring-3 focus-visible:ring-iris-200 focus-visible:outline-none`}
+          className="mb-4 block rounded-sm px-2 text-ink hover:text-ink focus-visible:ring-3 focus-visible:ring-iris-100 focus-visible:outline-none"
         >
-          <CartIcon size={20} />
+          <Wordmark className="text-27" />
         </Link>
       )}
       <div className={`flex items-center gap-2.5 border-b border-line-soft px-2 ${seller ? "mb-4 pb-5" : "mb-3.5 pb-4.5"}`}>
